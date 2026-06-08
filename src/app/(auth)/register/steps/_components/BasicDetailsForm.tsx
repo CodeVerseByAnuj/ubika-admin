@@ -82,7 +82,7 @@ const BasicDetailsForm = () => {
         </div>
 
         {/* OTP Number */}
-        <Field>
+        {/* <Field>
           <FieldLabel htmlFor="ohpNumber">OHP Number</FieldLabel>
 
           <FieldContent>
@@ -93,7 +93,7 @@ const BasicDetailsForm = () => {
               placeholder="Enter OHP number"
             />
           </FieldContent>
-        </Field>
+        </Field> */}
         <div>
           <LoadingButton className="w-full h-10"> Continue</LoadingButton>
         </div>
