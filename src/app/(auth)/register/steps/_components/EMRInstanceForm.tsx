@@ -51,21 +51,8 @@ const EMRInstanceForm = () => {
           <SelectTrigger className="h-11 w-full">
             <SelectValue placeholder="Select EMR instance" />
           </SelectTrigger>
-
           <SelectContent>
-            <SelectItem value="hospital-emr">Hospital EMR</SelectItem>
-
-            <SelectItem value="clinic-emr">Clinic EMR</SelectItem>
-
-            <SelectItem value="primary-care">Primary Care EMR</SelectItem>
-
-            <SelectItem value="mental-health">Mental Health EMR</SelectItem>
-
-            <SelectItem value="diagnostic-center">
-              Diagnostic Center EMR
-            </SelectItem>
-
-            <SelectItem value="telemedicine">Telemedicine EMR</SelectItem>
+            <SelectItem value="hospital-emr">Trillium Spine Centre</SelectItem>
           </SelectContent>
         </Select>
       </div>

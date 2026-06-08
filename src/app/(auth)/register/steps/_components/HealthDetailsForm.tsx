@@ -1,17 +1,10 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/common/LoadingButton";
 
-const HealthDetailsForm = () => {
+const HealthDetailsForm = ({ onNext }: { onNext?: () => void }) => {
   return (
     <div className="w-full">
       <div className="flex flex-col gap-2 my-4">
@@ -28,14 +21,7 @@ const HealthDetailsForm = () => {
         <Field>
           <FieldLabel htmlFor="hc_version">HC Version</FieldLabel>
           <FieldContent>
-            <Select>
-              <SelectTrigger className=" w-full">
-                <SelectValue placeholder="Select gender" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="st">st</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input id="hc_version" type="text" placeholder="Enter HC version" />
           </FieldContent>
         </Field>
 
@@ -53,7 +39,7 @@ const HealthDetailsForm = () => {
           </FieldContent>
         </Field>
         <div>
-          <LoadingButton className="w-full h-10"> Continue</LoadingButton>
+          <LoadingButton className="w-full h-10" onClick={onNext}> Continue</LoadingButton>
         </div>
       </div>
     </div>

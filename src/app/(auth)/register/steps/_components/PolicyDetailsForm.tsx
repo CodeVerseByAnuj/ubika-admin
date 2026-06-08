@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShieldCheck, CalendarDays } from "lucide-react";
+import { ShieldCheck, CalendarDays, CheckCircle2, Circle } from "lucide-react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -21,13 +21,21 @@ const policy: ConsentPolicy = {
   effective_date: "2026-06-01",
 };
 
-const PolicyDetailsForm = () => {
+const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
+  const [selected, setSelected] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
   const formatted = new Date(policy.effective_date).toLocaleDateString(
     "en-CA",
     { year: "numeric", month: "long", day: "numeric" }
   );
+
+  const handleSelect = () => {
+    setSelected((prev) => {
+      if (prev) setAccepted(false);
+      return !prev;
+    });
+  };
 
   return (
     <div className="w-full">
@@ -36,13 +44,20 @@ const PolicyDetailsForm = () => {
           Review & Accept Policy
         </h1>
         <p className="text-sm leading-6 text-muted-foreground">
-          Please review the consent policy below and accept it before
-          continuing.
+          Select the policy to review, then accept it before continuing.
         </p>
       </div>
 
       {/* Policy Card */}
-      <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+      <button
+        type="button"
+        onClick={handleSelect}
+        className={`w-full text-left rounded-2xl border shadow-sm overflow-hidden transition-all ${
+          selected
+            ? "border-primary bg-primary/5"
+            : "border-border bg-card hover:border-primary/40"
+        }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between bg-primary/10 px-5 py-3 border-b">
           <div className="flex items-center gap-2">
@@ -51,9 +66,16 @@ const PolicyDetailsForm = () => {
               {policy.name}
             </span>
           </div>
-          <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-            Policy #{policy.id}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+              Policy #{policy.id}
+            </span>
+            {selected ? (
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+            ) : (
+              <Circle className="h-5 w-5 text-muted-foreground/40" />
+            )}
+          </div>
         </div>
 
         {/* Body */}
@@ -68,11 +90,33 @@ const PolicyDetailsForm = () => {
             </span>
           </div>
         </div>
-      </div>
-   
+      </button>
+
+      {/* Accept checkbox — shown only after policy is selected */}
+      {selected && (
+        <div className="mt-4 flex gap-3 rounded-xl border bg-muted/40 p-3">
+          <Checkbox
+            id="acceptPolicy"
+            className="mt-1 border border-black"
+            checked={accepted}
+            onCheckedChange={(checked) => setAccepted(checked === true)}
+          />
+          <Label
+            htmlFor="acceptPolicy"
+            className="cursor-pointer text-sm leading-6"
+          >
+            {`I have read and agree to the ${policy.name} and consent to the processing of my OHIP information.`}
+          </Label>
+        </div>
+      )}
+
       {/* Button */}
       <div className="mt-5">
-        <LoadingButton disabled={!accepted} className="h-10 w-full">
+        <LoadingButton
+          disabled={!selected || !accepted}
+          className="h-10 w-full"
+          onClick={onNext}
+        >
           Continue
         </LoadingButton>
       </div>
