@@ -1,11 +1,18 @@
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "./_components/AppSidebar";
 import Header from "./_components/Header";
+import React from "react";
 
-const layout = () => {
+const PortalLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
-      <Header />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">
+        <Header />
+        <div className="p-4">{children}</div>
+      </main>
+    </SidebarProvider>
   );
 };
 
-export default layout;
+export default PortalLayout;

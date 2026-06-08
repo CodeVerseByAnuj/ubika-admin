@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Main from "./_components/summary-viewer/Main";
 
-export default function Home() {
+const DashboardPage = () => {
   return (
-    <div className="h-14 flex items-center justify-between px-4 border-b">
-      <h1 className="text-xl font-semibold">Yubika</h1>
-      <Button asChild>
-        <Link href={"/register"}>Register</Link>
-      </Button>
+    <div>
+      <Main />
     </div>
   );
-}
+};
+
+export default DashboardPage;
