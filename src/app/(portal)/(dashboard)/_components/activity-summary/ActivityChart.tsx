@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { TrendingUp, Activity, Heart, Flame, Footprints } from "lucide-react";
 import {
   CartesianGrid,
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { IActivityList } from "@/api-services/patient-wearables/types";
+import FilterHandler from "./FilterHandler";
 
 // Define metrics type
 type MetricKey = "steps" | "distance" | "activeCalories" | "avgHeartRate";
@@ -94,7 +95,23 @@ const EmptyState = () => (
   </Card>
 );
 
-const ActivityChart = ({ activity }: { activity: IActivityList[] }) => {
+const ActivityChart = ({
+  activity,
+  date,
+  setDate,
+}: {
+  activity: IActivityList[];
+  date: {
+    startDate: string;
+    endDate: string;
+  };
+  setDate: Dispatch<
+    SetStateAction<{
+      startDate: string;
+      endDate: string;
+    }>
+  >;
+}) => {
   const [selectedMetric, setSelectedMetric] = useState<MetricKey>("steps");
 
   // Always call useMemo, even if activity is empty
@@ -209,15 +226,22 @@ const ActivityChart = ({ activity }: { activity: IActivityList[] }) => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <CardTitle>Activity Overview</CardTitle>
-            <CardDescription>
-              {activity.length} days of activity data from{" "}
-              {activity[0]?.source?.provider || "wearable device"}
-              {activity[0]?.source?.device && ` (${activity[0].source.device})`}
-            </CardDescription>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <CardTitle className="text-lg font-semibold">
+                Activity Overview
+              </CardTitle>
+              <CardDescription>
+                {activity.length} days of activity data from{" "}
+                {activity[0]?.source?.provider || "wearable device"}
+                {activity[0]?.source?.device &&
+                  ` (${activity[0].source.device})`}
+              </CardDescription>
+            </div>
+            <FilterHandler date={date} setDate={setDate} />
           </div>
+
           <MetricButtons
             selectedMetric={selectedMetric}
             onMetricChange={setSelectedMetric}

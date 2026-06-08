@@ -1,9 +1,11 @@
-import Main from "./_components/summary-viewer/Main";
+import ActivityWrapper from "./_components/activity-summary/ActivityWrapper";
+import SleepWrapper from "./_components/sleep-summary/SleepWrapper";
 
 const DashboardPage = () => {
   return (
-    <div>
-      <Main />
+    <div className="space-y-4">
+      <ActivityWrapper />
+      <SleepWrapper />
     </div>
   );
 };
