@@ -1,0 +1,63 @@
+"use client";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import LoadingButton from "@/components/common/LoadingButton";
+
+const HealthDetailsForm = () => {
+  return (
+    <div className="w-full">
+      <div className="flex flex-col gap-2 my-4">
+        <h1 className="text-xl font-semibold tracking-tight text-primary">
+          Fill Your Personal Information
+        </h1>
+
+        <p className="text-sm leading-6 text-muted-foreground">
+          Please provide your Ontario Health Insurance Plan (OHIP) details to
+          securely verify your identity and access your clinical records safely.
+        </p>
+      </div>
+      <div className="space-y-6">
+        <Field>
+          <FieldLabel htmlFor="hc_version">HC Version</FieldLabel>
+          <FieldContent>
+            <Select>
+              <SelectTrigger className=" w-full">
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="st">st</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
+
+        {/* OTP Number */}
+        <Field>
+          <FieldLabel htmlFor="hcNumber">HC Number</FieldLabel>
+
+          <FieldContent>
+            <Input
+              id="hcNumber"
+              type="text"
+              inputMode="numeric"
+              placeholder="Enter HC number"
+            />
+          </FieldContent>
+        </Field>
+        <div>
+          <LoadingButton className="w-full h-10"> Continue</LoadingButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HealthDetailsForm;
