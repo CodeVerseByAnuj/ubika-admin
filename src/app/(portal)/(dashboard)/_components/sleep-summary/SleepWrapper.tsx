@@ -7,6 +7,8 @@ import {
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import SleepChart from "./SleepChart";
+import ShowError from "../ShowError";
+import LoadingSkeleton from "../LoadingSkeleton";
 
 const SleepWrapper = () => {
   const [date, setDate] = useState(() => {
@@ -19,7 +21,7 @@ const SleepWrapper = () => {
     };
   });
 
-  const { data } = useQuery({
+  const { data, isLoading, isFetching, isError, error, refetch } = useQuery({
     queryKey: ["getSleepSummaries", date],
     queryFn: () =>
       patientWearablesApiServices.getSummaries<
@@ -28,7 +30,32 @@ const SleepWrapper = () => {
     placeholderData: keepPreviousData,
   });
 
-  return <SleepChart sleep={data?.data || []} date={date} setDate={setDate} />;
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <ShowError
+        title="Failed to Load Sleep Data"
+        message={
+          error instanceof Error
+            ? error.message
+            : "Unable to fetch sleep summaries."
+        }
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
+  return (
+    <SleepChart
+      sleep={data?.data || []}
+      date={date}
+      setDate={setDate}
+      loading={isLoading || isFetching}
+    />
+  );
 };
 
 export default SleepWrapper;

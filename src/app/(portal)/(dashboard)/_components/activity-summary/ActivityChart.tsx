@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { IActivityList } from "@/api-services/patient-wearables/types";
-import FilterHandler from "./FilterHandler";
+import FilterHandler from "../FilterHandler";
 
 // Define metrics type
 type MetricKey = "steps" | "distance" | "activeCalories" | "avgHeartRate";
@@ -99,6 +99,7 @@ const ActivityChart = ({
   activity,
   date,
   setDate,
+  loading,
 }: {
   activity: IActivityList[];
   date: {
@@ -111,6 +112,7 @@ const ActivityChart = ({
       endDate: string;
     }>
   >;
+  loading: boolean;
 }) => {
   const [selectedMetric, setSelectedMetric] = useState<MetricKey>("steps");
 
@@ -239,7 +241,7 @@ const ActivityChart = ({
                   ` (${activity[0].source.device})`}
               </CardDescription>
             </div>
-            <FilterHandler date={date} setDate={setDate} />
+            <FilterHandler date={date} setDate={setDate} loading={loading} />
           </div>
 
           <MetricButtons
@@ -270,18 +272,18 @@ const ActivityChart = ({
                   tickMargin={8}
                   tickFormatter={(value) => value}
                   interval={
-                    chartData.length > 50 ? 6 : chartData.length > 30 ? 3 : 0
+                    chartData?.length > 50 ? 6 : chartData?.length > 30 ? 3 : 0
                   }
-                  angle={chartData.length > 14 ? -45 : 0}
-                  textAnchor={chartData.length > 14 ? "end" : "middle"}
-                  height={chartData.length > 14 ? 60 : 30}
+                  angle={chartData?.length > 14 ? -45 : 0}
+                  textAnchor={chartData?.length > 14 ? "end" : "middle"}
+                  height={chartData?.length > 14 ? 60 : 30}
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
                   tickFormatter={(value) =>
-                    `${value}${metrics[selectedMetric].suffix}`
+                    `${value}${metrics[selectedMetric]?.suffix}`
                   }
                   width={65}
                   domain={["auto", "auto"]}
@@ -297,11 +299,11 @@ const ActivityChart = ({
                   }
                 />
                 <Line
-                  dataKey={metrics[selectedMetric].dataKey}
+                  dataKey={metrics[selectedMetric]?.dataKey}
                   type="monotone"
-                  stroke={metrics[selectedMetric].color}
+                  stroke={metrics[selectedMetric]?.color}
                   strokeWidth={2}
-                  dot={chartData.length <= 50 ? { r: 2 } : false}
+                  dot={chartData?.length <= 50 ? { r: 2 } : false}
                   activeDot={{ r: 6 }}
                   connectNulls={true}
                 />
@@ -312,22 +314,22 @@ const ActivityChart = ({
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Average {metrics[selectedMetric].label.toLowerCase()}:{" "}
-          {avgValue.toLocaleString()}
-          {metrics[selectedMetric].suffix}
+          Average {metrics[selectedMetric]?.label?.toLowerCase()}:{" "}
+          {avgValue?.toLocaleString()}
+          {metrics[selectedMetric]?.suffix}
           <TrendingUp className="h-4 w-4" />
         </div>
         <div className="flex w-full justify-between flex-wrap gap-2 text-muted-foreground">
           <span>
-            Min: {minValue.toLocaleString()}
-            {metrics[selectedMetric].suffix}
+            Min: {minValue?.toLocaleString()}
+            {metrics[selectedMetric]?.suffix}
           </span>
           <span>
-            Max: {maxValue.toLocaleString()}
-            {metrics[selectedMetric].suffix}
+            Max: {maxValue?.toLocaleString()}
+            {metrics[selectedMetric]?.suffix}
           </span>
           <span>
-            Total active time: {Math.floor(totalActiveMinutes / 60)}h{" "}
+            Total active time: {Math?.floor(totalActiveMinutes / 60)}h{" "}
             {totalActiveMinutes % 60}m
           </span>
         </div>

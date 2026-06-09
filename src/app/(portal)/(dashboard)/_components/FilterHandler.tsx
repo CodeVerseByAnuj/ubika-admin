@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
+import LoadingButton from "@/components/common/LoadingButton";
 
 type FilterHandlerProps = {
   date: {
@@ -23,9 +24,10 @@ type FilterHandlerProps = {
       endDate: string;
     }>
   >;
+  loading: boolean;
 };
 
-const FilterHandler = ({ date, setDate }: FilterHandlerProps) => {
+const FilterHandler = ({ date, setDate, loading }: FilterHandlerProps) => {
   const today = new Date();
   const [tempDate, setTempDate] = useState(date);
 
@@ -123,9 +125,9 @@ const FilterHandler = ({ date, setDate }: FilterHandlerProps) => {
       </div>
 
       {/* Apply Button */}
-      <Button onClick={handleApply}>
-        <Filter className="mr-2 h-4 w-4" /> Apply
-      </Button>
+      <LoadingButton isLoading={loading} onClick={handleApply}>
+        <Filter className="mr-1 h-4 w-4" /> Apply
+      </LoadingButton>
     </div>
   );
 };
