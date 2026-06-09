@@ -1,9 +1,12 @@
 "use client";
 import { patientWearablesApiServices } from "@/api-services/patient-wearables/api";
-import { ISummariesResponse } from "@/api-services/patient-wearables/types";
+import {
+  IBody,
+  ISummariesResponse,
+} from "@/api-services/patient-wearables/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import ActivityChart from "./BodyChart";
+import BodyChart from "./BodyChart";
 
 const BodyWrapper = () => {
   const [date, setDate] = useState(() => {
@@ -16,19 +19,16 @@ const BodyWrapper = () => {
     };
   });
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getSummaries", date],
+  const { data } = useQuery({
+    queryKey: ["getBodySummaries", date],
     queryFn: () =>
-      patientWearablesApiServices.getSummaries<ISummariesResponse>(
-        "body",
-        date,
-      ),
+      patientWearablesApiServices.getSummaries<IBody>("body", date),
     placeholderData: keepPreviousData,
   });
 
-  return (
-    <ActivityChart activity={data?.data || []} date={date} setDate={setDate} />
-  );
+  console.log(data);
+
+  return <BodyChart body={data || null} date={date} setDate={setDate} />;
 };
 
 export default BodyWrapper;

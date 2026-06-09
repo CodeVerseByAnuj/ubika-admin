@@ -23,7 +23,7 @@ const ActivityWrapper = () => {
     queryKey: ["getActivitySummaries", date],
     queryFn: () =>
       patientWearablesApiServices.getSummaries<
-        ISummariesResponse<IActivityList>
+        ISummariesResponse<IActivityList[]>
       >("activity", date),
     placeholderData: keepPreviousData,
   });

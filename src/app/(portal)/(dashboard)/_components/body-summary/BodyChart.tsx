@@ -1,14 +1,25 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import { useState, useMemo, Dispatch, SetStateAction } from "react";
-import { TrendingUp, Activity, Heart, Flame, Footprints } from "lucide-react";
+import { useMemo, Dispatch, SetStateAction } from "react";
 import {
-  CartesianGrid,
-  Line,
-  LineChart,
+  Activity,
+  Heart,
+  Thermometer,
+  Droplet,
+  Weight,
+  Ruler,
+  Brain,
+  BarChart3,
+  Calendar,
+} from "lucide-react";
+import {
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
 } from "recharts";
 
@@ -16,76 +27,67 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import { Button } from "@/components/ui/button";
-import { IActivityList } from "@/api-services/patient-wearables/types";
+import { Progress } from "@/components/ui/progress";
+import { IBody } from "@/api-services/patient-wearables/types";
 import FilterHandler from "./FilterHandler";
 
-// Define metrics type
-type MetricKey = "steps" | "distance" | "activeCalories" | "avgHeartRate";
+// Helper to format numbers
+const formatNumber = (
+  value: number | null | undefined,
+  decimals = 1,
+): string => {
+  if (value === null || value === undefined) return "—";
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+};
 
-interface MetricsType {
-  [key: string]: {
-    label: string;
-    icon: React.ComponentType<any>;
-    color: string;
-    dataKey: string;
-    suffix: string;
-  };
-}
+// Format ISO date to readable string
+const formatDate = (isoString: string | null | undefined): string => {
+  if (!isoString) return "—";
+  try {
+    return new Date(isoString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return "Invalid date";
+  }
+};
 
-// Separate MetricButtons component with proper types
-const MetricButtons = ({
-  selectedMetric,
-  onMetricChange,
+// Blood pressure display component
+const BloodPressureCard = ({
+  systolic,
+  diastolic,
 }: {
-  selectedMetric: MetricKey;
-  onMetricChange: (metric: MetricKey) => void;
+  systolic: number;
+  diastolic: number;
 }) => {
-  const metricsList: {
-    key: MetricKey;
-    label: string;
-    icon: React.ComponentType<any>;
-  }[] = [
-    { key: "steps", label: "Steps", icon: Footprints },
-    { key: "distance", label: "Distance (km)", icon: Activity },
-    { key: "activeCalories", label: "Active Calories", icon: Flame },
-    { key: "avgHeartRate", label: "Avg Heart Rate", icon: Heart },
-  ];
-
+  const isNormal = systolic < 120 && diastolic < 80;
   return (
-    <div className="flex gap-2 flex-wrap">
-      {metricsList.map((metric) => (
-        <Button
-          key={metric.key}
-          variant={selectedMetric === metric.key ? "default" : "outline"}
-          size="sm"
-          onClick={() => onMetricChange(metric.key)}
-          className="gap-2"
-        >
-          <metric.icon className="h-4 w-4" />
-          {metric.label}
-        </Button>
-      ))}
+    <div
+      className={`rounded-lg p-3 border ${isNormal ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200"}`}
+    >
+      <p className="text-xs text-muted-foreground mb-1">Blood Pressure</p>
+      <p className="text-2xl font-bold">
+        {systolic}/{diastolic}
+      </p>
+      <p className="text-xs mt-1">mmHg</p>
     </div>
   );
 };
 
-// Empty state component
+// Empty state
 const EmptyState = () => (
   <Card>
     <CardHeader>
-      <CardTitle>Activity Overview</CardTitle>
-      <CardDescription>No activity data available</CardDescription>
+      <CardTitle>Body Metrics</CardTitle>
+      <CardDescription>No body composition data available</CardDescription>
     </CardHeader>
     <CardContent>
       <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
@@ -95,12 +97,12 @@ const EmptyState = () => (
   </Card>
 );
 
-const ActivityChart = ({
-  activity,
+const BodyChart = ({
+  body,
   date,
   setDate,
 }: {
-  activity: IActivityList[];
+  body: IBody | null;
   date: {
     startDate: string;
     endDate: string;
@@ -112,228 +114,372 @@ const ActivityChart = ({
     }>
   >;
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<MetricKey>("steps");
-
-  // Always call useMemo, even if activity is empty
-  const chartData = useMemo(() => {
-    if (!activity || activity.length === 0) return [];
-
-    return [...activity]
-      .filter((item) => item && item.date)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .map((item) => ({
-        date: new Date(item.date).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        }),
-        fullDate: item.date,
-        steps: item.steps || 0,
-        distance: item.distance_meters
-          ? +(item.distance_meters / 1000).toFixed(2)
-          : 0,
-        floors: item.floors_climbed || 0,
-        activeCalories: item.active_calories_kcal || 0,
-        totalCalories: item.total_calories_kcal || 0,
-        activeMinutes: item.active_minutes || 0,
-        sedentaryMinutes: item.sedentary_minutes || 0,
-        lightIntensity: item.intensity_minutes?.light || 0,
-        moderateIntensity: item.intensity_minutes?.moderate || 0,
-        vigorousIntensity: item.intensity_minutes?.vigorous || 0,
-        avgHeartRate: item.heart_rate?.avg_bpm || 0,
-        maxHeartRate: item.heart_rate?.max_bpm || 0,
-        minHeartRate: item.heart_rate?.min_bpm || 0,
-      }));
-  }, [activity]);
-
-  const metrics: MetricsType = {
-    steps: {
-      label: "Steps",
-      icon: Footprints,
-      color: "var(--chart-1)",
-      dataKey: "steps",
-      suffix: "",
-    },
-    distance: {
-      label: "Distance (km)",
-      icon: Activity,
-      color: "var(--chart-2)",
-      dataKey: "distance",
-      suffix: " km",
-    },
-    activeCalories: {
-      label: "Active Calories",
-      icon: Flame,
-      color: "var(--chart-3)",
-      dataKey: "activeCalories",
-      suffix: " kcal",
-    },
-    avgHeartRate: {
-      label: "Avg Heart Rate",
-      icon: Heart,
-      color: "var(--chart-4)",
-      dataKey: "avgHeartRate",
-      suffix: " bpm",
-    },
-  };
-
-  const chartConfig = {
-    [selectedMetric]: {
-      label: metrics[selectedMetric].label,
-      color: metrics[selectedMetric].color,
-    },
-  } satisfies ChartConfig;
-
-  // Calculate statistics - safe even if chartData is empty
-  const values = chartData
-    .map((d) => d[metrics[selectedMetric].dataKey as keyof typeof d] as number)
-    .filter((val) => !isNaN(val));
-
-  const avgValue =
-    values.length > 0
-      ? Math.round(values.reduce((a, b) => a + b, 0) / values.length)
-      : 0;
-  const maxValue = values.length > 0 ? Math.max(...values) : 0;
-  const minValue = values.length > 0 ? Math.min(...values) : 0;
-
-  const totalActiveMinutes =
-    activity?.reduce((sum, item) => sum + (item.active_minutes || 0), 0) ?? 0;
-
-  // Tooltip formatter - returns string
-  const tooltipFormatter = (value: number | string | undefined) => {
-    const num = typeof value === "number" ? value : Number(value);
-    const formatted = isNaN(num) ? 0 : num;
-    return `${formatted.toLocaleString()}${metrics[selectedMetric].suffix}`;
-  };
-
-  // Label formatter
-  const labelFormatter = (label: string, payload: any[]) => {
-    if (payload?.[0]?.payload?.fullDate) {
-      return new Date(payload[0].payload.fullDate).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    }
-    return label;
-  };
-
-  // If no data, show empty state (after all hooks)
-  if (chartData.length === 0) {
+  // If no body data, show empty state
+  if (!body) {
     return <EmptyState />;
   }
+
+  const { slow_changing, averaged, latest } = body;
+
+  // Prepare data for bar chart (comparing current vs recommended ranges)
+  const barChartData = useMemo(() => {
+    const items = [];
+    if (slow_changing.weight_kg !== null && slow_changing.weight_kg > 0) {
+      items.push({
+        name: "Weight",
+        current: slow_changing.weight_kg,
+        recommended: 70, // placeholder, ideally based on height & age
+        unit: "kg",
+      });
+    }
+    if (slow_changing.bmi !== null && slow_changing.bmi > 0) {
+      items.push({
+        name: "BMI",
+        current: slow_changing.bmi,
+        recommended: 22,
+        unit: "",
+      });
+    }
+    if (
+      slow_changing.body_fat_percent !== null &&
+      slow_changing.body_fat_percent > 0
+    ) {
+      items.push({
+        name: "Body Fat",
+        current: slow_changing.body_fat_percent,
+        recommended: 18,
+        unit: "%",
+      });
+    }
+    if (
+      slow_changing.muscle_mass_kg !== null &&
+      slow_changing.muscle_mass_kg > 0
+    ) {
+      items.push({
+        name: "Muscle Mass",
+        current: slow_changing.muscle_mass_kg,
+        recommended: 30,
+        unit: "kg",
+      });
+    }
+    return items;
+  }, [slow_changing]);
+
+  // Check if latest section has any data
+  const hasLatestData =
+    latest.body_temperature_celsius !== null ||
+    latest.skin_temperature_celsius !== null ||
+    latest.blood_pressure !== null;
+
+  // BMI status text
+  const getBmiStatus = (bmi: number | null | undefined): string | null => {
+    if (!bmi) return null;
+    if (bmi < 18.5) return "Underweight";
+    if (bmi >= 25) return "Overweight";
+    return "Normal";
+  };
 
   return (
     <Card>
       <CardHeader>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <CardTitle className="text-lg font-semibold">
-                Activity Overview
-              </CardTitle>
-              <CardDescription>
-                {activity.length} days of activity data from{" "}
-                {activity[0]?.source?.provider || "wearable device"}
-                {activity[0]?.source?.device &&
-                  ` (${activity[0].source.device})`}
-              </CardDescription>
-            </div>
-            <FilterHandler date={date} setDate={setDate} />
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <CardTitle className="text-lg font-semibold">
+              Body Composition & Vitals
+            </CardTitle>
+            <CardDescription>
+              {body.source?.provider || "Wearable device"}{" "}
+              {body.source?.device && `(${body.source.device})`}
+              {slow_changing.age && ` • Age: ${slow_changing.age} yrs`}
+              {averaged?.period_days &&
+                ` • Averaged over last ${averaged.period_days} days`}
+            </CardDescription>
           </div>
-
-          <MetricButtons
-            selectedMetric={selectedMetric}
-            onMetricChange={setSelectedMetric}
-          />
+          <FilterHandler date={date} setDate={setDate} />
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="h-[300px] w-full">
-          <ChartContainer config={chartConfig} className="h-full w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  top: 5,
-                  right: 15,
-                  left: 10,
-                  bottom: chartData.length > 30 ? 20 : 5,
-                }}
-              >
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="date"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => value}
-                  interval={
-                    chartData.length > 50 ? 6 : chartData.length > 30 ? 3 : 0
-                  }
-                  angle={chartData.length > 14 ? -45 : 0}
-                  textAnchor={chartData.length > 14 ? "end" : "middle"}
-                  height={chartData.length > 14 ? 60 : 30}
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) =>
-                    `${value}${metrics[selectedMetric].suffix}`
-                  }
-                  width={65}
-                  domain={["auto", "auto"]}
-                />
-                <ChartTooltip
-                  cursor={true}
-                  content={
-                    <ChartTooltipContent
-                      indicator="line"
-                      formatter={tooltipFormatter as any}
-                      labelFormatter={labelFormatter as any}
+      <CardContent className="space-y-6">
+        {/* Section 1: Slow-changing metrics (cards with progress) */}
+        <div>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+            <Weight className="h-4 w-4" /> Body Composition
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Weight */}
+            <Card className="shadow-sm">
+              <CardContent className="pt-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Weight</p>
+                    <p className="text-2xl font-bold">
+                      {formatNumber(slow_changing.weight_kg)} kg
+                    </p>
+                  </div>
+                  <Weight className="h-5 w-5 text-muted-foreground" />
+                </div>
+                {slow_changing.weight_kg && (
+                  <>
+                    <Progress
+                      value={Math.min(
+                        100,
+                        (slow_changing.weight_kg / 80) * 100,
+                      )}
+                      className="h-1 mt-2"
                     />
-                  }
-                />
-                <Line
-                  dataKey={metrics[selectedMetric].dataKey}
-                  type="monotone"
-                  stroke={metrics[selectedMetric].color}
-                  strokeWidth={2}
-                  dot={chartData.length <= 50 ? { r: 2 } : false}
-                  activeDot={{ r: 6 }}
-                  connectNulls={true}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      vs. healthy range
+                    </p>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* BMI */}
+            <Card className="shadow-sm">
+              <CardContent className="pt-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-xs text-muted-foreground">BMI</p>
+                    <p className="text-2xl font-bold">
+                      {formatNumber(slow_changing.bmi)}
+                    </p>
+                  </div>
+                  <Ruler className="h-5 w-5 text-muted-foreground" />
+                </div>
+                {slow_changing.bmi && (
+                  <>
+                    <Progress
+                      value={Math.min(100, (slow_changing.bmi / 25) * 100)}
+                      className="h-1 mt-2"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {getBmiStatus(slow_changing.bmi)}
+                    </p>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Body Fat */}
+            <Card className="shadow-sm">
+              <CardContent className="pt-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Body Fat</p>
+                    <p className="text-2xl font-bold">
+                      {formatNumber(slow_changing.body_fat_percent)}%
+                    </p>
+                  </div>
+                  <Droplet className="h-5 w-5 text-muted-foreground" />
+                </div>
+                {slow_changing.body_fat_percent && (
+                  <Progress
+                    value={Math.min(
+                      100,
+                      (slow_changing.body_fat_percent / 30) * 100,
+                    )}
+                    className="h-1 mt-2"
+                  />
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Muscle Mass */}
+            <Card className="shadow-sm">
+              <CardContent className="pt-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Muscle Mass</p>
+                    <p className="text-2xl font-bold">
+                      {formatNumber(slow_changing.muscle_mass_kg)} kg
+                    </p>
+                  </div>
+                  <Activity className="h-5 w-5 text-muted-foreground" />
+                </div>
+                {slow_changing.muscle_mass_kg && (
+                  <Progress
+                    value={Math.min(
+                      100,
+                      (slow_changing.muscle_mass_kg / 40) * 100,
+                    )}
+                    className="h-1 mt-2"
+                  />
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
+
+        {/* Section 2: Averaged metrics (Resting HR, HRV) */}
+        {averaged &&
+          (averaged.resting_heart_rate_bpm !== null ||
+            averaged.avg_hrv_sdnn_ms !== null) && (
+            <div>
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                <Heart className="h-4 w-4" /> Averages
+                {averaged.period_start && averaged.period_end && (
+                  <span className="text-xs font-normal ml-2">
+                    <Calendar className="h-3 w-3 inline mr-1" />
+                    {formatDate(averaged.period_start)} –{" "}
+                    {formatDate(averaged.period_end)}
+                  </span>
+                )}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {averaged.resting_heart_rate_bpm !== null && (
+                  <Card className="shadow-sm">
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-xs text-muted-foreground">
+                            Resting Heart Rate
+                          </p>
+                          <p className="text-2xl font-bold">
+                            {formatNumber(averaged.resting_heart_rate_bpm)} bpm
+                          </p>
+                        </div>
+                        <Heart className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {averaged.avg_hrv_sdnn_ms !== null && (
+                  <Card className="shadow-sm">
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-xs text-muted-foreground">
+                            HRV (SDNN)
+                          </p>
+                          <p className="text-2xl font-bold">
+                            {formatNumber(averaged.avg_hrv_sdnn_ms)} ms
+                          </p>
+                        </div>
+                        <Brain className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          )}
+
+        {/* Section 3: Latest vitals (temperature, blood pressure) */}
+        {hasLatestData && (
+          <div>
+            <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+              <Thermometer className="h-4 w-4" /> Latest Measurements
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Body Temperature */}
+              {latest.body_temperature_celsius !== null && (
+                <Card className="shadow-sm">
+                  <CardContent className="pt-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Body Temperature
+                        </p>
+                        <p className="text-2xl font-bold">
+                          {formatNumber(latest.body_temperature_celsius)} °C
+                        </p>
+                        {latest.body_temperature_measured_at && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(latest.body_temperature_measured_at)}
+                          </p>
+                        )}
+                      </div>
+                      <Thermometer className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Skin Temperature */}
+              {latest.skin_temperature_celsius !== null && (
+                <Card className="shadow-sm">
+                  <CardContent className="pt-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Skin Temperature
+                        </p>
+                        <p className="text-2xl font-bold">
+                          {formatNumber(latest.skin_temperature_celsius)} °C
+                        </p>
+                        {latest.skin_temperature_measured_at && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(latest.skin_temperature_measured_at)}
+                          </p>
+                        )}
+                      </div>
+                      <Thermometer className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Blood Pressure */}
+              {latest.blood_pressure && (
+                <BloodPressureCard
+                  systolic={latest.blood_pressure.systolic}
+                  diastolic={latest.blood_pressure.diastolic}
+                />
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Section 4: Bar chart comparing current vs recommended */}
+        {barChartData.length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" /> Comparison: Current vs.
+              Recommended
+            </h3>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={barChartData}
+                  margin={{ top: 5, right: 15, left: 10, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis
+                    tickFormatter={(value) => {
+                      const unit = barChartData[0]?.unit || "";
+                      return `${value}${unit}`;
+                    }}
+                  />
+                  <Tooltip
+                    formatter={(value: any) => `${value as any}`}
+                    labelFormatter={(label) => `${label}`}
+                  />
+                  <Bar dataKey="current" fill="var(--chart-1)" name="Current" />
+                  <Bar
+                    dataKey="recommended"
+                    fill="var(--chart-2)"
+                    name="Recommended"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              Recommended values based on general health guidelines (individual
+              targets may vary).
+            </p>
+          </div>
+        )}
+
+        {/* If only weight and body fat exist but no comparison chart? Actually chart will show both */}
+        {barChartData.length === 0 && (
+          <div className="text-center text-muted-foreground text-sm py-4">
+            No comparative data available for bar chart.
+          </div>
+        )}
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Average {metrics[selectedMetric].label.toLowerCase()}:{" "}
-          {avgValue.toLocaleString()}
-          {metrics[selectedMetric].suffix}
-          <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="flex w-full justify-between flex-wrap gap-2 text-muted-foreground">
-          <span>
-            Min: {minValue.toLocaleString()}
-            {metrics[selectedMetric].suffix}
-          </span>
-          <span>
-            Max: {maxValue.toLocaleString()}
-            {metrics[selectedMetric].suffix}
-          </span>
-          <span>
-            Total active time: {Math.floor(totalActiveMinutes / 60)}h{" "}
-            {totalActiveMinutes % 60}m
-          </span>
-        </div>
-      </CardFooter>
     </Card>
   );
 };
 
-export default ActivityChart;
+export default BodyChart;

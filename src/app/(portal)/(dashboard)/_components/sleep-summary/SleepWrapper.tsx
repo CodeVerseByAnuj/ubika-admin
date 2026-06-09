@@ -22,10 +22,9 @@ const SleepWrapper = () => {
   const { data } = useQuery({
     queryKey: ["getSleepSummaries", date],
     queryFn: () =>
-      patientWearablesApiServices.getSummaries<ISummariesResponse<ISleepList>>(
-        "sleep",
-        date,
-      ),
+      patientWearablesApiServices.getSummaries<
+        ISummariesResponse<ISleepList[]>
+      >("sleep", date),
     placeholderData: keepPreviousData,
   });
 
