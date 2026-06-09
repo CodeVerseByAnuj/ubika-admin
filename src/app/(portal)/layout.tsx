@@ -6,11 +6,15 @@ import React from "react";
 const PortalLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main className="w-full">
-        <Header />
-        <div className="p-4">{children}</div>
-      </main>
+      <div className="flex min-h-screen w-full overflow-x-hidden">
+        <AppSidebar />
+
+        <main className="flex-1 overflow-x-hidden">
+          <Header />
+
+          <div className="p-4 overflow-x-hidden">{children}</div>
+        </main>
+      </div>
     </SidebarProvider>
   );
 };
