@@ -1,13 +1,6 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
-
 import * as React from "react";
-import {
-  BookOpen,
-  ChevronRight,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import { BookOpen, ChevronRight, SquareTerminal } from "lucide-react";
 
 import {
   Collapsible,
@@ -67,7 +60,15 @@ const data = [
     items: [
       {
         title: "Allergies",
-        url: "/allergies",
+        url: "/patient/allergies",
+      },
+      {
+        title: "Appointments",
+        url: "/patient/appointments",
+      },
+      {
+        title: "Conditions",
+        url: "/patient/conditions",
       },
     ],
   },
