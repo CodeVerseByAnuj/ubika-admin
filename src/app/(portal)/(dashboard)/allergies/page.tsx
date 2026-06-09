@@ -1,6 +1,10 @@
+import Allergies from "./_components/Allergies"
+
 function page() {
   return (
-    <div>page</div>
+    <>
+      <Allergies />
+    </>
   )
 }
 

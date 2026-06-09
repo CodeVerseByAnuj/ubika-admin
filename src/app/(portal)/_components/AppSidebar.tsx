@@ -67,7 +67,7 @@ const data = [
     items: [
       {
         title: "Allergies",
-        url: "#",
+        url: "/allergies",
       },
     ],
   },
