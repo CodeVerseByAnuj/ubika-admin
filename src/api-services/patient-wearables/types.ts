@@ -92,6 +92,56 @@ export interface IBody {
   };
 }
 
+export interface IDataSummary {
+  user_id: string;
+  total_data_points: number;
+  total_workouts: number;
+  total_sleep_events: number;
+  series_type_counts: {
+    // All known series types from your data
+    heart_rate: number;
+    energy: number;
+    steps: number;
+    distance_walking_running: number;
+    basal_energy: number;
+    headphone_audio_exposure: number;
+    flights_climbed: number;
+    respiratory_rate: number;
+    environmental_audio_exposure: number;
+    cadence: number;
+    power: number;
+    running_power: number;
+    running_speed: number;
+    swimming_stroke_count: number;
+    blood_pressure_diastolic: number;
+    blood_glucose: number;
+    oxygen_saturation: number;
+    stand_time: number;
+    time_in_daylight: number;
+    skin_temperature: number;
+    blood_pressure_systolic: number;
+    body_temperature: number;
+    resting_heart_rate: number;
+    heart_rate_variability_sdnn: number;
+    exercise_time: number;
+    body_fat_percentage: number;
+    vo2_max: number;
+    weight: number;
+  };
+  workout_type_counts: {
+    [workoutName: string]: number; // Covers any workout type, no need to list 100+ keys
+  };
+  by_provider: Array<{
+    provider: "suunto" | "apple" | "unknown" | "oura";
+    data_points: number;
+    series_counts: {
+      [metricName: string]: number; // Each provider can have different metrics
+    };
+    workout_count: number;
+    sleep_count: number;
+  }>;
+}
+
 export interface ISummariesResponse<T> {
   data: T;
 }

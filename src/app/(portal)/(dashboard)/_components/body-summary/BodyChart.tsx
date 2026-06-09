@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useMemo, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Activity,
   Heart,
@@ -10,18 +10,8 @@ import {
   Weight,
   Ruler,
   Brain,
-  BarChart3,
   Calendar,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 import {
   Card,
@@ -32,7 +22,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { IBody } from "@/api-services/patient-wearables/types";
-import FilterHandler from "./FilterHandler";
+import FilterHandler from "../FilterHandler";
 
 // Helper to format numbers
 const formatNumber = (
@@ -71,7 +61,7 @@ const BloodPressureCard = ({
   const isNormal = systolic < 120 && diastolic < 80;
   return (
     <div
-      className={`rounded-lg p-3 border ${isNormal ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200"}`}
+      className={`rounded-lg p-3 border ${isNormal ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800" : "bg-amber-50 border-amber-200 dark:bg-amber-950/20 dark:border-amber-800"}`}
     >
       <p className="text-xs text-muted-foreground mb-1">Blood Pressure</p>
       <p className="text-2xl font-bold">
@@ -101,6 +91,7 @@ const BodyChart = ({
   body,
   date,
   setDate,
+  loading,
 }: {
   body: IBody | null;
   date: {
@@ -113,57 +104,13 @@ const BodyChart = ({
       endDate: string;
     }>
   >;
+  loading: boolean;
 }) => {
-  // If no body data, show empty state
   if (!body) {
     return <EmptyState />;
   }
 
   const { slow_changing, averaged, latest } = body;
-
-  // Prepare data for bar chart (comparing current vs recommended ranges)
-  const barChartData = useMemo(() => {
-    const items = [];
-    if (slow_changing.weight_kg !== null && slow_changing.weight_kg > 0) {
-      items.push({
-        name: "Weight",
-        current: slow_changing.weight_kg,
-        recommended: 70, // placeholder, ideally based on height & age
-        unit: "kg",
-      });
-    }
-    if (slow_changing.bmi !== null && slow_changing.bmi > 0) {
-      items.push({
-        name: "BMI",
-        current: slow_changing.bmi,
-        recommended: 22,
-        unit: "",
-      });
-    }
-    if (
-      slow_changing.body_fat_percent !== null &&
-      slow_changing.body_fat_percent > 0
-    ) {
-      items.push({
-        name: "Body Fat",
-        current: slow_changing.body_fat_percent,
-        recommended: 18,
-        unit: "%",
-      });
-    }
-    if (
-      slow_changing.muscle_mass_kg !== null &&
-      slow_changing.muscle_mass_kg > 0
-    ) {
-      items.push({
-        name: "Muscle Mass",
-        current: slow_changing.muscle_mass_kg,
-        recommended: 30,
-        unit: "kg",
-      });
-    }
-    return items;
-  }, [slow_changing]);
 
   // Check if latest section has any data
   const hasLatestData =
@@ -171,7 +118,7 @@ const BodyChart = ({
     latest.skin_temperature_celsius !== null ||
     latest.blood_pressure !== null;
 
-  // BMI status text
+  // BMI status text (informative only)
   const getBmiStatus = (bmi: number | null | undefined): string | null => {
     if (!bmi) return null;
     if (bmi < 18.5) return "Underweight";
@@ -179,131 +126,137 @@ const BodyChart = ({
     return "Normal";
   };
 
+  // Simple progress values (visual guides, no recommended labels)
+  const weightProgress = slow_changing.weight_kg
+    ? Math.min(100, (slow_changing.weight_kg / 100) * 100)
+    : 0;
+  const bmiProgress = slow_changing.bmi
+    ? Math.min(100, (slow_changing.bmi / 35) * 100)
+    : 0;
+  const bodyFatProgress = slow_changing.body_fat_percent
+    ? Math.min(100, (slow_changing.body_fat_percent / 40) * 100)
+    : 0;
+  const muscleProgress = slow_changing.muscle_mass_kg
+    ? Math.min(100, (slow_changing.muscle_mass_kg / 50) * 100)
+    : 0;
+
   return (
-    <Card>
-      <CardHeader>
+    <Card className="overflow-hidden">
+      <CardHeader className="border-b pb-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="text-xl font-semibold tracking-tight">
               Body Composition & Vitals
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="mt-1">
               {body.source?.provider || "Wearable device"}{" "}
-              {body.source?.device && `(${body.source.device})`}
-              {slow_changing.age && ` • Age: ${slow_changing.age} yrs`}
+              {body.source?.device && `(${body?.source?.device})`}
+              {slow_changing?.age && ` • Age: ${slow_changing?.age} yrs`}
               {averaged?.period_days &&
-                ` • Averaged over last ${averaged.period_days} days`}
+                ` • Averaged over last ${averaged?.period_days} days`}
             </CardDescription>
           </div>
-          <FilterHandler date={date} setDate={setDate} />
+          <FilterHandler date={date} setDate={setDate} loading={loading} />
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+
+      <CardContent className="space-y-8">
         {/* Section 1: Slow-changing metrics (cards with progress) */}
         <div>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-muted-foreground mb-4 flex items-center gap-2">
             <Weight className="h-4 w-4" /> Body Composition
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Weight */}
-            <Card className="shadow-sm">
-              <CardContent className="pt-4">
+            {/* Weight Card */}
+            <Card className="shadow-sm hover:shadow transition-all">
+              <CardContent>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-xs text-muted-foreground">Weight</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Weight
+                    </p>
                     <p className="text-2xl font-bold">
-                      {formatNumber(slow_changing.weight_kg)} kg
+                      {formatNumber(slow_changing?.weight_kg)}{" "}
+                      <span className="text-sm font-normal text-muted-foreground">
+                        kg
+                      </span>
                     </p>
                   </div>
                   <Weight className="h-5 w-5 text-muted-foreground" />
                 </div>
-                {slow_changing.weight_kg && (
-                  <>
-                    <Progress
-                      value={Math.min(
-                        100,
-                        (slow_changing.weight_kg / 80) * 100,
-                      )}
-                      className="h-1 mt-2"
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      vs. healthy range
-                    </p>
-                  </>
+                {slow_changing?.weight_kg && (
+                  <Progress value={weightProgress} className="h-1.5 mt-3" />
                 )}
               </CardContent>
             </Card>
 
-            {/* BMI */}
-            <Card className="shadow-sm">
-              <CardContent className="pt-4">
+            {/* BMI Card */}
+            <Card className="shadow-sm hover:shadow transition-all">
+              <CardContent>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-xs text-muted-foreground">BMI</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      BMI
+                    </p>
                     <p className="text-2xl font-bold">
-                      {formatNumber(slow_changing.bmi)}
+                      {formatNumber(slow_changing?.bmi)}
                     </p>
                   </div>
                   <Ruler className="h-5 w-5 text-muted-foreground" />
                 </div>
-                {slow_changing.bmi && (
+                {slow_changing?.bmi && (
                   <>
-                    <Progress
-                      value={Math.min(100, (slow_changing.bmi / 25) * 100)}
-                      className="h-1 mt-2"
-                    />
+                    <Progress value={bmiProgress} className="h-1.5 mt-3" />
                     <p className="text-xs text-muted-foreground mt-1">
-                      {getBmiStatus(slow_changing.bmi)}
+                      {getBmiStatus(slow_changing?.bmi)}
                     </p>
                   </>
                 )}
               </CardContent>
             </Card>
 
-            {/* Body Fat */}
-            <Card className="shadow-sm">
-              <CardContent className="pt-4">
+            {/* Body Fat Card */}
+            <Card className="shadow-sm hover:shadow transition-all">
+              <CardContent>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-xs text-muted-foreground">Body Fat</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Body Fat
+                    </p>
                     <p className="text-2xl font-bold">
-                      {formatNumber(slow_changing.body_fat_percent)}%
+                      {formatNumber(slow_changing?.body_fat_percent)}
+                      <span className="text-sm font-normal text-muted-foreground">
+                        %
+                      </span>
                     </p>
                   </div>
                   <Droplet className="h-5 w-5 text-muted-foreground" />
                 </div>
-                {slow_changing.body_fat_percent && (
-                  <Progress
-                    value={Math.min(
-                      100,
-                      (slow_changing.body_fat_percent / 30) * 100,
-                    )}
-                    className="h-1 mt-2"
-                  />
+                {slow_changing?.body_fat_percent && (
+                  <Progress value={bodyFatProgress} className="h-1.5 mt-3" />
                 )}
               </CardContent>
             </Card>
 
-            {/* Muscle Mass */}
-            <Card className="shadow-sm">
-              <CardContent className="pt-4">
+            {/* Muscle Mass Card */}
+            <Card className="shadow-sm hover:shadow transition-all">
+              <CardContent>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-xs text-muted-foreground">Muscle Mass</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Muscle Mass
+                    </p>
                     <p className="text-2xl font-bold">
-                      {formatNumber(slow_changing.muscle_mass_kg)} kg
+                      {formatNumber(slow_changing?.muscle_mass_kg)}{" "}
+                      <span className="text-sm font-normal text-muted-foreground">
+                        kg
+                      </span>
                     </p>
                   </div>
                   <Activity className="h-5 w-5 text-muted-foreground" />
                 </div>
-                {slow_changing.muscle_mass_kg && (
-                  <Progress
-                    value={Math.min(
-                      100,
-                      (slow_changing.muscle_mass_kg / 40) * 100,
-                    )}
-                    className="h-1 mt-2"
-                  />
+                {slow_changing?.muscle_mass_kg && (
+                  <Progress value={muscleProgress} className="h-1.5 mt-3" />
                 )}
               </CardContent>
             </Card>
@@ -312,30 +265,33 @@ const BodyChart = ({
 
         {/* Section 2: Averaged metrics (Resting HR, HRV) */}
         {averaged &&
-          (averaged.resting_heart_rate_bpm !== null ||
-            averaged.avg_hrv_sdnn_ms !== null) && (
+          (averaged?.resting_heart_rate_bpm !== null ||
+            averaged?.avg_hrv_sdnn_ms !== null) && (
             <div>
-              <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-4 flex items-center gap-2">
                 <Heart className="h-4 w-4" /> Averages
-                {averaged.period_start && averaged.period_end && (
+                {averaged?.period_start && averaged?.period_end && (
                   <span className="text-xs font-normal ml-2">
                     <Calendar className="h-3 w-3 inline mr-1" />
-                    {formatDate(averaged.period_start)} –{" "}
-                    {formatDate(averaged.period_end)}
+                    {formatDate(averaged?.period_start)} –{" "}
+                    {formatDate(averaged?.period_end)}
                   </span>
                 )}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {averaged.resting_heart_rate_bpm !== null && (
+                {averaged?.resting_heart_rate_bpm !== null && (
                   <Card className="shadow-sm">
                     <CardContent className="pt-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-muted-foreground uppercase tracking-wide">
                             Resting Heart Rate
                           </p>
                           <p className="text-2xl font-bold">
-                            {formatNumber(averaged.resting_heart_rate_bpm)} bpm
+                            {formatNumber(averaged?.resting_heart_rate_bpm)}{" "}
+                            <span className="text-sm font-normal text-muted-foreground">
+                              bpm
+                            </span>
                           </p>
                         </div>
                         <Heart className="h-5 w-5 text-muted-foreground" />
@@ -343,16 +299,19 @@ const BodyChart = ({
                     </CardContent>
                   </Card>
                 )}
-                {averaged.avg_hrv_sdnn_ms !== null && (
+                {averaged?.avg_hrv_sdnn_ms !== null && (
                   <Card className="shadow-sm">
                     <CardContent className="pt-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-muted-foreground uppercase tracking-wide">
                             HRV (SDNN)
                           </p>
                           <p className="text-2xl font-bold">
-                            {formatNumber(averaged.avg_hrv_sdnn_ms)} ms
+                            {formatNumber(averaged?.avg_hrv_sdnn_ms)}{" "}
+                            <span className="text-sm font-normal text-muted-foreground">
+                              ms
+                            </span>
                           </p>
                         </div>
                         <Brain className="h-5 w-5 text-muted-foreground" />
@@ -367,24 +326,27 @@ const BodyChart = ({
         {/* Section 3: Latest vitals (temperature, blood pressure) */}
         {hasLatestData && (
           <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-muted-foreground mb-4 flex items-center gap-2">
               <Thermometer className="h-4 w-4" /> Latest Measurements
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Body Temperature */}
-              {latest.body_temperature_celsius !== null && (
+              {latest?.body_temperature_celsius !== null && (
                 <Card className="shadow-sm">
                   <CardContent className="pt-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-muted-foreground uppercase tracking-wide">
                           Body Temperature
                         </p>
                         <p className="text-2xl font-bold">
-                          {formatNumber(latest.body_temperature_celsius)} °C
+                          {formatNumber(latest?.body_temperature_celsius)}{" "}
+                          <span className="text-sm font-normal text-muted-foreground">
+                            °C
+                          </span>
                         </p>
-                        {latest.body_temperature_measured_at && (
-                          <p className="text-xs text-muted-foreground">
+                        {latest?.body_temperature_measured_at && (
+                          <p className="text-xs text-muted-foreground mt-1">
                             {formatDate(latest.body_temperature_measured_at)}
                           </p>
                         )}
@@ -396,20 +358,23 @@ const BodyChart = ({
               )}
 
               {/* Skin Temperature */}
-              {latest.skin_temperature_celsius !== null && (
+              {latest?.skin_temperature_celsius !== null && (
                 <Card className="shadow-sm">
                   <CardContent className="pt-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-muted-foreground uppercase tracking-wide">
                           Skin Temperature
                         </p>
                         <p className="text-2xl font-bold">
-                          {formatNumber(latest.skin_temperature_celsius)} °C
+                          {formatNumber(latest?.skin_temperature_celsius)}{" "}
+                          <span className="text-sm font-normal text-muted-foreground">
+                            °C
+                          </span>
                         </p>
-                        {latest.skin_temperature_measured_at && (
-                          <p className="text-xs text-muted-foreground">
-                            {formatDate(latest.skin_temperature_measured_at)}
+                        {latest?.skin_temperature_measured_at && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {formatDate(latest?.skin_temperature_measured_at)}
                           </p>
                         )}
                       </div>
@@ -420,63 +385,29 @@ const BodyChart = ({
               )}
 
               {/* Blood Pressure */}
-              {latest.blood_pressure && (
+              {latest?.blood_pressure && (
                 <BloodPressureCard
-                  systolic={latest.blood_pressure.systolic}
-                  diastolic={latest.blood_pressure.diastolic}
+                  systolic={latest?.blood_pressure?.systolic}
+                  diastolic={latest?.blood_pressure?.diastolic}
                 />
               )}
             </div>
           </div>
         )}
 
-        {/* Section 4: Bar chart comparing current vs recommended */}
-        {barChartData.length > 0 && (
-          <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" /> Comparison: Current vs.
-              Recommended
-            </h3>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={barChartData}
-                  margin={{ top: 5, right: 15, left: 10, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis
-                    tickFormatter={(value) => {
-                      const unit = barChartData[0]?.unit || "";
-                      return `${value}${unit}`;
-                    }}
-                  />
-                  <Tooltip
-                    formatter={(value: any) => `${value as any}`}
-                    labelFormatter={(label) => `${label}`}
-                  />
-                  <Bar dataKey="current" fill="var(--chart-1)" name="Current" />
-                  <Bar
-                    dataKey="recommended"
-                    fill="var(--chart-2)"
-                    name="Recommended"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+        {/* If no data in any section, show a subtle message */}
+        {!slow_changing?.weight_kg &&
+          !slow_changing?.bmi &&
+          !slow_changing?.body_fat_percent &&
+          !slow_changing?.muscle_mass_kg &&
+          !averaged?.resting_heart_rate_bpm &&
+          !averaged?.avg_hrv_sdnn_ms &&
+          !hasLatestData && (
+            <div className="text-center text-muted-foreground text-sm py-8">
+              No body composition or vital data available for the selected
+              period.
             </div>
-            <p className="text-xs text-muted-foreground text-center mt-2">
-              Recommended values based on general health guidelines (individual
-              targets may vary).
-            </p>
-          </div>
-        )}
-
-        {/* If only weight and body fat exist but no comparison chart? Actually chart will show both */}
-        {barChartData.length === 0 && (
-          <div className="text-center text-muted-foreground text-sm py-4">
-            No comparative data available for bar chart.
-          </div>
-        )}
+          )}
       </CardContent>
     </Card>
   );
