@@ -1,21 +1,43 @@
 "use client";
 
+import Image from "next/image";
+
 const ApplicationLogo = () => {
   return (
     <div className="overflow-hidden">
-      <h1
-        suppressHydrationWarning
+      {/* Full Logo */}
+      <div
         className="
-          font-semibold text-2xl
-          whitespace-nowrap
-          transition-all duration-200
-          group-data-[collapsible=icon]:opacity-0
-          group-data-[collapsible=icon]:scale-95
-          group-data-[collapsible=icon]:w-0
+          hidden group-data-[collapsible=]:flex
+          items-center px-2
         "
       >
-        Ubika
-      </h1>
+        <Image
+          src="/images/ubika-logo.png"
+          alt="Ubika logo"
+          width={200}
+          height={80}
+          priority
+          className="w-28 h-auto object-contain"
+        />
+      </div>
+
+      {/* Icon Logo */}
+      <div
+        className="
+          hidden group-data-[collapsible=icon]:flex
+          items-center justify-center
+        "
+      >
+        <Image
+          src="/images/ubika-icon-logo.png"
+          alt="Ubika icon logo"
+          width={100}
+          height={100}
+          priority
+          className="w-8 h-8 object-contain"
+        />
+      </div>
     </div>
   );
 };
