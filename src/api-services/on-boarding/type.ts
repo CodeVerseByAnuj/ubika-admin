@@ -43,3 +43,18 @@ export const HealthCardSchema = z.object({
 });
 
 export type HealthCardFormData = z.infer<typeof HealthCardSchema>;
+
+export type EmrInstance = {
+    id: string;
+    name: string;
+    type: string;
+    address: string | null;
+    latitude: number | null;
+    longitude: number | null;
+};
+
+export const EmrLinkingSchema = z.object({
+    emrInstanceId: z.string().min(1, "Please select an EMR instance"),
+});
+
+export type EmrLinkingFormData = z.infer<typeof EmrLinkingSchema>;
