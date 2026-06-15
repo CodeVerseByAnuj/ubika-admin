@@ -1,7 +1,7 @@
-import React from "react";
+import MedicationsWrapper from "./_components/MedicationsWrapper";
 
 const PatientMedicationsPage = () => {
-  return <div>PatientMedicationsPage</div>;
+  return <MedicationsWrapper />;
 };
 
 export default PatientMedicationsPage;

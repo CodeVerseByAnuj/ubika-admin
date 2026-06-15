@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { BookOpen, ChevronRight, SquareTerminal } from "lucide-react";
+import { BookOpen, ChevronRight, SquareTerminal, User } from "lucide-react";
 
 import {
   Collapsible,
@@ -22,6 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import ProfileMenu from "./ProfileMenu";
+import Link from "next/link";
 
 // Sample Data
 const data = [
@@ -29,6 +30,13 @@ const data = [
     title: "Home",
     url: "/",
     icon: SquareTerminal,
+    isActive: true,
+    items: [],
+  },
+  {
+    title: "Profile",
+    url: "/profile",
+    icon: User,
     isActive: true,
     items: [],
   },
@@ -69,6 +77,18 @@ const data = [
       {
         title: "Conditions",
         url: "/patient/conditions",
+      },
+      {
+        title: "Medications",
+        url: "/patient/medications",
+      },
+      {
+        title: "Labs",
+        url: "/patient/labs",
+      },
+      {
+        title: "Letters",
+        url: "/patient/letters",
       },
     ],
   },
@@ -126,9 +146,9 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
                         {item.items.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
-                              <a href={subItem.url}>
+                              <Link href={subItem.url}>
                                 <span>{subItem.title}</span>
-                              </a>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
@@ -143,10 +163,10 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url}>
+                  <Link href={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
