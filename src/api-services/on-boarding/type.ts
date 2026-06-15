@@ -30,3 +30,31 @@ export type OnBoardingPayload = {
     sex: "Male" | "Female" | "Other";
     dob: string;
 };
+
+export const HealthCardSchema = z.object({
+    hc_number: z
+        .string()
+        .min(1, "Health card number is required")
+        .regex(/^\d{10}$/, "Health card number must be exactly 10 digits"),
+    hc_version: z
+        .string()
+        .min(1, "Health card version is required")
+        .regex(/^[A-Za-z]{2}$/, "Health card version must be 2 letters"),
+});
+
+export type HealthCardFormData = z.infer<typeof HealthCardSchema>;
+
+export type EmrInstance = {
+    id: string;
+    name: string;
+    type: string;
+    address: string | null;
+    latitude: number | null;
+    longitude: number | null;
+};
+
+export const EmrLinkingSchema = z.object({
+    emrInstanceId: z.string().min(1, "Please select an EMR instance"),
+});
+
+export type EmrLinkingFormData = z.infer<typeof EmrLinkingSchema>;
