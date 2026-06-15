@@ -29,6 +29,20 @@ export const onBoardingApiServices = {
             );
         }
     },
+    createHealthCard: async function <T>(data: any): Promise<T> {
+        try {
+            const response = await axiosInstance.post(`/patient/onboarding/health-card`, data);
+            return response.data;
+        }
+        catch (error: any) {
+            console.error("API Error:", error);
+            throw (
+                error?.response?.data || {
+                    message: "Something went wrong",
+                }
+            );
+        }
+    },
     getCurrentPolicy: async function <T>(): Promise<T> {
         try {
             const response = await axiosInstance.get(`/patient/consent/policies/current`);

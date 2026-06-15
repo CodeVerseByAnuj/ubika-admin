@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const { z } = require\\('zod'\\); const s = z.object\\({ a: z.string\\(\\) }\\); console.log\\('_zod' in s, '_def' in s, Object.keys\\(s\\).slice\\(0,10\\)\\)\")",
+      "Bash(node -e \"const { z } = require\\('zod'\\); const s = z.object\\({ a: z.string\\(\\) }\\); console.log\\('_def:', JSON.stringify\\(s._def, null, 2\\).slice\\(0, 200\\)\\); console.log\\('_zod type:', typeof s._zod\\)\")"
+    ]
+  }
+}
