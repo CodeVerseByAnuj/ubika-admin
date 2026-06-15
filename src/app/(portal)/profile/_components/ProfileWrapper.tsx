@@ -5,9 +5,9 @@ import { CalendarDays, Pill } from "lucide-react";
 
 const ProfileWrapper = () => {
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
       <div>
-        <h1 className="text-2xl md:text-3xl tracking-tight font-semibold mb-2">
+        <h1 className="text-2xl md:text-3xl tracking-tight font-semibold mb-1">
           Good Morning, Sophia
         </h1>
         <p className="text-muted-foreground">Wednesday · April 22</p>

@@ -1,7 +1,7 @@
-import Allergies from "./_components/Allergies";
+import AllergiesWrapper from "./_components/AllergiesWrapper";
 
 const PatientAllergiesPage = () => {
-  return <Allergies />;
+  return <AllergiesWrapper />;
 };
 
 export default PatientAllergiesPage;

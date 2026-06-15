@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/sidebar";
 import ProfileMenu from "./ProfileMenu";
 import Link from "next/link";
+import ApplicationLogo from "./ApplicationLogo";
 
 // Sample Data
 const data = [
@@ -79,8 +80,8 @@ const data = [
         url: "/patient/conditions",
       },
       {
-        title: "Medications",
-        url: "/patient/medications",
+        title: "History",
+        url: "/patient/history",
       },
       {
         title: "Labs",
@@ -89,6 +90,10 @@ const data = [
       {
         title: "Letters",
         url: "/patient/letters",
+      },
+      {
+        title: "Medications",
+        url: "/patient/medications",
       },
     ],
   },
@@ -99,15 +104,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     <Sidebar collapsible="icon" {...props}>
       {/* Header */}
       <SidebarHeader className="border-b h-14 flex flex-row items-center px-4 overflow-hidden">
-        <h1
-          className="
-      font-semibold text-2xl
-      whitespace-nowrap
-      group-data-[collapsible=icon]:hidden
-    "
-        >
-          Ubika
-        </h1>
+        <ApplicationLogo />
       </SidebarHeader>
 
       <SidebarContent className="p-2">
