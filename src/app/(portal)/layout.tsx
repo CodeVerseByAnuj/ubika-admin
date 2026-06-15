@@ -9,9 +9,8 @@ const PortalLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex min-h-screen w-full overflow-x-hidden">
         <AppSidebar />
 
-        <main className="flex-1 overflow-x-hidden">
+        <main className="flex-1 overflow-x-hidden bg-gray-50/10">
           <Header />
-
           <div className="p-4 overflow-x-hidden">{children}</div>
         </main>
       </div>

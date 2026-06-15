@@ -1,7 +1,7 @@
-import React from "react";
+import LettesWrapper from "./_components/LettesWrapper";
 
 const PatientLettersPage = () => {
-  return <div>PatientLettersPage</div>;
+  return <LettesWrapper />;
 };
 
 export default PatientLettersPage;

@@ -1,7 +1,7 @@
-import React from "react";
+import ConditionWrapper from "./_components/ConditionWrapper";
 
 const PatientConditionsPage = () => {
-  return <div>PatientConditionsPage</div>;
+  return <ConditionWrapper />;
 };
 
 export default PatientConditionsPage;

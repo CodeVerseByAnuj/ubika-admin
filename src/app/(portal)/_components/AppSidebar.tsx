@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { BookOpen, ChevronRight, SquareTerminal } from "lucide-react";
+import { BookOpen, ChevronRight, SquareTerminal, User } from "lucide-react";
 
 import {
   Collapsible,
@@ -22,6 +22,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import ProfileMenu from "./ProfileMenu";
+import Link from "next/link";
+import ApplicationLogo from "./ApplicationLogo";
 
 // Sample Data
 const data = [
@@ -29,6 +31,13 @@ const data = [
     title: "Home",
     url: "/",
     icon: SquareTerminal,
+    isActive: true,
+    items: [],
+  },
+  {
+    title: "Profile",
+    url: "/profile",
+    icon: User,
     isActive: true,
     items: [],
   },
@@ -70,6 +79,22 @@ const data = [
         title: "Conditions",
         url: "/patient/conditions",
       },
+      {
+        title: "History",
+        url: "/patient/history",
+      },
+      {
+        title: "Labs",
+        url: "/patient/labs",
+      },
+      {
+        title: "Letters",
+        url: "/patient/letters",
+      },
+      {
+        title: "Medications",
+        url: "/patient/medications",
+      },
     ],
   },
 ];
@@ -79,15 +104,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     <Sidebar collapsible="icon" {...props}>
       {/* Header */}
       <SidebarHeader className="border-b h-14 flex flex-row items-center px-4 overflow-hidden">
-        <h1
-          className="
-      font-semibold text-2xl
-      whitespace-nowrap
-      group-data-[collapsible=icon]:hidden
-    "
-        >
-          Ubika
-        </h1>
+        <ApplicationLogo />
       </SidebarHeader>
 
       <SidebarContent className="p-2">
@@ -126,9 +143,9 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
                         {item.items.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
-                              <a href={subItem.url}>
+                              <Link href={subItem.url}>
                                 <span>{subItem.title}</span>
-                              </a>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
@@ -143,10 +160,10 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url}>
+                  <Link href={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );

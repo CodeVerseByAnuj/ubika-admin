@@ -1,7 +1,7 @@
-import React from "react";
+import AppointmentsWrapper from "./_components/AppointmentsWrapper";
 
 const PatientAppointmentsPage = () => {
-  return <div>PatientAppointmentsPage</div>;
+  return <AppointmentsWrapper />;
 };
 
 export default PatientAppointmentsPage;

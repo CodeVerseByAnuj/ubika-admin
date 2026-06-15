@@ -1,7 +1,7 @@
-import React from "react";
+import HistoryWrapper from "./_components/HistoryWrapper";
 
 const PatientHistoryPage = () => {
-  return <div>PatientHistoryPage</div>;
+  return <HistoryWrapper />;
 };
 
 export default PatientHistoryPage;

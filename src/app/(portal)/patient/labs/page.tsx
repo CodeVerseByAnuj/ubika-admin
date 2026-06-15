@@ -1,7 +1,7 @@
-import React from "react";
+import LabsWrapper from "./_components/LabsWrapper";
 
 const PatientLabsPage = () => {
-  return <div>PatientLabsPage</div>;
+  return <LabsWrapper />;
 };
 
 export default PatientLabsPage;
