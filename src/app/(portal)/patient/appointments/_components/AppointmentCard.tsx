@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, ChevronRight, MoreVertical } from "lucide-react";
+import { CalendarDays, MoreVertical } from "lucide-react";
 
 const AppointmentCard = ({ appointment }: { appointment: any }) => {
   return (
-    <div className="group rounded-xl border bg-white px-4 py-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
+    <div className="group rounded-xl border bg-brand-soft px-4 py-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
       {/* Left Section */}
       <div className="flex items-center gap-4 min-w-0">
         {/* Icon */}

@@ -6,23 +6,16 @@ import { CalendarDays, Pill } from "lucide-react";
 const ProfileWrapper = () => {
   return (
     <div className="w-full space-y-4">
-      <div>
-        <h1 className="text-2xl md:text-3xl tracking-tight font-semibold mb-1">
-          Good Morning, Sophia
-        </h1>
-        <p className="text-muted-foreground">Wednesday · April 22</p>
-      </div>
-
-      <div className="p-2 md:p-4 shadow rounded-xl space-y-4 bg-white">
-        <Badge variant={"secondary"} className="uppercase text-sm">
+      <div className="p-2 md:p-4 shadow rounded-xl space-y-4 bg-brand-peach/50">
+        <Badge variant={"outline"} className="uppercase bg-white">
           All Clear
         </Badge>
-        <h2 className="text-lg md:text-xl font-medium">
+        <h2 className="text-lg md:text-xl font-medium text-muted-foreground">
           Your clinic is connected. No major health concerns at this time.
         </h2>
       </div>
 
-      <div className="p-2 md:p-4 rounded-xl space-y-4 bg-green-300/10">
+      <div className="p-2 md:p-4 rounded-xl space-y-4 bg-brand-soft">
         <div className="uppercase font-medium text-muted-foreground">
           Ubika Voice Insight
         </div>
