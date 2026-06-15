@@ -9,6 +9,19 @@ export const OnBoardingSchema = z.object({
     dob: z.string().min(1, "Date of birth is required"),
 });
 
+export const OnPolicyConsentSchema = z.object({
+    consent_policy_id: z.number().min(1, "Policy ID is required"),
+});
+
+export type OnPolicyConsent = z.infer<typeof OnPolicyConsentSchema>;
+
+export type ConsentPolicy = {
+    id: number;
+    name: string;
+    body: string;
+    effective_date: string;
+};
+
 export type OnBoardingFormData = z.infer<typeof OnBoardingSchema>;
 
 export type OnBoardingPayload = {
