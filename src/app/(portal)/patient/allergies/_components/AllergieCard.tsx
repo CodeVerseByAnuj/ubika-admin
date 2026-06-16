@@ -60,21 +60,15 @@ const AllergieCard = ({ allergy }: { allergy: IAllergies }) => {
       )}
     >
       {/* Header */}
-      <div className="flex items-start gap-3 min-w-0">
-        <div className="h-12 w-12 shrink-0 rounded-xl bg-red-50 dark:bg-red-950/20 flex items-center justify-center">
-          <ShieldAlert className="h-5 w-5 text-red-600 dark:text-red-400" />
-        </div>
+      <div className="min-w-0">
+        <h3 className="font-semibold text-base text-foreground">
+          {allergy.allergy_name}
+        </h3>
 
-        <div className="min-w-0">
-          <h3 className="font-semibold text-base text-foreground truncate">
-            {allergy.allergy_name}
-          </h3>
-
-          <p className="text-sm text-muted-foreground">
-            {allergy.attributes.allergy_group_name ||
-              allergy.attributes.allergy_type}
-          </p>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          {allergy.attributes.allergy_group_name ||
+            allergy.attributes.allergy_type}
+        </p>
       </div>
 
       {/* Status & Severity */}

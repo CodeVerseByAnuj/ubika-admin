@@ -124,3 +124,45 @@ export interface IConditionsResponse {
   data: ICondition[];
   meta: IPagination;
 }
+
+export interface IHistory {
+  id: number;
+  type: string;
+  history_description: string;
+  effectiveAt: string;
+
+  attributes: {
+    history_type: string;
+    history_type_id: number;
+
+    is_active: boolean;
+    is_negative: boolean;
+    is_resolved: boolean;
+
+    finding_type: string;
+
+    location_abbreviation: string;
+    location_name: string;
+
+    history_regular_location_abbreviation: string;
+    history_regular_location_name: string;
+
+    history_regular_item_id: number;
+    history_regular_item_active: boolean;
+
+    details: string;
+    note: string;
+    treatment: string;
+  };
+
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}
+
+export interface IHistoryResposne {
+  data: IHistory[];
+  meta: IPagination;
+}

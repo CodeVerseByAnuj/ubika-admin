@@ -48,43 +48,32 @@ const ConditionCard = ({ condition }: { condition: ICondition }) => {
   return (
     <div className="group rounded-xl border bg-card p-4 transition-all duration-300 hover:shadow-sm">
       {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex gap-3 min-w-0">
-          <div
-            className={cn(
-              "h-11 w-11 shrink-0 rounded-xl flex items-center justify-center",
-              status.toLowerCase() === "critical"
-                ? "bg-rose-50 text-rose-600 dark:bg-rose-950/20"
-                : "bg-primary/10 text-primary",
-            )}
-          >
-            <ShieldAlert className="h-5 w-5" />
-          </div>
 
-          <div className="min-w-0">
-            <h3 className="font-semibold text-base truncate">
-              {condition?.condition_description}
-            </h3>
+      <div className="min-w-0">
+        <h3 className="font-semibold text-base">
+          {condition?.condition_description}
+        </h3>
 
-            <p className="text-sm text-muted-foreground">
-              {condition?.attributes?.finding_type || "Medical Condition"}
-            </p>
-          </div>
-        </div>
-
-        <Badge
-          variant="outline"
-          className={cn(
-            "rounded-full text-xs font-medium",
-            getStatusStyles(status),
-          )}
-        >
-          Status : {status}
-        </Badge>
+        <p className="text-sm text-muted-foreground">
+          {condition?.attributes?.finding_type || "Medical Condition"}
+        </p>
       </div>
 
       {/* Details */}
       <div className="mt-4 rounded-xl bg-muted/40 p-3 space-y-2">
+        <div className="text-sm">
+          <span className="font-medium">Status:</span>{" "}
+          <Badge
+            variant="outline"
+            className={cn(
+              "rounded-full text-xs font-medium",
+              getStatusStyles(status),
+            )}
+          >
+            {status}
+          </Badge>
+        </div>
+
         <div className="text-sm">
           <span className="font-medium">Code:</span>{" "}
           <span className="text-muted-foreground">

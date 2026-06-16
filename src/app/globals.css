@@ -5,9 +5,27 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-brand-peach: var(--brand-peach);
-  --color-brand-soft: var(--brand-soft);
+  /* Fonts */
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
 
+  /* Brand Colors */
+  --color-mist: var(--ubika-mist);
+  --color-navy: var(--ubika-navy);
+  --color-sage: var(--ubika-sage);
+  --color-ink: var(--ubika-ink);
+  --color-clay: var(--ubika-clay);
+
+  /* Tints */
+  --color-mist-2: var(--ubika-mist-2);
+  --color-sage-soft: var(--ubika-sage-soft);
+  --color-clay-soft: var(--ubika-clay-soft);
+  --color-clay-tint: var(--ubika-clay-tint);
+  --color-slate: var(--ubika-slate);
+
+  /* Shadcn  */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -52,56 +70,73 @@
 }
 
 :root {
-  --brand-peach: #e8c5b5;
-  --brand-soft: #eaf0ed;
+  /* UBIKA BRAND TOKENS */
+  --ubika-mist: #f4f6f5;
+  --ubika-navy: #2d4a6b;
+  --ubika-sage: #82a89e;
+  --ubika-ink: #0e1828;
+  --ubika-clay: #b05a3f;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.02 265);
+  /* Tints */
+  --ubika-mist-2: #ecefee;
+  --ubika-sage-soft: #eaf0ed;
+  --ubika-clay-soft: #fbefe5;
+  --ubika-clay-tint: #f4dcd0;
+  --ubika-slate: #6b7480;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 265);
+  /* SEMANTIC TOKENS */
+  --ubika-bg: var(--ubika-mist);
+  --ubika-surface: #ffffff;
+  --ubika-text: var(--ubika-ink);
+  --ubika-text-muted: var(--ubika-slate);
+  --ubika-border: rgba(14, 24, 40, 0.08);
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 265);
+  /* SHADCN MAPPING */
+  --background: var(--ubika-bg);
+  --foreground: var(--ubika-text);
 
-  /* Premium Indigo */
-  --primary: oklch(0.22 0.2 264);
+  --card: var(--ubika-surface);
+  --card-foreground: var(--ubika-text);
 
-  --primary-foreground: oklch(0.985 0 0);
+  --popover: var(--ubika-surface);
+  --popover-foreground: var(--ubika-text);
 
-  --secondary: oklch(0.95 0.01 260);
-  --secondary-foreground: oklch(0.28 0.03 265);
+  --primary: var(--ubika-ink);
+  --primary-foreground: var(--ubika-mist);
 
-  --muted: oklch(0.96 0.005 260);
-  --muted-foreground: oklch(0.5 0.02 265);
+  --secondary: var(--ubika-mist-2);
+  --secondary-foreground: var(--ubika-text);
 
-  --accent: oklch(0.93 0.03 255);
-  --accent-foreground: oklch(0.22 0.03 265);
+  --muted: var(--ubika-mist-2);
+  --muted-foreground: var(--ubika-text-muted);
 
-  --destructive: oklch(0.62 0.24 28);
+  --accent: var(--ubika-sage-soft);
+  --accent-foreground: var(--ubika-text);
 
-  --border: oklch(0.9 0.006 260);
-  --input: oklch(0.9 0.006 260);
-  --ring: oklch(0.55 0.22 264);
+  --destructive: var(--ubika-clay);
 
-  /* Updated Vibrant Charts */
-  --chart-1: oklch(0.65 0.22 264); /* Indigo */
-  --chart-2: oklch(0.7 0.19 180); /* Cyan */
-  --chart-3: oklch(0.72 0.2 145); /* Green */
-  --chart-4: oklch(0.74 0.19 70); /* Yellow */
-  --chart-5: oklch(0.68 0.23 25); /* Orange */
+  --border: var(--ubika-border);
+  --input: var(--ubika-border);
 
+  --ring: var(--ubika-navy);
+
+  /* Charts */
+  --chart-1: var(--ubika-ink);
+  --chart-2: var(--ubika-navy);
+  --chart-3: var(--ubika-sage);
+  --chart-4: var(--ubika-clay);
+  --chart-5: var(--ubika-slate);
   --radius: 0.75rem;
 
   /* Sidebar */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--ubika-text);
+  --sidebar-primary: var(--ubika-ink);
+  --sidebar-primary-foreground: var(--ubika-mist);
+  --sidebar-accent: var(--ubika-sage-soft);
+  --sidebar-accent-foreground: var(--ubika-text);
+  --sidebar-border: var(--ubika-border);
+  --sidebar-ring: var(--ubika-navy);
 }
 
 .dark {

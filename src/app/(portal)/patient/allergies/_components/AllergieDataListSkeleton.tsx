@@ -6,13 +6,9 @@ const AllergieDataListSkeleton = () => {
       {Array.from({ length: 20 }).map((_, index) => (
         <div key={index} className="rounded-xl border p-4">
           {/* Header */}
-          <div className="flex items-start gap-3">
-            <Skeleton className="h-12 w-12 rounded-xl" />
-
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-5 w-40" />
-              <Skeleton className="h-4 w-28" />
-            </div>
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-5 w-40" />
+            <Skeleton className="h-4 w-28" />
           </div>
 
           {/* Status & Severity */}

@@ -7,13 +7,9 @@ const AppointmentDataListSkeleton = () => {
         <div key={index} className="rounded-xl border bg-card p-4">
           {/* Header */}
           <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3 flex-1">
-              <Skeleton className="h-11 w-11 rounded-xl" />
-
-              <div className="flex-1 space-y-2">
-                <Skeleton className="h-5 w-40" />
-                <Skeleton className="h-4 w-28" />
-              </div>
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-28" />
             </div>
 
             <Skeleton className="h-7 w-24 rounded-full" />

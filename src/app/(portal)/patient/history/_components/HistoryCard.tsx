@@ -1,89 +1,71 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ClipboardList, Calendar, MoreVertical } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Calendar, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { IHistory } from "@/api-services/patient/types";
 
-const HistoryCard = ({ history }: { history: any }) => {
-  const historyType = history.attributes.history_type;
-
-  const getTypeStyles = (type: string) => {
-    switch (type) {
-      case "REGULAR":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/40";
-
-      case "FOLLOW_UP":
-        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/40";
-
-      case "SPECIALIST":
-        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/40";
-
-      default:
-        return "bg-muted text-muted-foreground border-border";
-    }
-  };
+const HistoryCard = ({ history }: { history: IHistory }) => {
+  const recordedDate = new Date(history.effectiveAt).toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
 
   return (
-    <div className="group rounded-xl border bg-brand-soft bg-background p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
-      {/* Left */}
-      <div className="flex items-center gap-4 min-w-0">
-        {/* Icon */}
-        <div className="h-11 w-11 shrink-0 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
-          <ClipboardList className="h-5 w-5" />
+    <div className="rounded-xl border bg-card p-4 transition-all hover:shadow-sm">
+      {/* Header */}
+      <div className="min-w-0 flex-1">
+        <h3 className="font-semibold text-base">
+          {history.history_description}
+        </h3>
+
+        <p className="text-sm text-muted-foreground">
+          {history.attributes.history_type}
+        </p>
+      </div>
+
+      {/* Details */}
+      <div className="mt-4 space-y-2">
+        <div className="flex items-center gap-2 text-sm">
+          <MapPin className="h-4 w-4 text-muted-foreground" />
+          <span>{history.attributes.location_name}</span>
         </div>
 
-        {/* Content */}
-        <div className="min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-lg font-semibold text-foreground truncate">
-              {history.history_description}
-            </h2>
+        <div className="flex items-center gap-2 text-sm">
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <span>{recordedDate}</span>
+        </div>
+      </div>
 
-            <Badge
-              variant="outline"
-              className={`text-[10px] font-semibold rounded-full uppercase ${getTypeStyles(
-                historyType,
-              )}`}
-            >
-              {historyType.replace("_", " ")}
-            </Badge>
-          </div>
+      {/* Status */}
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Badge variant="outline">{history.attributes.finding_type}</Badge>
 
-          <p className="text-sm text-muted-foreground truncate">
-            {history.attributes.details || "No additional details"}
+        {history.attributes.is_active && (
+          <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200">
+            Active
+          </Badge>
+        )}
+
+        {history.attributes.is_resolved && (
+          <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+            Resolved
+          </Badge>
+        )}
+
+        {history.attributes.is_negative && (
+          <Badge variant="secondary">Negative Finding</Badge>
+        )}
+      </div>
+
+      {(history.attributes.details || history.attributes.note) && (
+        <div className="mt-4 rounded-lg bg-muted/40 p-3">
+          <p className="text-sm text-muted-foreground">
+            {history.attributes.details || history.attributes.note}
           </p>
-
-          <div className="mt-2 flex items-center gap-2 flex-wrap">
-            <Badge
-              variant="secondary"
-              className="rounded-md px-2 py-1 text-xs font-medium"
-            >
-              <Calendar className="h-3 w-3 mr-1" />
-
-              {new Date(history.effectiveAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}
-            </Badge>
-
-            {history.attributes.treatment && (
-              <Badge
-                variant="outline"
-                className="rounded-md px-2 py-1 text-xs font-medium"
-              >
-                {history.attributes.treatment}
-              </Badge>
-            )}
-          </div>
         </div>
-      </div>
-
-      {/* Right */}
-      <div className="shrink-0">
-        <Button variant="ghost" size="icon" className="rounded-lg">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
-      </div>
+      )}
     </div>
   );
 };

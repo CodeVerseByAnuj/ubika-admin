@@ -87,18 +87,13 @@ const AppointmentCard = ({ appointment }: { appointment: IAppointment }) => {
     >
       {/* Header: Title and Status */}
       <div className="flex items-start justify-between gap-3">
-        <div className="flex gap-3">
-          <div className="h-12 w-12 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center">
-            <CalendarDays className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-base capitalize">
-              {type?.toLowerCase().replace(/_/g, " ") || "General Visit"}
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              ID: {attributes.appointment_uuid?.slice(0, 8).toUpperCase()}
-            </p>
-          </div>
+        <div>
+          <h3 className="font-semibold text-base capitalize">
+            {type?.toLowerCase().replace(/_/g, " ") || "General Visit"}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            ID: {attributes.appointment_uuid?.slice(0, 8).toUpperCase()}
+          </p>
         </div>
 
         <Badge
