@@ -1,111 +1,41 @@
 "use client";
-
-import AllergieCard from "./AllergieCard";
-
-const allergiesList = [
-  {
-    id: 1304,
-    type: "allergy_intolerance",
-    allergy_name: "ATGAM 50 MG/ML AMPUL",
-    effectiveAt: "2026-02-14T00:00:00Z",
-    attributes: {
-      clinical_status: "Suspect",
-      reaction_description: "Rash",
-    },
-  },
-  {
-    id: 1305,
-    type: "allergy_intolerance",
-    allergy_name: "Penicillin",
-    effectiveAt: "2026-02-12T00:00:00Z",
-    attributes: {
-      clinical_status: "Confirmed",
-      reaction_description: "Swelling",
-    },
-  },
-  {
-    id: 1306,
-    type: "allergy_intolerance",
-    allergy_name: "Peanuts",
-    effectiveAt: "2026-02-10T00:00:00Z",
-    attributes: {
-      clinical_status: "Active",
-      reaction_description: "Difficulty breathing",
-    },
-  },
-  {
-    id: 1307,
-    type: "allergy_intolerance",
-    allergy_name: "Dust Mites",
-    effectiveAt: "2026-02-08T00:00:00Z",
-    attributes: {
-      clinical_status: "Mild",
-      reaction_description: "Sneezing",
-    },
-  },
-  {
-    id: 1308,
-    type: "allergy_intolerance",
-    allergy_name: "Shellfish",
-    effectiveAt: "2026-02-06T00:00:00Z",
-    attributes: {
-      clinical_status: "Confirmed",
-      reaction_description: "Hives",
-    },
-  },
-  {
-    id: 1309,
-    type: "allergy_intolerance",
-    allergy_name: "Latex",
-    effectiveAt: "2026-02-04T00:00:00Z",
-    attributes: {
-      clinical_status: "Active",
-      reaction_description: "Skin irritation",
-    },
-  },
-  {
-    id: 1310,
-    type: "allergy_intolerance",
-    allergy_name: "Milk",
-    effectiveAt: "2026-02-02T00:00:00Z",
-    attributes: {
-      clinical_status: "Resolved",
-      reaction_description: "Stomach pain",
-    },
-  },
-  {
-    id: 1311,
-    type: "allergy_intolerance",
-    allergy_name: "Ibuprofen",
-    effectiveAt: "2026-01-30T00:00:00Z",
-    attributes: {
-      clinical_status: "Suspect",
-      reaction_description: "Nausea",
-    },
-  },
-  {
-    id: 1312,
-    type: "allergy_intolerance",
-    allergy_name: "Eggs",
-    effectiveAt: "2026-01-28T00:00:00Z",
-    attributes: {
-      clinical_status: "Confirmed",
-      reaction_description: "Itching",
-    },
-  },
-  {
-    id: 1313,
-    type: "allergy_intolerance",
-    allergy_name: "Pollen",
-    effectiveAt: "2026-01-26T00:00:00Z",
-    attributes: {
-      clinical_status: "Mild",
-      reaction_description: "Runny nose",
-    },
-  },
-];
+import { useEffect, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { patientApiServices } from "@/api-services/patient/api";
+import { IAllergiesResponse } from "@/api-services/patient/types";
+import CustomPagination from "@/components/common/CustomPagination";
+import AllergieDataListSkeleton from "./AllergieDataListSkeleton";
+import AllergieDataList from "./AllergieDataList";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const AllergiesWrapper = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const [page, setPage] = useState(() =>
+    parseInt(searchParams.get("page") || "1", 10),
+  );
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries({
+      page,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
+  }, [page, router, pathName]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getAllergies", page],
+    queryFn: () => patientApiServices.getAllergies<IAllergiesResponse>(page),
+    placeholderData: keepPreviousData,
+  });
+
+  const dataList = data?.data || [];
+  const paginationMeta = data?.meta || null;
+
   return (
     <div className="w-full space-y-5">
       <div>
@@ -116,11 +46,25 @@ const AllergiesWrapper = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {allergiesList.map((allergy) => (
-          <AllergieCard key={allergy.id} allergy={allergy} />
-        ))}
-      </div>
+      {!isLoading ? (
+        <AllergieDataList allergiesList={dataList} />
+      ) : (
+        <AllergieDataListSkeleton />
+      )}
+
+      <>
+        {!isLoading && paginationMeta && (
+          <CustomPagination
+            pagination={{
+              page: page,
+              limit: paginationMeta.per_page,
+              total: paginationMeta.total,
+              totalPages: paginationMeta.last_page,
+            }}
+            onPageChange={(page) => setPage(page)}
+          />
+        )}
+      </>
     </div>
   );
 };

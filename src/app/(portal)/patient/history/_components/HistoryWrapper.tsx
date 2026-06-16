@@ -1,131 +1,43 @@
 "use client";
 
-import HistoryCard from "./HistoryCard";
-
-const historyList = [
-  {
-    id: 547,
-    type: "clinical_history",
-    history_description: "Generated using Demo Data Generator",
-    effectiveAt: "2026-02-26T14:36:25Z",
-    attributes: {
-      history_type: "REGULAR",
-      details: null,
-      note: null,
-      treatment: null,
-    },
-  },
-  {
-    id: 548,
-    type: "clinical_history",
-    history_description: "Routine annual health check completed",
-    effectiveAt: "2026-02-24T10:20:00Z",
-    attributes: {
-      history_type: "ANNUAL",
-      details: "General wellness evaluation",
-      note: "Vitals stable",
-      treatment: null,
-    },
-  },
-  {
-    id: 549,
-    type: "clinical_history",
-    history_description: "Blood pressure monitoring",
-    effectiveAt: "2026-02-22T09:00:00Z",
-    attributes: {
-      history_type: "FOLLOW_UP",
-      details: "BP slightly elevated",
-      note: "Continue monitoring",
-      treatment: "Lifestyle changes",
-    },
-  },
-  {
-    id: 550,
-    type: "clinical_history",
-    history_description: "Diabetes management review",
-    effectiveAt: "2026-02-20T08:30:00Z",
-    attributes: {
-      history_type: "REGULAR",
-      details: "Blood sugar controlled",
-      note: "Medication effective",
-      treatment: "Metformin",
-    },
-  },
-  {
-    id: 551,
-    type: "clinical_history",
-    history_description: "Asthma follow-up visit",
-    effectiveAt: "2026-02-18T12:15:00Z",
-    attributes: {
-      history_type: "FOLLOW_UP",
-      details: "Breathing improved",
-      note: "No recent attacks",
-      treatment: "Inhaler therapy",
-    },
-  },
-  {
-    id: 552,
-    type: "clinical_history",
-    history_description: "Vaccination administered",
-    effectiveAt: "2026-02-16T11:45:00Z",
-    attributes: {
-      history_type: "IMMUNIZATION",
-      details: "Influenza vaccine",
-      note: "No side effects",
-      treatment: null,
-    },
-  },
-  {
-    id: 553,
-    type: "clinical_history",
-    history_description: "Orthopedic consultation",
-    effectiveAt: "2026-02-14T02:00:00Z",
-    attributes: {
-      history_type: "SPECIALIST",
-      details: "Knee pain assessment",
-      note: "Recommended physiotherapy",
-      treatment: "Physical therapy",
-    },
-  },
-  {
-    id: 554,
-    type: "clinical_history",
-    history_description: "Mental health counseling session",
-    effectiveAt: "2026-02-12T04:30:00Z",
-    attributes: {
-      history_type: "COUNSELING",
-      details: "Stress management",
-      note: "Positive progress",
-      treatment: "Therapy sessions",
-    },
-  },
-  {
-    id: 555,
-    type: "clinical_history",
-    history_description: "Skin allergy treatment",
-    effectiveAt: "2026-02-10T01:10:00Z",
-    attributes: {
-      history_type: "REGULAR",
-      details: "Mild allergic reaction",
-      note: "Prescribed ointment",
-      treatment: "Topical cream",
-    },
-  },
-  {
-    id: 556,
-    type: "clinical_history",
-    history_description: "Cardiology consultation",
-    effectiveAt: "2026-02-08T03:25:00Z",
-    attributes: {
-      history_type: "SPECIALIST",
-      details: "ECG review normal",
-      note: "No abnormalities found",
-      treatment: null,
-    },
-  },
-];
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { patientApiServices } from "@/api-services/patient/api";
+import { IHistoryResposne } from "@/api-services/patient/types";
+import HistoryDataList from "./HistoryDataList";
+import HistoryDataListSkeleton from "./HistoryDataListSkeleton";
+import CustomPagination from "@/components/common/CustomPagination";
 
 const HistoryWrapper = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const [page, setPage] = useState(() =>
+    parseInt(searchParams.get("page") || "1", 10),
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries({
+      page,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
+  }, [page, router, pathName]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getAllergies", page],
+    queryFn: () => patientApiServices.getHistory<IHistoryResposne>(page),
+    placeholderData: keepPreviousData,
+  });
+
+  const dataList = data?.data || [];
+  const paginationMeta = data?.meta || null;
+
   return (
     <div className="w-full space-y-5">
       <div>
@@ -136,11 +48,25 @@ const HistoryWrapper = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {historyList.map((history) => (
-          <HistoryCard key={history.id} history={history} />
-        ))}
-      </div>
+      {!isLoading ? (
+        <HistoryDataList historyList={dataList} />
+      ) : (
+        <HistoryDataListSkeleton />
+      )}
+
+      <>
+        {!isLoading && paginationMeta && (
+          <CustomPagination
+            pagination={{
+              page: page,
+              limit: paginationMeta.per_page,
+              total: paginationMeta.total,
+              totalPages: paginationMeta.last_page,
+            }}
+            onPageChange={(page) => setPage(page)}
+          />
+        )}
+      </>
     </div>
   );
 };

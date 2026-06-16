@@ -35,6 +35,10 @@ const CustomPagination = ({
 }: PaginationProps) => {
   const { page, totalPages, limit, total } = pagination;
 
+  if (totalPages <= 1) {
+    return null;
+  }
+
   const generatePages = () => {
     const pages: (number | string)[] = [];
 

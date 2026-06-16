@@ -1,192 +1,111 @@
 "use client";
-
-import AppointmentCard from "./AppointmentCard";
-
-const appointmentList = [
-  {
-    id: 1,
-    doctor: "Dr. Chen",
-    specialization: "Cardiology",
-    hospital: "Trillium Health",
-    date: "Apr 28",
-    time: "2:00 PM",
-  },
-  {
-    id: 2,
-    doctor: "Dr. Smith",
-    specialization: "Dermatology",
-    hospital: "City Care",
-    date: "May 02",
-    time: "11:30 AM",
-  },
-  {
-    id: 3,
-    doctor: "Dr. Williams",
-    specialization: "Neurology",
-    hospital: "Metro Hospital",
-    date: "May 05",
-    time: "9:00 AM",
-  },
-  {
-    id: 4,
-    doctor: "Dr. Brown",
-    specialization: "Orthopedic",
-    hospital: "Apollo Clinic",
-    date: "May 07",
-    time: "4:00 PM",
-  },
-  {
-    id: 5,
-    doctor: "Dr. Taylor",
-    specialization: "ENT",
-    hospital: "Sunrise Health",
-    date: "May 10",
-    time: "1:15 PM",
-  },
-  {
-    id: 6,
-    doctor: "Dr. Wilson",
-    specialization: "Pediatrics",
-    hospital: "Kids Care",
-    date: "May 12",
-    time: "3:45 PM",
-  },
-  {
-    id: 7,
-    doctor: "Dr. Johnson",
-    specialization: "Dentist",
-    hospital: "Smile Dental",
-    date: "May 14",
-    time: "10:00 AM",
-  },
-  {
-    id: 8,
-    doctor: "Dr. Davis",
-    specialization: "Eye Specialist",
-    hospital: "Vision Plus",
-    date: "May 16",
-    time: "12:30 PM",
-  },
-  {
-    id: 9,
-    doctor: "Dr. Lee",
-    specialization: "Psychiatrist",
-    hospital: "Mind Wellness",
-    date: "May 18",
-    time: "5:00 PM",
-  },
-  {
-    id: 10,
-    doctor: "Dr. White",
-    specialization: "General Physician",
-    hospital: "Care Hospital",
-    date: "May 20",
-    time: "8:30 AM",
-  },
-  {
-    id: 11,
-    doctor: "Dr. Hall",
-    specialization: "Gynecologist",
-    hospital: "Women's Clinic",
-    date: "May 21",
-    time: "2:20 PM",
-  },
-  {
-    id: 12,
-    doctor: "Dr. Young",
-    specialization: "Urologist",
-    hospital: "Health First",
-    date: "May 22",
-    time: "6:00 PM",
-  },
-  {
-    id: 13,
-    doctor: "Dr. Allen",
-    specialization: "Cardiology",
-    hospital: "Heart Center",
-    date: "May 24",
-    time: "1:00 PM",
-  },
-  {
-    id: 14,
-    doctor: "Dr. King",
-    specialization: "Oncology",
-    hospital: "Cancer Care",
-    date: "May 25",
-    time: "9:40 AM",
-  },
-  {
-    id: 15,
-    doctor: "Dr. Scott",
-    specialization: "Physiotherapy",
-    hospital: "Recovery Hub",
-    date: "May 26",
-    time: "7:15 PM",
-  },
-  {
-    id: 16,
-    doctor: "Dr. Green",
-    specialization: "Radiology",
-    hospital: "Scan Center",
-    date: "May 27",
-    time: "11:10 AM",
-  },
-  {
-    id: 17,
-    doctor: "Dr. Adams",
-    specialization: "Pulmonology",
-    hospital: "Lung Care",
-    date: "May 28",
-    time: "3:00 PM",
-  },
-  {
-    id: 18,
-    doctor: "Dr. Baker",
-    specialization: "Nephrology",
-    hospital: "Kidney Clinic",
-    date: "May 29",
-    time: "4:45 PM",
-  },
-  {
-    id: 19,
-    doctor: "Dr. Carter",
-    specialization: "Diabetology",
-    hospital: "Sugar Care",
-    date: "May 30",
-    time: "10:50 AM",
-  },
-  {
-    id: 20,
-    doctor: "Dr. Evans",
-    specialization: "Skin Specialist",
-    hospital: "Glow Clinic",
-    date: "Jun 01",
-    time: "12:00 PM",
-  },
-];
+import { useEffect, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { patientApiServices } from "@/api-services/patient/api";
+import { IAppointmentsResponse } from "@/api-services/patient/types";
+import CustomPagination from "@/components/common/CustomPagination";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import AppointmentDataList from "./AppointmentDataList";
+import AppointmentDataListSkeleton from "./AppointmentDataListSkeleton";
 
 const AppointmentsWrapper = () => {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const [page, setPage] = useState(() =>
+    parseInt(searchParams.get("page") || "1", 10),
+  );
+  const [status, setStatus] = useState(
+    () => searchParams.get("status") || "all",
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries({
+      page,
+      status,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
+  }, [page, status, router, pathName]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getAppointments", page, status],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      Object.entries({
+        page,
+        status,
+      }).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          params.append(key, String(value));
+        }
+      });
+      return patientApiServices.getAppointments<IAppointmentsResponse>(
+        params.toString(),
+      );
+    },
+    placeholderData: keepPreviousData,
+  });
+
+  const dataList = data?.data || [];
+  const paginationMeta = data?.meta || null;
+
   return (
     <div className="w-full space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Patient Appointments
-        </h1>
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Patient Appointments
+          </h1>
 
-        <p className="text-sm text-muted-foreground mt-1">
-          Manage and track all upcoming patient appointments.
-        </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage and track all upcoming patient appointments.
+          </p>
+        </div>
+
+        <Select value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger className="w-full md:w-45">
+            <SelectValue placeholder="Theme" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="upcoming">Upcoming</SelectItem>
+              <SelectItem value="past">Past</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {appointmentList.map((appointment) => (
-          <AppointmentCard key={appointment.id} appointment={appointment} />
-        ))}
-      </div>
+      {!isLoading ? (
+        <AppointmentDataList appointments={dataList} />
+      ) : (
+        <AppointmentDataListSkeleton />
+      )}
 
-      <div className="py-4">
-        <div>Pagination</div>
-      </div>
+      {!isLoading && paginationMeta && (
+        <CustomPagination
+          pagination={{
+            page: page,
+            limit: paginationMeta.per_page,
+            total: paginationMeta.total,
+            totalPages: paginationMeta.last_page,
+          }}
+          onPageChange={(page) => setPage(page)}
+        />
+      )}
     </div>
   );
 };
