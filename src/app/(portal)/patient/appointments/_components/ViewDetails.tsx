@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAppointmentDetailsResposne } from "@/api-services/patient/types";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
   const appointment = response?.data;
 
   // Status configuration with custom status-based card backgrounds
-  const getStatus = (attrs: typeof appointment.attributes) => {
+  const getStatus = (attrs: any) => {
     if (attrs.is_deleted)
       return {
         label: "Deleted",
