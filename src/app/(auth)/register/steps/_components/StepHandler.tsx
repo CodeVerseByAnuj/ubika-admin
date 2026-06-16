@@ -32,7 +32,7 @@ const StepHandler = () => {
 
             {/* Personal Info */}
             <TabsContent value="personal-info">
-              <BasicDetailsForm />
+              <BasicDetailsForm onNext={() => setActiveTab("privacy-consent")} />
             </TabsContent>
 
             {/* Privacy Consent */}
