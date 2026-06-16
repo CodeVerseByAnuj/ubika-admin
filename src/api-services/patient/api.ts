@@ -35,14 +35,12 @@ export const patientApiServices = {
     }
   },
   getAppointmentsDetails: async function <T>(
-    appointmentId: string,
+    appointmentId: number,
   ): Promise<T> {
     try {
-      const response = await axiosInstance.get(`/patient/appointments`, {
-        params: {
-          appointmentId,
-        },
-      });
+      const response = await axiosInstance.get(
+        `/patient/appointments/${appointmentId}`,
+      );
       return response.data;
     } catch (error: any) {
       console.error("Get patient appointments details api error:", error);

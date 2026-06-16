@@ -1,79 +1,139 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ShieldAlert, Calendar, MoreVertical } from "lucide-react";
-
+import {
+  ShieldAlert,
+  Calendar,
+  MoreVertical,
+  AlertTriangle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { IAllergies } from "@/api-services/patient/types";
+import { cn } from "@/lib/utils";
 
-const AllergieCard = ({ allergy }: { allergy: any }) => {
+const AllergieCard = ({ allergy }: { allergy: IAllergies }) => {
   const status = allergy.attributes.clinical_status;
+  const severity = allergy.attributes.allergy_severity_code;
 
   const getStatusStyles = (statusString: string) => {
-    switch (statusString) {
-      case "Confirmed":
-        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/40";
+    switch (statusString?.toLowerCase()) {
+      case "confirmed":
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400";
 
-      case "Active":
-        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/40";
+      case "active":
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400";
 
-      case "Resolved":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/40";
+      case "resolved":
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400";
 
       default:
-        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/40";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400";
     }
   };
 
+  const getSeverityStyles = (severityString: string) => {
+    switch (severityString?.toLowerCase()) {
+      case "severe":
+        return "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/30 dark:text-red-400";
+
+      case "moderate":
+        return "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/30 dark:text-orange-400";
+
+      case "mild":
+        return "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400";
+
+      default:
+        return "bg-muted text-muted-foreground border-border";
+    }
+  };
+
+  const formattedDate = allergy.effectiveAt
+    ? new Date(allergy.effectiveAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "Unknown";
+
   return (
-    <div className="group rounded-xl border bg-brand-soft bg-brand-soft p-4  flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
-      {/* Left */}
-      <div className="flex items-center gap-4 min-w-0">
-        {/* Icon */}
-        <div className="h-11 w-11 shrink-0 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
-          <ShieldAlert className="h-5 w-5" />
+    <div
+      className={cn(
+        "group rounded-xl border p-4 transition-all duration-300 hover:shadow",
+      )}
+    >
+      {/* Header */}
+      <div className="flex items-start gap-3 min-w-0">
+        <div className="h-12 w-12 shrink-0 rounded-xl bg-red-50 dark:bg-red-950/20 flex items-center justify-center">
+          <ShieldAlert className="h-5 w-5 text-red-600 dark:text-red-400" />
         </div>
 
-        {/* Content */}
         <div className="min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-lg font-semibold text-foreground truncate">
-              {allergy.allergy_name}
-            </h2>
+          <h3 className="font-semibold text-base text-foreground truncate">
+            {allergy.allergy_name}
+          </h3>
 
-            <Badge
-              variant="outline"
-              className={`text-[10px] font-semibold rounded-full uppercase ${getStatusStyles(
-                status,
-              )}`}
-            >
-              {status}
-            </Badge>
-          </div>
-
-          <p className="text-sm text-muted-foreground truncate">
-            Reaction: {allergy.attributes.reaction_description}
+          <p className="text-sm text-muted-foreground">
+            {allergy.attributes.allergy_group_name ||
+              allergy.attributes.allergy_type}
           </p>
-
-          <div className="mt-2 flex items-center gap-2 flex-wrap">
-            <Badge
-              variant="secondary"
-              className="rounded-md px-2 py-1 text-xs font-medium"
-            >
-              <Calendar className="h-3 w-3 mr-1" />
-
-              {new Date(allergy.effectiveAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}
-            </Badge>
-          </div>
         </div>
       </div>
 
-      {/* Right */}
-      <div className="shrink-0">
-        <Button variant="ghost" size="icon" className="rounded-lg">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
+      {/* Status & Severity */}
+      <div className="mt-3 flex flex-wrap gap-2">
+        {status && (
+          <Badge
+            variant="outline"
+            className={cn(
+              "rounded-full px-2.5 py-1 text-[11px] font-medium",
+              getStatusStyles(status),
+            )}
+          >
+            Status : {status}
+          </Badge>
+        )}
+
+        {severity && (
+          <Badge
+            variant="outline"
+            className={cn(
+              "rounded-full px-2.5 py-1 text-[11px] font-medium",
+              getSeverityStyles(severity),
+            )}
+          >
+            <AlertTriangle className="mr-1 h-3 w-3" />
+            Severity : {severity}
+          </Badge>
+        )}
+      </div>
+
+      {/* Reaction */}
+      {allergy.attributes.reaction_description && (
+        <div className="mt-3 rounded-xl bg-muted/50 p-3">
+          <div className="mb-1 flex items-center gap-2">
+            <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
+            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Reaction Description
+            </span>
+          </div>
+
+          <p className="text-sm leading-relaxed text-foreground">
+            {allergy.attributes.reaction_description}
+          </p>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center gap-1">
+          <span>
+            {allergy.attributes.reaction_count || 0} reaction
+            {(allergy.attributes.reaction_count || 0) > 1 ? "s" : ""}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <Calendar className="h-3.5 w-3.5" />
+          <span>Since {formattedDate}</span>
+        </div>
       </div>
     </div>
   );
