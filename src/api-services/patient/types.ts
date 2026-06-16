@@ -94,3 +94,33 @@ export interface IAppointmentDetailsResposne {
     };
   };
 }
+
+export interface ICondition {
+  id: string;
+  type: string;
+  condition_description: string;
+  effectiveAt: string;
+  attributes: {
+    condition_code: string;
+    condition_code_system: string;
+    condition_status_name: string;
+    is_active_condition: boolean;
+    is_resolved: boolean;
+    is_negative: boolean;
+    finding_type: string;
+    condition_onset_ts: string;
+    condition_recovery_ts: string;
+    days_since_diagnosed: number;
+    days_since_onset: number;
+  };
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}
+
+export interface IConditionsResponse {
+  data: ICondition[];
+  meta: IPagination;
+}

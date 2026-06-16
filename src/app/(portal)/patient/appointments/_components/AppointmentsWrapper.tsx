@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAppointmentsResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
@@ -56,6 +56,7 @@ const AppointmentsWrapper = () => {
         params.toString(),
       );
     },
+    placeholderData: keepPreviousData,
   });
 
   const dataList = data?.data || [];
@@ -88,10 +89,10 @@ const AppointmentsWrapper = () => {
         </Select>
       </div>
 
-      {isLoading ? (
-        <AppointmentDataListSkeleton />
-      ) : (
+      {!isLoading ? (
         <AppointmentDataList appointments={dataList} />
+      ) : (
+        <AppointmentDataListSkeleton />
       )}
 
       {!isLoading && paginationMeta && (

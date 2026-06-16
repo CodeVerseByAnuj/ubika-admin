@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAllergiesResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
@@ -30,6 +30,7 @@ const AllergiesWrapper = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["getAllergies", page],
     queryFn: () => patientApiServices.getAllergies<IAllergiesResponse>(page),
+    placeholderData: keepPreviousData,
   });
 
   const dataList = data?.data || [];

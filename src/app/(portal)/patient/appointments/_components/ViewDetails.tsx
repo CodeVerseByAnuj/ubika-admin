@@ -48,38 +48,45 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
 
   const appointment = response?.data;
 
-  // Clean Status Badge Config
+  // Status configuration with custom status-based card backgrounds
   const getStatus = (attrs: typeof appointment.attributes) => {
     if (attrs.is_deleted)
       return {
         label: "Deleted",
         className: "bg-stone-100 text-stone-700 border-stone-200",
+        cardBg: "bg-stone-50/70 dark:bg-stone-950/20",
         icon: XCircle,
       };
     if (attrs.is_cancelled)
       return {
         label: "Cancelled",
         className: "bg-red-50 text-red-700 border-red-200",
+        cardBg: "bg-red-50/30 dark:bg-red-950/10",
         icon: XCircle,
       };
     if (attrs.has_arrived)
       return {
         label: "Arrived",
         className: "bg-green-50 text-green-700 border-green-200",
+        cardBg: "bg-green-50/30 dark:bg-green-950/10",
         icon: CheckCircle2,
       };
     if (attrs.is_confirmed)
       return {
         label: "Confirmed",
         className: "bg-blue-50 text-blue-700 border-blue-200",
+        cardBg: "bg-blue-50/30 dark:bg-blue-950/10",
         icon: CheckCircle2,
       };
     return {
       label: "Scheduled",
       className: "bg-amber-50 text-amber-700 border-amber-200",
+      cardBg: "bg-amber-50/30 dark:bg-amber-950/10",
       icon: CalendarDays,
     };
   };
+
+  const statusConfig = appointment ? getStatus(appointment?.attributes) : null;
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
@@ -89,7 +96,12 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-md p-6 gap-0 overflow-hidden rounded-2xl">
+      <DialogContent
+        aria-describedby={undefined}
+        className={cn(
+          "max-w-md p-6 gap-0 overflow-hidden transition-colors duration-200",
+        )}
+      >
         {isLoading ? (
           <div className="flex h-48 items-center justify-center">
             <Spinner className="h-6 w-6 text-primary animate-spin" />
@@ -103,40 +115,45 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
                 : "Failed to load details"}
             </span>
           </div>
-        ) : appointment ? (
+        ) : appointment && statusConfig ? (
           <div className="space-y-5">
-            {/* Header Area with Default Shadcn Close/X Action support */}
+            {/* Header Area */}
             <DialogHeader className="text-left flex flex-row items-center justify-between gap-4 space-y-0 pb-4 border-b pr-6">
+              {/* VisuallyHidden implementation via Tailwind utilities for maximum standard compliance */}
+              <DialogTitle className="sr-only">
+                {appointment.type?.toLowerCase().replace(/_/g, " ") ||
+                  "Appointment Details"}
+              </DialogTitle>
+
               <div className="flex flex-col gap-0.5">
                 <span className="text-[11px] font-bold text-primary uppercase tracking-widest">
                   Appointment Details
                 </span>
-                <DialogTitle className="text-lg font-bold capitalize text-foreground leading-tight">
+                <p className="text-lg font-bold capitalize text-foreground leading-tight">
                   {appointment.type?.toLowerCase().replace(/_/g, " ") ||
                     "General Visit"}
-                </DialogTitle>
+                </p>
               </div>
 
               {(() => {
-                const status = getStatus(appointment?.attributes);
-                const Icon = status?.icon;
+                const Icon = statusConfig.icon;
                 return (
                   <Badge
                     variant="outline"
                     className={cn(
                       "flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold shrink-0 border shadow-sm",
-                      status.className,
+                      statusConfig.className,
                     )}
                   >
                     <Icon className="h-3.5 w-3.5" />
-                    {status.label}
+                    {statusConfig.label}
                   </Badge>
                 );
               })()}
             </DialogHeader>
 
             {/* Date and Time Block */}
-            <div className="bg-muted/40 p-4 rounded-xl border space-y-3">
+            <div className="bg-background/80 backdrop-blur-sm p-4 rounded-xl border space-y-3">
               <div className="flex items-center gap-3">
                 <div className="h-9 w-9 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                   <CalendarDays className="h-5 w-5 text-primary" />
@@ -242,7 +259,7 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
 
             {/* Bottom Tracking Reference */}
             <div className="pt-2 text-center">
-              <span className="text-xs bg-muted px-2.5 py-1 rounded text-muted-foreground font-mono">
+              <span className="text-xs bg-background/50 border px-2.5 py-1 rounded text-muted-foreground font-mono">
                 Ref: #
                 {appointment?.attributes?.appointment_uuid
                   ?.slice(0, 8)
