@@ -103,7 +103,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar collapsible="icon" {...props}>
       {/* Header */}
-      <SidebarHeader className="border-b h-14 flex flex-row items-center px-4 overflow-hidden">
+      <SidebarHeader className="border-b h-14 flex flex-row items-center overflow-hidden">
         <ApplicationLogo />
       </SidebarHeader>
 

@@ -23,7 +23,6 @@ export const patientWearablesApiServices = {
       return response.data;
     } catch (error: any) {
       console.error("API Error:", error);
-
       throw (
         error?.response?.data || {
           message: "Something went wrong",
