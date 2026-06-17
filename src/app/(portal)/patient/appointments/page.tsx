@@ -4,7 +4,7 @@ import AppointmentsWrapper from "./_components/AppointmentsWrapper";
 const PatientAppointmentsPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AppointmentsWrapper />;
+      <AppointmentsWrapper />
     </Suspense>
   );
 };

@@ -1,82 +1,111 @@
 "use client";
 
-import MedicationCard from "./MedicationCard";
-
-const medicationList = [
-  {
-    id: 400,
-    medication_name: "calcium/ascorbate calcium",
-    effectiveAt: "2025-06-30T00:00:00Z",
-    attributes: {
-      medication_display_text: "calcium/ascorbate calcium tab",
-      prescription_status: "Active",
-    },
-  },
-  {
-    id: 401,
-    medication_name: "atorvastatin",
-    effectiveAt: "2025-07-01T00:00:00Z",
-    attributes: {
-      medication_display_text: "atorvastatin 20mg tablet",
-      prescription_status: "Active",
-    },
-  },
-  {
-    id: 402,
-    medication_name: "metformin",
-    effectiveAt: "2025-07-02T00:00:00Z",
-    attributes: {
-      medication_display_text: "metformin 500mg tablet",
-      prescription_status: "Active",
-    },
-  },
-  {
-    id: 403,
-    medication_name: "amlodipine",
-    effectiveAt: "2025-07-03T00:00:00Z",
-    attributes: {
-      medication_display_text: "amlodipine 5mg tablet",
-      prescription_status: "Inactive",
-    },
-  },
-  {
-    id: 404,
-    medication_name: "ibuprofen",
-    effectiveAt: "2025-07-04T00:00:00Z",
-    attributes: {
-      medication_display_text: "ibuprofen 400mg capsule",
-      prescription_status: "Active",
-    },
-  },
-  {
-    id: 405,
-    medication_name: "paracetamol",
-    effectiveAt: "2025-07-05T00:00:00Z",
-    attributes: {
-      medication_display_text: "paracetamol 650mg tablet",
-      prescription_status: "Completed",
-    },
-  },
-];
+import { useEffect, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { patientApiServices } from "@/api-services/patient/api";
+import { IMedicationsResposne } from "@/api-services/patient/types";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import MedicationDataList from "./MedicationDataList";
+import MedicationDataListSkeleton from "./MedicationDataListSkeleton";
+import CustomPagination from "@/components/common/CustomPagination";
 
 const MedicationsWrapper = () => {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const [page, setPage] = useState(() =>
+    parseInt(searchParams.get("page") || "1", 10),
+  );
+  const [status, setStatus] = useState(
+    () => searchParams.get("status") || "all",
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries({
+      page,
+      status,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
+  }, [page, status, router, pathName]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getAppointments", page, status],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      Object.entries({
+        page,
+        status,
+      }).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          params.append(key, String(value));
+        }
+      });
+      return patientApiServices.getMedications<IMedicationsResposne>(
+        params.toString(),
+      );
+    },
+    placeholderData: keepPreviousData,
+  });
+
+  const dataList = data?.data || [];
+  const paginationMeta = data?.meta || null;
+
   return (
     <div className="w-full space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Patient Medications
-        </h1>
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Patient Medications
+          </h1>
 
-        <p className="text-sm text-muted-foreground mt-1">
-          Track and manage all prescribed medications.
-        </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Track and manage all prescribed medications.
+          </p>
+        </div>
+
+        <Select value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger className="w-full md:w-45">
+            <SelectValue placeholder="Select Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {medicationList.map((medication) => (
-          <MedicationCard key={medication.id} medication={medication} />
-        ))}
-      </div>
+      {!isLoading ? (
+        <MedicationDataList medications={dataList} />
+      ) : (
+        <MedicationDataListSkeleton />
+      )}
+
+      {!isLoading && paginationMeta && (
+        <CustomPagination
+          pagination={{
+            page: page,
+            limit: paginationMeta.per_page,
+            total: paginationMeta.total,
+            totalPages: paginationMeta.last_page,
+          }}
+          onPageChange={(page) => setPage(page)}
+        />
+      )}
     </div>
   );
 };

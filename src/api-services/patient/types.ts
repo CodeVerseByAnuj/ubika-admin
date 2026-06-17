@@ -166,3 +166,171 @@ export interface IHistoryResposne {
   data: IHistory[];
   meta: IPagination;
 }
+
+export interface IMedication {
+  id: number;
+  type: string;
+  medication_name: string;
+  effectiveAt: string;
+  attributes: {
+    instructions_display_text: string;
+    route: string;
+    prescription_status: string;
+    type_of_use: string;
+    is_external: boolean;
+    effective_date: string;
+    written_ts: string;
+    dose_min: number;
+    dose_max: number;
+    dose_unit: string;
+    dose_range_text: string;
+    duration_amount: number;
+    duration_unit: string;
+    interval_time: string;
+    is_prn: boolean;
+    is_concurrent: boolean;
+    generic_drug_name: string;
+    prescribing_provider_id: number;
+    dosage_start_ts: string;
+  };
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}
+
+export interface IMedicationsResposne {
+  data: IMedication[];
+  meta: IPagination;
+}
+
+export interface IMedicationDetailsResponse {
+  data: {
+    id: number;
+    type: string;
+    medication_name: string;
+    effectiveAt: string;
+
+    attributes: {
+      instructions_display_text: string | null;
+      route: string | null;
+      prescription_status: string | null;
+      type_of_use: string | null;
+
+      is_external: boolean;
+
+      effective_date: string | null;
+      written_ts: string | null;
+      dosage_start_ts: string | null;
+      prescription_last_modified_ts: string | null;
+
+      dose_min: number | null;
+      dose_max: number | null;
+      dose_unit: string | null;
+      dose_range_text: string | null;
+
+      duration_amount: number | null;
+      duration_unit: string | null;
+      interval_time: string | null;
+
+      is_prn: boolean;
+      is_concurrent: boolean;
+
+      generic_drug_name: string | null;
+      generic_id: number | null;
+
+      prescribing_provider_id: number | null;
+
+      ingredient_count: string | null;
+
+      eye_code_name: string | null;
+      eye_code_abbreviation: string | null;
+
+      dosage_id: number | null;
+
+      note: string | null;
+    };
+
+    provenance: {
+      sourceSystem: string;
+      sourceRecordType: string;
+      lastSyncedAt: string;
+    };
+  };
+}
+
+export interface ILab {
+  id: number;
+  type: string;
+  observation_label: string;
+  effectiveAt: string;
+
+  attributes: {
+    observation_value: string;
+    observation_value_numeric: string;
+    observation_units: string;
+
+    collection_ts: string;
+    observation_ts: string;
+
+    is_active: boolean;
+    review_with_patient: boolean;
+
+    lab_group_id: number;
+    base_group_id: number;
+    test_id: number;
+
+    result_id: string;
+    source_id: number;
+  };
+
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}
+
+export interface ILabsResposne {
+  data: ILab[];
+  meta: IPagination;
+}
+
+export interface ILabDetailsResponse {
+  data: {
+    id: number;
+    type: string;
+    observation_label: string;
+    effectiveAt: string;
+
+    attributes: {
+      observation_value: string;
+      observation_value_numeric: string;
+      observation_units: string;
+
+      collection_ts: string;
+      observation_ts: string;
+
+      is_active: boolean;
+      review_with_patient: boolean;
+
+      lab_group_id: number;
+      base_group_id: number;
+      test_id: number;
+
+      result_id: string;
+      source_id: number;
+
+      external_note: string | null;
+      transaction_ts: string | null;
+      version_ts: string | null;
+    };
+
+    provenance: {
+      sourceSystem: string;
+      sourceRecordType: string;
+      lastSyncedAt: string;
+    };
+  };
+}
