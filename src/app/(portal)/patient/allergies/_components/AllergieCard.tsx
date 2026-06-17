@@ -1,10 +1,4 @@
-import {
-  ShieldAlert,
-  Calendar,
-  MoreVertical,
-  AlertTriangle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Calendar, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { IAllergies } from "@/api-services/patient/types";
 import { cn } from "@/lib/utils";
@@ -56,7 +50,7 @@ const AllergieCard = ({ allergy }: { allergy: IAllergies }) => {
   return (
     <div
       className={cn(
-        "group rounded-xl border p-4 transition-all duration-300 hover:shadow",
+        "group rounded-xl bg-white border p-4 transition-all duration-300 hover:shadow",
       )}
     >
       {/* Header */}

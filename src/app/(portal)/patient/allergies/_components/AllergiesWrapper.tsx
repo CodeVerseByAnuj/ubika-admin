@@ -15,6 +15,7 @@ const AllergiesWrapper = () => {
   const [page, setPage] = useState(() =>
     parseInt(searchParams.get("page") || "1", 10),
   );
+
   useEffect(() => {
     const params = new URLSearchParams();
     Object.entries({

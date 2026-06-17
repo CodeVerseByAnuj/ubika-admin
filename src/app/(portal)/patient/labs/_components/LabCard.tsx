@@ -1,48 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FlaskConical, Calendar, MoreVertical } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ILab } from "@/api-services/patient/types";
+import ViewDetails from "./ViewDetails"; // adjust import path as needed
 
-const LabCard = ({ lab }: { lab: any }) => {
-  const status = lab.attributes.status;
-
-  const getStatusStyles = (statusString: string) => {
-    switch (statusString) {
-      case "Normal":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/40";
-
-      case "High":
-        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/40";
-
-      default:
-        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/40";
-    }
-  };
-
+const LabCard = ({ lab }: { lab: ILab }) => {
   return (
-    <div className="group rounded-xl border bg-brand-soft bg-background p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
-      {/* Left Section */}
-      <div className="flex items-center gap-4 min-w-0">
-        {/* Icon */}
-        <div className="h-11 w-11 shrink-0 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
-          <FlaskConical className="h-5 w-5" />
-        </div>
-
-        {/* Content */}
+    <div className="flex items-center justify-between gap-4 rounded-xl border bg-white p-4 transition-all duration-300 hover:shadow-sm">
+      {/* Left Section - Lab Info */}
+      <div className="flex min-w-0 items-center gap-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-lg font-semibold text-foreground truncate">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="truncate text-lg font-semibold text-foreground">
               {lab.observation_label}
             </h2>
 
             <Badge
               variant="outline"
-              className={`text-[10px] font-semibold rounded-full uppercase ${getStatusStyles(
-                status,
-              )}`}
+              className={
+                lab.attributes.is_active
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                  : "bg-slate-50 text-slate-700 border-slate-200"
+              }
             >
-              {status}
+              {lab.attributes.is_active ? "Active" : "Inactive"}
             </Badge>
           </div>
 
@@ -51,27 +31,29 @@ const LabCard = ({ lab }: { lab: any }) => {
             {lab.attributes.observation_units}
           </p>
 
-          <div className="mt-2 flex items-center gap-2 flex-wrap">
+          <div className="mt-2 flex flex-wrap gap-2">
             <Badge
               variant="secondary"
               className="rounded-md px-2 py-1 text-xs font-medium"
             >
-              <Calendar className="h-3 w-3 mr-1" />
-
+              <Calendar className="mr-1 h-3 w-3" />
               {new Date(lab.effectiveAt).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
+                year: "numeric",
               })}
             </Badge>
+
+            {lab.attributes.review_with_patient && (
+              <Badge variant="secondary">Reviewed</Badge>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Right Section */}
-      <div className="shrink-0">
-        <Button variant="ghost" size="icon" className="rounded-lg">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
+      {/* Right Section - View Details Button */}
+      <div className="flex shrink-0 items-center">
+        <ViewDetails labId={lab.id} />
       </div>
     </div>
   );
