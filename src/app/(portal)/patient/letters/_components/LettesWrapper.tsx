@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,11 +24,24 @@ const LettesWrapper = () => {
     router.replace(`${pathName}?${params.toString()}`, { scroll: true });
   }, [page, router, pathName]);
 
-  const { data } = useQuery({
-    queryKey: ["getHistory", page],
-    queryFn: () => patientApiServices.getHistory<IHistoryResposne>(page),
+  const { data, isError, error } = useQuery({
+    queryKey: ["getLatters", page],
+    queryFn: () => patientApiServices.getLatters<any>(page),
     placeholderData: keepPreviousData,
   });
+
+  if (isError) {
+    return (
+      <div className="text-sm">
+        <span className="font-medium text-destructive">
+          Failed to load results {" : "}
+        </span>
+        <span className="text-muted-foreground">
+          {error.message || "Please try again later."}
+        </span>
+      </div>
+    );
+  }
 
   const dataList = data?.data || [];
   const paginationMeta = data?.meta || null;

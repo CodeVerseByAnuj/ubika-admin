@@ -40,7 +40,7 @@ const AppointmentsWrapper = () => {
     router.replace(`${pathName}?${params.toString()}`, { scroll: true });
   }, [page, status, router, pathName]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getAppointments", page, status],
     queryFn: () => {
       const params = new URLSearchParams();
@@ -59,6 +59,19 @@ const AppointmentsWrapper = () => {
     placeholderData: keepPreviousData,
   });
 
+  if (isError) {
+    return (
+      <div className="text-sm">
+        <span className="font-medium text-destructive">
+          Failed to load results {" : "}
+        </span>
+        <span className="text-muted-foreground">
+          {error.message || "Please try again later."}
+        </span>
+      </div>
+    );
+  }
+
   const dataList = data?.data || [];
   const paginationMeta = data?.meta || null;
 
@@ -66,9 +79,7 @@ const AppointmentsWrapper = () => {
     <div className="w-full space-y-5">
       <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Appointments
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight">Appointments</h1>
 
           <p className="text-sm text-muted-foreground mt-1">
             Manage and track all upcoming appointments.
