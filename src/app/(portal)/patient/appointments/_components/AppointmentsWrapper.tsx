@@ -79,7 +79,9 @@ const AppointmentsWrapper = () => {
     <div className="w-full space-y-5">
       <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Appointments</h1>
+          <h1 className="text-2xl font-bold tracking-tight font-serif">
+            Appointments
+          </h1>
 
           <p className="text-sm text-muted-foreground mt-1">
             Manage and track all upcoming appointments.

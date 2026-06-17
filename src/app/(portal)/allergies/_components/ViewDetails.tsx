@@ -49,7 +49,7 @@ const ViewDetails = ({ allergy }: { allergy: IAllergies }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="w-full justify-start">
+        <Button size="sm" className="w-full justify-start">
           View Details
         </Button>
       </DialogTrigger>

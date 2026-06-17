@@ -80,7 +80,7 @@ const MedicationsWrapper = () => {
     <div className="w-full space-y-5">
       <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-2xl font-bold tracking-tight font-serif">
             Patient Medications
           </h1>
 
