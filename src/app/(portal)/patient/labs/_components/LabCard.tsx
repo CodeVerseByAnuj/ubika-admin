@@ -5,7 +5,7 @@ import ViewDetails from "./ViewDetails"; // adjust import path as needed
 
 const LabCard = ({ lab }: { lab: ILab }) => {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border bg-white p-4 transition-all duration-300 hover:shadow-sm">
+    <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4 transition-all duration-300 hover:shadow-sm">
       {/* Left Section - Lab Info */}
       <div className="flex min-w-0 items-center gap-4">
         <div className="min-w-0">

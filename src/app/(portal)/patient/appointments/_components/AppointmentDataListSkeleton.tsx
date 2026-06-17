@@ -4,7 +4,7 @@ const AppointmentDataListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 gap-4">
       {Array.from({ length: 20 }).map((_, index) => (
-        <div key={index} className="rounded-xl border bg-card p-4">
+        <div key={index} className="rounded-xl border p-4 bg-card">
           {/* Header */}
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 space-y-2">
