@@ -33,8 +33,8 @@ const PatientSummaryTileSection = () => {
       ) : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {/* Existing vitals (hardcoded or from another API) */}
-          <DataTile label="Sleep" value="7h 12m" />
-          <DataTile label="Steps" value="6,240" />
+          <DataTile label="Sleep" value="-" />
+          <DataTile label="Steps" value="-" />
 
           {/* New clinical data from API */}
           <DataTile
