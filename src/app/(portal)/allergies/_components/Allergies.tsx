@@ -22,7 +22,7 @@ const Allergies = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-xl font-bold mb-3">Patient Allergies</h1>
+      <h1 className="text-xl font-bold mb-3">Allergies</h1>
       <div className="space-y-3">
         {!isLoading ? (
           <DataTable
