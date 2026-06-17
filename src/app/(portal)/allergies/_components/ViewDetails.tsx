@@ -11,14 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  ShieldAlert,
-  Calendar,
-  Info,
-  AlertCircle,
-  Pill,
-  Activity,
-} from "lucide-react";
+import { Calendar, Info, AlertCircle, Pill, Activity } from "lucide-react";
 
 const ViewDetails = ({ allergy }: { allergy: IAllergies }) => {
   const formatDate = (dateString: string) => {

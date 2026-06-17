@@ -514,7 +514,10 @@ const SleepChart = ({
                           style: { textAnchor: "middle", fontSize: "12px" },
                         }}
                       />
-                      <Tooltip content={<CustomStackedTooltip />} />
+                      {
+                        // eslint-disable-next-line react-hooks/static-components
+                        <Tooltip content={<CustomStackedTooltip />} />
+                      }
                       <Legend
                         verticalAlign="top"
                         height={36}

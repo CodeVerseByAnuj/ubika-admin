@@ -1,5 +1,4 @@
-import { ShieldAlert, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ICondition } from "@/api-services/patient/types";
 import { cn } from "@/lib/utils";

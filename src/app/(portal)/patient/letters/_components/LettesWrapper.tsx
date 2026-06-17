@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IHistoryResposne } from "@/api-services/patient/types";
-import CustomPagination from "@/components/common/CustomPagination";
 
 const LettesWrapper = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const [page, setPage] = useState(() =>
-    parseInt(searchParams.get("page") || "1", 10),
-  );
+  const [page] = useState(() => parseInt(searchParams.get("page") || "1", 10));
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -26,14 +23,16 @@ const LettesWrapper = () => {
     router.replace(`${pathName}?${params.toString()}`, { scroll: true });
   }, [page, router, pathName]);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["getAllergies", page],
+  const { data } = useQuery({
+    queryKey: ["getHistory", page],
     queryFn: () => patientApiServices.getHistory<IHistoryResposne>(page),
     placeholderData: keepPreviousData,
   });
 
   const dataList = data?.data || [];
   const paginationMeta = data?.meta || null;
+
+  console.log(dataList, paginationMeta);
   return (
     <div className="w-full space-y-5">
       <div>
