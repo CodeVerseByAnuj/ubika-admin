@@ -4,7 +4,7 @@ import AllergiesWrapper from "./_components/AllergiesWrapper";
 const PatientAllergiesPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AllergiesWrapper />;
+      <AllergiesWrapper />
     </Suspense>
   );
 };

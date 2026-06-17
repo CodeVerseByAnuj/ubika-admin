@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pill, ChevronRight, Calendar, MoreVertical } from "lucide-react";
+import { Pill, Calendar, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { IMedication } from "@/api-services/patient/types";
+import ViewDetails from "./ViewDetails";
 
-const MedicationCard = ({ medication }: { medication: any }) => {
+const MedicationCard = ({ medication }: { medication: IMedication }) => {
   const status = medication.attributes.prescription_status;
 
   const getStatusStyles = (statusString: string) => {
@@ -20,16 +21,11 @@ const MedicationCard = ({ medication }: { medication: any }) => {
   };
 
   return (
-    <div className="group rounded-xl border bg-brand-soft bg-background p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
+    <div className="group rounded-xl border bg-white p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
       {/* Left Section */}
-      <div className="flex items-center gap-4 min-w-0">
-        {/* Icon */}
-        <div className="h-11 w-11 shrink-0 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
-          <Pill className="h-5 w-5" />
-        </div>
-
+      <div className="flex items-start gap-4 min-w-0 flex-1">
         {/* Content */}
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-lg font-semibold text-foreground capitalize truncate">
               {medication.medication_name}
@@ -45,20 +41,44 @@ const MedicationCard = ({ medication }: { medication: any }) => {
             </Badge>
           </div>
 
-          <p className="text-sm text-muted-foreground truncate">
-            {medication.attributes.medication_display_text}
+          <p className="mt-1 text-sm text-muted-foreground">
+            {medication.attributes.dose_range_text}{" "}
+            {medication.attributes.dose_unit}
+            {" • "}
+            {medication.attributes.interval_time}
+            {" • "}
+            {medication.attributes.route}
           </p>
 
-          <div className="mt-2 flex items-center gap-2 flex-wrap">
+          <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+            {medication.attributes.instructions_display_text}
+          </p>
+
+          <div className="mt-3 flex flex-wrap gap-2">
             <Badge
               variant="secondary"
               className="rounded-md px-2 py-1 text-xs font-medium"
             >
-              <Calendar className="h-3 w-3 mr-1" />
+              {medication.attributes.type_of_use}
+            </Badge>
 
+            <Badge
+              variant="secondary"
+              className="rounded-md px-2 py-1 text-xs font-medium"
+            >
+              Duration: {medication.attributes.duration_amount}{" "}
+              {medication.attributes.duration_unit}
+            </Badge>
+
+            <Badge
+              variant="secondary"
+              className="rounded-md px-2 py-1 text-xs font-medium"
+            >
+              <Calendar className="mr-1 h-3 w-3" />
               {new Date(medication.effectiveAt).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
+                year: "numeric",
               })}
             </Badge>
           </div>
@@ -67,9 +87,7 @@ const MedicationCard = ({ medication }: { medication: any }) => {
 
       {/* Right Section */}
       <div className="shrink-0">
-        <Button variant="ghost" size="icon" className="rounded-lg">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
+        <ViewDetails medicationId={medication.id} />
       </div>
     </div>
   );

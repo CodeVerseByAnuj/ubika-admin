@@ -50,7 +50,7 @@ const AllergyCard = ({ allergy }: { allergy: IAllergies }) => {
   return (
     <div
       className={cn(
-        "group rounded-xl border p-4 transition-all duration-300 hover:shadow",
+        "group rounded-xl bg-white border p-4 transition-all duration-300 hover:shadow",
       )}
     >
       {/* Header */}

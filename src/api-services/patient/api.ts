@@ -90,7 +90,50 @@ export const patientApiServices = {
       const response = await axiosInstance.get(`/patient/labs?${queryParams}`);
       return response.data;
     } catch (error: any) {
+      console.error("Get patient labs api error:", error);
+      throw (
+        error?.response?.data || {
+          message: "Something went wrong",
+        }
+      );
+    }
+  },
+  getLabDetails: async function <T>(labId: number): Promise<T> {
+    try {
+      const response = await axiosInstance.get(`/patient/labs/${labId}`);
+      return response.data;
+    } catch (error: any) {
       console.error("Get patient labs details api error:", error);
+      throw (
+        error?.response?.data || {
+          message: "Something went wrong",
+        }
+      );
+    }
+  },
+  getMedications: async function <T>(queryParams: string): Promise<T> {
+    try {
+      const response = await axiosInstance.get(
+        `/patient/medications?${queryParams}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error("Get patient medication api error:", error);
+      throw (
+        error?.response?.data || {
+          message: "Something went wrong",
+        }
+      );
+    }
+  },
+  getMedicationDetails: async function <T>(medicationId: number): Promise<T> {
+    try {
+      const response = await axiosInstance.get(
+        `/patient/medications/${medicationId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error("Get patient medication details api error:", error);
       throw (
         error?.response?.data || {
           message: "Something went wrong",

@@ -4,7 +4,7 @@ import LabsWrapper from "./_components/LabsWrapper";
 const PatientLabsPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LabsWrapper />;
+      <LabsWrapper />
     </Suspense>
   );
 };

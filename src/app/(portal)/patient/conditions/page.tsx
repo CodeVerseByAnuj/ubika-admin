@@ -4,7 +4,7 @@ import ConditionWrapper from "./_components/ConditionWrapper";
 const PatientConditionsPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ConditionWrapper />;
+      <ConditionWrapper />
     </Suspense>
   );
 };

@@ -79,7 +79,7 @@ const AppointmentCard = ({ appointment }: { appointment: IAppointment }) => {
   return (
     <div
       className={cn(
-        "group rounded-xl border p-5 transition-all duration-300 hover:shadow bg-stone-50",
+        "group rounded-xl border p-5 transition-all duration-300 hover:shadow bg-white",
         isUpcoming && !attributes.is_cancelled && "border-l-4 border-l-primary",
         (attributes.is_cancelled || attributes.is_deleted) &&
         "opacity-70 bg-muted/20",
