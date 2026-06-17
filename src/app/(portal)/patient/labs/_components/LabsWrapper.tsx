@@ -108,7 +108,9 @@ const LabsWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Lab Results</h1>
+        <h1 className="text-2xl font-bold tracking-tight font-serif">
+          Lab Results
+        </h1>
 
         <p className="mt-1 text-sm text-muted-foreground">
           Monitor and review recent laboratory reports.

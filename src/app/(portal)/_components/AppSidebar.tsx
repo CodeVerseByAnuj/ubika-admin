@@ -1,6 +1,12 @@
 "use client";
 import * as React from "react";
-import { BookOpen, ChevronRight, SquareTerminal, User } from "lucide-react";
+import {
+  BookOpen,
+  ChartArea,
+  ChevronRight,
+  DatabaseIcon,
+  SquareTerminal,
+} from "lucide-react";
 
 import {
   Collapsible,
@@ -28,7 +34,7 @@ import ApplicationLogo from "./ApplicationLogo";
 // Sample Data
 const data = [
   {
-    title: "Home",
+    title: "Today",
     url: "/",
     icon: SquareTerminal,
     isActive: true,
@@ -79,6 +85,13 @@ const data = [
         title: "Conditions",
         url: "/patient/conditions",
       },
+    ],
+  },
+  {
+    title: "Records",
+    url: "#",
+    icon: DatabaseIcon,
+    items: [
       {
         title: "History",
         url: "/patient/history",
@@ -96,6 +109,14 @@ const data = [
         url: "/patient/medications",
       },
     ],
+  },
+
+  {
+    title: "Wearables",
+    url: "/wearables",
+    icon: ChartArea,
+    isActive: true,
+    items: [],
   },
 ];
 

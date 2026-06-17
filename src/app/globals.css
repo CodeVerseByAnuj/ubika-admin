@@ -92,7 +92,7 @@
   --ubika-border: rgba(14, 24, 40, 0.08);
 
   /* SHADCN MAPPING */
-  --background: var(--ubika-bg);
+  --background: oklch(1 0 0);
   --foreground: var(--ubika-text);
 
   --card: var(--ubika-surface);
@@ -129,7 +129,7 @@
   --radius: 0.75rem;
 
   /* Sidebar */
-  --sidebar: #ffffff;
+  --sidebar: oklch(1 0 0);
   --sidebar-foreground: var(--ubika-text);
   --sidebar-primary: var(--ubika-ink);
   --sidebar-primary-foreground: var(--ubika-mist);

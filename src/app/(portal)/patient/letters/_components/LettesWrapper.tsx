@@ -50,7 +50,9 @@ const LettesWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Patient Letters</h1>
+        <h1 className="text-2xl font-bold tracking-tight font-serif">
+          Patient Letters
+        </h1>
 
         <p className="text-sm text-muted-foreground mt-1">
           Review and manage all medical letters and notices.

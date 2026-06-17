@@ -53,7 +53,7 @@ const ConditionWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="text-2xl font-bold tracking-tight font-serif">
           Patient Conditions
         </h1>
 

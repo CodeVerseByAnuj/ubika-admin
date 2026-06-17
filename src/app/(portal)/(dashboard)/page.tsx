@@ -29,15 +29,6 @@ const DashboardPage = () => {
         />
       </section>
 
-      {/* Trust Band */}
-      <section className="mt-4">
-        <TrustBand
-          icon={<ShieldCheck className="h-4 w-4" />}
-          title="Verified with Ontario Health."
-          description="Only a secure hash is shared — your full OHIP is never retained."
-        />
-      </section>
-
       {/* Upcoming */}
       <UpcomingAppointments />
 

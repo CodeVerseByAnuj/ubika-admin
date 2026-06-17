@@ -53,9 +53,7 @@ const ViewDetails = ({ medicationId }: ViewDetailsProps) => {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          View Details
-        </Button>
+        <Button size="sm">View Details</Button>
       </DialogTrigger>
 
       <DialogContent

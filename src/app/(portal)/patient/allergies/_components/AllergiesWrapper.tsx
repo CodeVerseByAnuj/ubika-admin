@@ -53,7 +53,9 @@ const AllergiesWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Allergies</h1>
+        <h1 className="text-2xl font-bold tracking-tight font-serif">
+          Allergies
+        </h1>
 
         <p className="text-sm text-muted-foreground mt-1">
           Review patient allergy records and reactions.
