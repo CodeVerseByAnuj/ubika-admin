@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const AllergieDataListSkeleton = () => {
+const AllergyDataListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {Array.from({ length: 20 }).map((_, index) => (
@@ -34,4 +34,4 @@ const AllergieDataListSkeleton = () => {
   );
 };
 
-export default AllergieDataListSkeleton;
+export default AllergyDataListSkeleton;

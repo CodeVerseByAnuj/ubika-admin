@@ -1,17 +1,17 @@
 import { IAllergies } from "@/api-services/patient/types";
-import AllergieCard from "./AllergieCard";
+import AllergyCard from "./AllergyCard";
 
-type AllergieDataListProps = {
-  allergiesList: IAllergies[];
+type AllergyDataListProps = {
+  allergyList: IAllergies[];
 };
 
-const AllergieDataList = ({ allergiesList }: AllergieDataListProps) => {
+const AllergyDataList = ({ allergyList }: AllergyDataListProps) => {
   return (
     <>
-      {allergiesList.length > 0 ? (
+      {allergyList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {allergiesList.map((allergy) => (
-            <AllergieCard
+          {allergyList.map((allergy) => (
+            <AllergyCard
               key={allergy.id + crypto.randomUUID()}
               allergy={allergy}
             />
@@ -26,4 +26,4 @@ const AllergieDataList = ({ allergiesList }: AllergieDataListProps) => {
   );
 };
 
-export default AllergieDataList;
+export default AllergyDataList;

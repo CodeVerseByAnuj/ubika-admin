@@ -4,8 +4,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAllergiesResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
-import AllergieDataListSkeleton from "./AllergieDataListSkeleton";
-import AllergieDataList from "./AllergieDataList";
+import AllergyDataListSkeleton from "./AllergyDataListSkeleton";
+import AllergyDataList from "./AllergyDataList";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const AllergiesWrapper = () => {
@@ -40,7 +40,7 @@ const AllergiesWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Patient Allergies</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Allergies</h1>
 
         <p className="text-sm text-muted-foreground mt-1">
           Review patient allergy records and reactions.
@@ -48,9 +48,9 @@ const AllergiesWrapper = () => {
       </div>
 
       {!isLoading ? (
-        <AllergieDataList allergiesList={dataList} />
+        <AllergyDataList allergyList={dataList} />
       ) : (
-        <AllergieDataListSkeleton />
+        <AllergyDataListSkeleton />
       )}
 
       <>

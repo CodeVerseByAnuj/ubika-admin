@@ -82,7 +82,7 @@ const AppointmentCard = ({ appointment }: { appointment: IAppointment }) => {
         "group rounded-xl border p-5 transition-all duration-300 hover:shadow bg-white",
         isUpcoming && !attributes.is_cancelled && "border-l-4 border-l-primary",
         (attributes.is_cancelled || attributes.is_deleted) &&
-          "opacity-70 bg-muted/20",
+        "opacity-70 bg-muted/20",
       )}
     >
       {/* Header: Title and Status */}
@@ -91,9 +91,6 @@ const AppointmentCard = ({ appointment }: { appointment: IAppointment }) => {
           <h3 className="font-semibold text-base capitalize">
             {type?.toLowerCase().replace(/_/g, " ") || "General Visit"}
           </h3>
-          <p className="text-xs text-muted-foreground">
-            ID: {attributes.appointment_uuid?.slice(0, 8).toUpperCase()}
-          </p>
         </div>
 
         <Badge

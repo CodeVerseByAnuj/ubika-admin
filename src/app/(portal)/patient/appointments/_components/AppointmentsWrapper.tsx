@@ -67,11 +67,11 @@ const AppointmentsWrapper = () => {
       <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            Patient Appointments
+            Appointments
           </h1>
 
           <p className="text-sm text-muted-foreground mt-1">
-            Manage and track all upcoming patient appointments.
+            Manage and track all upcoming appointments.
           </p>
         </div>
 

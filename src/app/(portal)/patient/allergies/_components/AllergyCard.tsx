@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { IAllergies } from "@/api-services/patient/types";
 import { cn } from "@/lib/utils";
 
-const AllergieCard = ({ allergy }: { allergy: IAllergies }) => {
+const AllergyCard = ({ allergy }: { allergy: IAllergies }) => {
   const status = allergy.attributes.clinical_status;
   const severity = allergy.attributes.allergy_severity_code;
 
@@ -127,4 +127,4 @@ const AllergieCard = ({ allergy }: { allergy: IAllergies }) => {
   );
 };
 
-export default AllergieCard;
+export default AllergyCard;

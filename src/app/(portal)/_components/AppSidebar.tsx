@@ -63,7 +63,7 @@ const data = [
   // },
 
   {
-    title: "Patient",
+    title: "Care",
     url: "#",
     icon: BookOpen,
     items: [
