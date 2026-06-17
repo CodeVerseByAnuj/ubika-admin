@@ -334,3 +334,16 @@ export interface ILabDetailsResponse {
     };
   };
 }
+
+export interface IMedicalTileSummaryResposne {
+  bp_latest: number | null;
+  hba1c_latest: number | null;
+  hba1c_flagged: number | null;
+  med_count_active: number | null;
+  next_visit_date: string | null;
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}

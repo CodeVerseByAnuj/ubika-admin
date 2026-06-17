@@ -141,4 +141,17 @@ export const patientApiServices = {
       );
     }
   },
+  getMedicalTileSummary: async function <T>(): Promise<T> {
+    try {
+      const response = await axiosInstance.get(`/patient/medical/tile-summary`);
+      return response.data;
+    } catch (error: any) {
+      console.error("Get patient medication summary details api error:", error);
+      throw (
+        error?.response?.data || {
+          message: "Something went wrong",
+        }
+      );
+    }
+  },
 };
