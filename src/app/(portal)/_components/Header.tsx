@@ -10,7 +10,7 @@ const Header = () => {
             Good Morning, Sophia
           </h1>
           <p className="text-xs font-medium text-muted-foreground">
-            Wednesday · April 22
+            Tuesday, May 14
           </p>
         </div>
       </div>
