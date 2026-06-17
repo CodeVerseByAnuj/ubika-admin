@@ -34,13 +34,13 @@ const data = [
     isActive: true,
     items: [],
   },
-  {
-    title: "Profile",
-    url: "/profile",
-    icon: User,
-    isActive: true,
-    items: [],
-  },
+  // {
+  //   title: "Profile",
+  //   url: "/profile",
+  //   icon: User,
+  //   isActive: true,
+  //   items: [],
+  // },
 
   // {
   //   title: "Models",

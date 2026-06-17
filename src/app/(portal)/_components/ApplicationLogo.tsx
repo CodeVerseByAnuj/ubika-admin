@@ -4,41 +4,31 @@ import Image from "next/image";
 
 const ApplicationLogo = () => {
   return (
-    <div className="overflow-hidden">
-      {/* Full Logo */}
-      <div
-        className="
-          hidden group-data-[collapsible=]:flex
-          items-center px-2
-        "
-      >
+    <>
+      {/* Expanded Sidebar */}
+      <div className="group-data-[collapsible=icon]:hidden px-2">
         <Image
           src="/images/ubika-logo.png"
           alt="Ubika logo"
           width={200}
           height={80}
           priority
-          className="w-28 h-auto object-contain"
+          className="h-auto w-28 object-contain"
         />
       </div>
 
-      {/* Icon Logo */}
-      <div
-        className="
-          hidden group-data-[collapsible=icon]:flex
-          items-center justify-center
-        "
-      >
+      {/* Collapsed Sidebar */}
+      <div className="hidden items-center justify-center group-data-[collapsible=icon]:flex">
         <Image
           src="/images/ubika-icon-logo.png"
           alt="Ubika icon logo"
-          width={100}
-          height={100}
+          width={32}
+          height={32}
           priority
-          className="w-8 h-8 object-contain"
+          className="h-8 w-8 object-contain"
         />
       </div>
-    </div>
+    </>
   );
 };
 

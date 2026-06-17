@@ -1,5 +1,4 @@
 "use client";
-
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -16,13 +15,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useRouter } from "next/navigation";
 
 const ProfileMenu = function () {
   const { isMobile } = useSidebar();
+  const router = useRouter();
 
   const user = {
-    name: "Rohan Verma",
-    email: "rohan@gmail.com",
+    name: "Sophia",
+    email: "sophia@gmail.com",
     avatar: "user",
   };
 
@@ -81,7 +82,10 @@ const ProfileMenu = function () {
               </DropdownMenuItem>
             </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem
+              onClick={() => router.push("/register")}
+              variant="destructive"
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
