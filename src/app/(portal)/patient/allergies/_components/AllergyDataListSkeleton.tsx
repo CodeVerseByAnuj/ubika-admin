@@ -4,7 +4,7 @@ const AllergyDataListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {Array.from({ length: 20 }).map((_, index) => (
-        <div key={index} className="rounded-xl border p-4">
+        <div key={index} className="rounded-xl border p-4 bg-card">
           {/* Header */}
           <div className="flex-1 space-y-2">
             <Skeleton className="h-5 w-40" />

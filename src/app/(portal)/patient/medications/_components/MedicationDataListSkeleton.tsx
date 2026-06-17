@@ -6,7 +6,7 @@ const MedicationDataListSkeleton = () => {
       {Array.from({ length: 20 }).map((_, index) => (
         <div
           key={index}
-          className="flex items-center justify-between gap-4 rounded-xl border bg-white p-4"
+          className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4"
         >
           {/* Left Section */}
           <div className="flex-1 space-y-3">

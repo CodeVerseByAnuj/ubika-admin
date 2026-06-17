@@ -20,7 +20,7 @@ const MedicationCard = ({ medication }: { medication: IMedication }) => {
   };
 
   return (
-    <div className="group rounded-xl border bg-white p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
+    <div className="group rounded-xl border bg-card p-4 flex items-center justify-between gap-4 hover:shadow-sm transition-all duration-300">
       {/* Left Section */}
       <div className="flex items-start gap-4 min-w-0 flex-1">
         {/* Content */}

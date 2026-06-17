@@ -6,7 +6,7 @@ const LabListSkeleton = () => {
       {Array.from({ length: 20 }).map((_, index) => (
         <div
           key={index}
-          className="flex items-center gap-4 rounded-xl border bg-white p-4"
+          className="flex items-center gap-4 rounded-xl border bg-card p-4"
         >
           {/* Content */}
           <div className="flex-1 space-y-3">
