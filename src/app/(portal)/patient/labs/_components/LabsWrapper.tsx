@@ -71,11 +71,24 @@ const LabsWrapper = () => {
     return params.toString();
   }, [page, filters]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getLabs", apiQueryString],
     queryFn: () => patientApiServices.getLabs<ILabsResposne>(apiQueryString),
     placeholderData: keepPreviousData,
   });
+
+  if (isError) {
+    return (
+      <div className="text-sm">
+        <span className="font-medium text-destructive">
+          Failed to load results {" : "}
+        </span>
+        <span className="text-muted-foreground">
+          {error.message || "Please try again later."}
+        </span>
+      </div>
+    );
+  }
 
   const dataList = data?.data || [];
   const paginationMeta = data?.meta;

@@ -28,11 +28,24 @@ const ConditionWrapper = () => {
     router.replace(`${pathName}?${params.toString()}`, { scroll: true });
   }, [page, router, pathName]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getConditions", page],
     queryFn: () => patientApiServices.getConditions<IConditionsResponse>(page),
     placeholderData: keepPreviousData,
   });
+
+  if (isError) {
+    return (
+      <div className="text-sm">
+        <span className="font-medium text-destructive">
+          Failed to load results {" : "}
+        </span>
+        <span className="text-muted-foreground">
+          {error.message || "Please try again later."}
+        </span>
+      </div>
+    );
+  }
 
   const dataList = data?.data || [];
   const paginationMeta = data?.meta || null;
