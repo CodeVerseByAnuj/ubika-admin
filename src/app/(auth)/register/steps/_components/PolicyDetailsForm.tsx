@@ -9,14 +9,21 @@ import { ShieldCheck, CalendarDays, CheckCircle2, Circle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import LoadingButton from "@/components/common/LoadingButton";
-import { OnPolicyConsentSchema, type OnPolicyConsent } from "@/api-services/on-boarding/type";
+import {
+  OnPolicyConsentSchema,
+  type OnPolicyConsent,
+} from "@/api-services/on-boarding/type";
 import { getCurrentPolicy } from "@/api-services/on-boarding/getCurrentPolicy";
 import { createPolicyConsent } from "@/api-services/on-boarding/createPolicyConsent";
 
 const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
   const [selected, setSelected] = useState(false);
 
-  const { data: policy, isLoading, isError } = useQuery({
+  const {
+    data: policy,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["current-policy"],
     queryFn: getCurrentPolicy,
   });
@@ -31,14 +38,15 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
     defaultValues: { consent_policy_id: 0 },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const accepted = (watch("consent_policy_id") ?? 0) > 0;
 
   const formatted = policy
     ? new Date(policy.effective_date).toLocaleDateString("en-CA", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
     : "";
 
   const onSubmit = async (data: OnPolicyConsent) => {
@@ -78,10 +86,11 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
         <button
           type="button"
           onClick={() => setSelected((prev) => !prev)}
-          className={`w-full text-left rounded-2xl border shadow-sm overflow-hidden transition-all ${selected
-            ? "border-primary bg-primary/5"
-            : "border-border bg-card hover:border-primary/40"
-            }`}
+          className={`w-full text-left rounded-2xl border shadow-sm overflow-hidden transition-all ${
+            selected
+              ? "border-primary bg-primary/5"
+              : "border-border bg-card hover:border-primary/40"
+          }`}
         >
           {/* Header */}
           <div className="flex items-center justify-between bg-primary/10 px-5 py-3 border-b">
@@ -111,7 +120,9 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
               <CalendarDays className="h-4 w-4 text-primary" />
               <span className="text-xs font-medium text-muted-foreground">
                 Effective from{" "}
-                <span className="text-foreground font-semibold">{formatted}</span>
+                <span className="text-foreground font-semibold">
+                  {formatted}
+                </span>
               </span>
             </div>
           </div>
@@ -126,11 +137,9 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
                 className="mt-1 border border-black"
                 checked={accepted}
                 onCheckedChange={(checked) =>
-                  setValue(
-                    "consent_policy_id",
-                    checked ? policy.id : 0,
-                    { shouldValidate: true }
-                  )
+                  setValue("consent_policy_id", checked ? policy.id : 0, {
+                    shouldValidate: true,
+                  })
                 }
               />
               <Label
@@ -140,7 +149,6 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
                 {`I have read and agree to the ${policy.name} and consent to the processing of my OHIP information.`}
               </Label>
             </div>
-
           </div>
         )}
         {errors.consent_policy_id && (

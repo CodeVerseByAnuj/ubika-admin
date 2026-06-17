@@ -1,9 +1,10 @@
 import { DataTile } from "@/components/custom-ui/data-tile";
 import { InsightCard } from "@/components/custom-ui/insight-card";
-import { ItemRow } from "@/components/custom-ui/item-row";
 import { StatusCard } from "@/components/custom-ui/status-card";
 import { TrustBand } from "@/components/custom-ui/trust-band";
-import { CalendarDays, Pill, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
+import UpcomingAppointments from "./_components/UpcomingAppointments";
+import PatientSummaryTileSection from "./_components/PatientSummaryTileSection";
 
 const DashboardPage = () => {
   return (
@@ -38,28 +39,7 @@ const DashboardPage = () => {
       </section>
 
       {/* Upcoming */}
-      <section className="mt-4">
-        <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          Upcoming
-        </h2>
-
-        <div className="space-y-2">
-          <ItemRow
-            icon={CalendarDays}
-            title="Dr. Chen · Cardiology"
-            subtitle="Mon Apr 28 · 2:00 PM · Trillium"
-            trail="6d"
-          />
-
-          <ItemRow
-            icon={Pill}
-            title="Metoprolol 50 mg"
-            subtitle="Tonight 8:00 PM · 2 refills"
-            trail="Tonight"
-            trailVariant="warning"
-          />
-        </div>
-      </section>
+      <UpcomingAppointments />
 
       {/* Insight */}
       <section className="mt-4">
@@ -71,21 +51,7 @@ const DashboardPage = () => {
       </section>
 
       {/* Data */}
-      <section className="mt-6">
-        <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          Your Data
-        </h2>
-
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          <DataTile label="Sleep" value="7h 12m" />
-
-          <DataTile label="Resting HR" value="58" unit="bpm" />
-
-          <DataTile label="HRV" value="42" unit="ms" />
-
-          <DataTile label="Steps" value="6,240" />
-        </div>
-      </section>
+      <PatientSummaryTileSection />
     </main>
   );
 };

@@ -12,7 +12,7 @@ import { getColumns } from "../columns";
 const Allergies = () => {
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["patientApiServices", page],
     queryFn: () => patientApiServices.getAllergies<IAllergiesResponse>(page),
   });

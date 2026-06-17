@@ -1,5 +1,4 @@
-import { Pill, Calendar, MoreVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { IMedication } from "@/api-services/patient/types";
 import ViewDetails from "./ViewDetails";

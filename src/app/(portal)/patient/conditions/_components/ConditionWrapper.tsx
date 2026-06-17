@@ -29,7 +29,7 @@ const ConditionWrapper = () => {
   }, [page, router, pathName]);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getAllergies", page],
+    queryKey: ["getConditions", page],
     queryFn: () => patientApiServices.getConditions<IConditionsResponse>(page),
     placeholderData: keepPreviousData,
   });

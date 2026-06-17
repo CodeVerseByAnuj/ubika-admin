@@ -30,7 +30,7 @@ const HistoryWrapper = () => {
   }, [page, router, pathName]);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getAllergies", page],
+    queryKey: ["getHistory", page],
     queryFn: () => patientApiServices.getHistory<IHistoryResposne>(page),
     placeholderData: keepPreviousData,
   });

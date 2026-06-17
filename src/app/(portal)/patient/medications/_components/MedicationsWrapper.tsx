@@ -42,7 +42,7 @@ const MedicationsWrapper = () => {
   }, [page, status, router, pathName]);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getAppointments", page, status],
+    queryKey: ["getMedications", page, status],
     queryFn: () => {
       const params = new URLSearchParams();
       Object.entries({
