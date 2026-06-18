@@ -73,7 +73,16 @@ const MedicationsWrapper = () => {
     );
   }
 
-  const dataList = data?.data || [];
+  const dataList = (data?.data || [])
+    .sort(
+      (a, b) =>
+        new Date(b.effectiveAt).getTime() - new Date(a.effectiveAt).getTime(),
+    )
+    .filter(
+      (item, index, self) =>
+        self.findIndex((m) => m.medication_name === item.medication_name) ===
+        index,
+    );
   const paginationMeta = data?.meta || null;
 
   return (
@@ -81,7 +90,7 @@ const MedicationsWrapper = () => {
       <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
         <div>
           <h1 className="text-2xl font-bold tracking-tight font-serif">
-            Patient Medications
+            Medications
           </h1>
 
           <p className="text-sm text-muted-foreground mt-1">

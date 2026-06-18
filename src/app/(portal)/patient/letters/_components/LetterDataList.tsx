@@ -12,7 +12,7 @@ const LetterDataList = ({ letterList }: LetterDataListProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {letterList.map((letter) => (
             <LetterCard
-              key={letter?.id + crypto.randomUUID()}
+              key={letter.id}
               letter={letter}
             />
           ))}

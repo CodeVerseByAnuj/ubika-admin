@@ -12,7 +12,7 @@ const MedicationDataList = ({ medications }: MedicationDataListProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {medications.map((medication) => (
             <MedicationCard
-              key={medication.id + crypto.randomUUID()}
+              key={medication.id}
               medication={medication}
             />
           ))}

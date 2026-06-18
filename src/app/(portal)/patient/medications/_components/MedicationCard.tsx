@@ -50,7 +50,7 @@ const MedicationCard = ({ medication }: { medication: IMedication }) => {
           </p>
 
           <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
-            {medication.attributes.instructions_display_text}
+           <span className="font-semibold">Instructions:</span> {medication.attributes.instructions_display_text}
           </p>
 
           <div className="mt-3 flex flex-wrap gap-2">
