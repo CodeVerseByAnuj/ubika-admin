@@ -9,7 +9,6 @@ import {
   LineChart,
   XAxis,
   YAxis,
-  ResponsiveContainer,
 } from "recharts";
 
 import {
@@ -88,7 +87,7 @@ const EmptyState = () => (
       <CardDescription>No activity data available</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
+      <div className="h-75 w-full flex items-center justify-center text-muted-foreground">
         No data to display
       </div>
     </CardContent>
@@ -251,64 +250,62 @@ const ActivityChart = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div className="h-75 w-full">
           <ChartContainer config={chartConfig} className="h-full w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  top: 5,
-                  right: 15,
-                  left: 10,
-                  bottom: chartData.length > 30 ? 20 : 5,
-                }}
-              >
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="date"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => value}
-                  interval={
-                    chartData?.length > 50 ? 6 : chartData?.length > 30 ? 3 : 0
-                  }
-                  angle={chartData?.length > 14 ? -45 : 0}
-                  textAnchor={chartData?.length > 14 ? "end" : "middle"}
-                  height={chartData?.length > 14 ? 60 : 30}
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) =>
-                    `${value}${metrics[selectedMetric]?.suffix}`
-                  }
-                  width={65}
-                  domain={["auto", "auto"]}
-                />
-                <ChartTooltip
-                  cursor={true}
-                  content={
-                    <ChartTooltipContent
-                      indicator="line"
-                      formatter={tooltipFormatter as any}
-                      labelFormatter={labelFormatter as any}
-                    />
-                  }
-                />
-                <Line
-                  dataKey={metrics[selectedMetric]?.dataKey}
-                  type="monotone"
-                  stroke={metrics[selectedMetric]?.color}
-                  strokeWidth={2}
-                  dot={chartData?.length <= 50 ? { r: 2 } : false}
-                  activeDot={{ r: 6 }}
-                  connectNulls={true}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                top: 5,
+                right: 15,
+                left: 10,
+                bottom: chartData.length > 30 ? 20 : 5,
+              }}
+            >
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value}
+                interval={
+                  chartData?.length > 50 ? 6 : chartData?.length > 30 ? 3 : 0
+                }
+                angle={chartData?.length > 14 ? -45 : 0}
+                textAnchor={chartData?.length > 14 ? "end" : "middle"}
+                height={chartData?.length > 14 ? 60 : 30}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) =>
+                  `${value}${metrics[selectedMetric]?.suffix}`
+                }
+                width={65}
+                domain={["auto", "auto"]}
+              />
+              <ChartTooltip
+                cursor={true}
+                content={
+                  <ChartTooltipContent
+                    indicator="line"
+                    formatter={tooltipFormatter as any}
+                    labelFormatter={labelFormatter as any}
+                  />
+                }
+              />
+              <Line
+                dataKey={metrics[selectedMetric]?.dataKey}
+                type="monotone"
+                stroke={metrics[selectedMetric]?.color}
+                strokeWidth={2}
+                dot={chartData?.length <= 50 ? { r: 2 } : false}
+                activeDot={{ r: 6 }}
+                connectNulls={true}
+              />
+            </LineChart>
           </ChartContainer>
         </div>
       </CardContent>

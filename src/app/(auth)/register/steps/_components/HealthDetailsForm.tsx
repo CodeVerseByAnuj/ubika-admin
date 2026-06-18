@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/common/LoadingButton";
-import { HealthCardSchema, type HealthCardFormData } from "@/api-services/on-boarding/type";
+import { HealthCardSchema, type HealthCardFormData } from "@/api-services/on-boarding/types";
 import { createHealthCard } from "@/api-services/on-boarding/createHealthCard";
 
 const HealthDetailsForm = ({ onNext }: { onNext?: () => void }) => {

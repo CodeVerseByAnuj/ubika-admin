@@ -9,7 +9,7 @@ import { ILettersResposne } from "@/api-services/patient/types";
 import LetterDataListSkeleton from "./LetterDataListSkeleton";
 import LetterDataList from "./LetterDataList";
 
-const LettesWrapper = () => {
+const LettersWrapper = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -85,4 +85,4 @@ const LettesWrapper = () => {
   );
 };
 
-export default LettesWrapper;
+export default LettersWrapper;

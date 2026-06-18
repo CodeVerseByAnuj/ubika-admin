@@ -119,7 +119,7 @@ const EmptyState = () => (
       <CardDescription>No sleep data available</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
+      <div className="h-75 w-full flex items-center justify-center text-muted-foreground">
         No data to display
       </div>
     </CardContent>
@@ -384,70 +384,68 @@ const SleepChart = ({
                   selectedMetric={selectedMetric}
                   onMetricChange={setSelectedMetric}
                 />
-                <div className="h-[300px] w-full">
+                <div className="h-75 w-full">
                   <ChartContainer
                     config={chartConfig}
                     className="h-full w-full"
                   >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={chartData}
-                        margin={{
-                          top: 5,
-                          right: 15,
-                          left: 10,
-                          bottom: chartData?.length > 30 ? 20 : 5,
-                        }}
-                      >
-                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis
-                          dataKey="date"
-                          tickLine={false}
-                          axisLine={false}
-                          tickMargin={8}
-                          tickFormatter={(value) => value}
-                          interval={
-                            chartData?.length > 50
-                              ? 6
-                              : chartData?.length > 30
-                                ? 3
-                                : 0
-                          }
-                          angle={chartData?.length > 14 ? -45 : 0}
-                          textAnchor={chartData?.length > 14 ? "end" : "middle"}
-                          height={chartData?.length > 14 ? 60 : 30}
-                        />
-                        <YAxis
-                          tickLine={false}
-                          axisLine={false}
-                          tickMargin={8}
-                          tickFormatter={(value) =>
-                            `${value}${metrics[selectedMetric]?.suffix}`
-                          }
-                          width={65}
-                          domain={["auto", "auto"]}
-                        />
-                        <ChartTooltip
-                          cursor={true}
-                          content={
-                            <ChartTooltipContent
-                              indicator="line"
-                              formatter={tooltipFormatter as any}
-                              labelFormatter={labelFormatter as any}
-                            />
-                          }
-                        />
-                        <Line
-                          dataKey={metrics[selectedMetric]?.dataKey}
-                          type="monotone"
-                          stroke={metrics[selectedMetric]?.color}
-                          strokeWidth={2}
-                          dot={chartData?.length <= 50 ? { r: 2 } : false}
-                          activeDot={{ r: 6 }}
-                          connectNulls={true}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <LineChart
+                      data={chartData}
+                      margin={{
+                        top: 5,
+                        right: 15,
+                        left: 10,
+                        bottom: chartData?.length > 30 ? 20 : 5,
+                      }}
+                    >
+                      <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => value}
+                        interval={
+                          chartData?.length > 50
+                            ? 6
+                            : chartData?.length > 30
+                              ? 3
+                              : 0
+                        }
+                        angle={chartData?.length > 14 ? -45 : 0}
+                        textAnchor={chartData?.length > 14 ? "end" : "middle"}
+                        height={chartData?.length > 14 ? 60 : 30}
+                      />
+                      <YAxis
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) =>
+                          `${value}${metrics[selectedMetric]?.suffix}`
+                        }
+                        width={65}
+                        domain={["auto", "auto"]}
+                      />
+                      <ChartTooltip
+                        cursor={true}
+                        content={
+                          <ChartTooltipContent
+                            indicator="line"
+                            formatter={tooltipFormatter as any}
+                            labelFormatter={labelFormatter as any}
+                          />
+                        }
+                      />
+                      <Line
+                        dataKey={metrics[selectedMetric]?.dataKey}
+                        type="monotone"
+                        stroke={metrics[selectedMetric]?.color}
+                        strokeWidth={2}
+                        dot={chartData?.length <= 50 ? { r: 2 } : false}
+                        activeDot={{ r: 6 }}
+                        connectNulls={true}
+                      />
+                    </LineChart>
                   </ChartContainer>
                 </div>
                 <div className="flex flex-col items-start gap-2 text-sm">
@@ -473,8 +471,8 @@ const SleepChart = ({
             {/* Tab 2: Stacked Area Chart for Sleep Stages */}
             <TabsContent value="stages" className="pt-4">
               <div className="space-y-4">
-                <div className="h-[350px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
+                <div className="h-87.5 w-full">
+                  <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 350 }}>
                     <AreaChart
                       data={chartData}
                       margin={{
