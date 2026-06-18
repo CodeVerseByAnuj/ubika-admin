@@ -12,7 +12,7 @@ const ConditionDataList = ({ conditionList }: ConditionDataListProps) => {
         <div className="grid grid-cols-1 gap-4">
           {conditionList.map((condition) => (
             <ConditionCard
-              key={condition.id + crypto.randomUUID()}
+              key={condition.id}
               condition={condition}
             />
           ))}

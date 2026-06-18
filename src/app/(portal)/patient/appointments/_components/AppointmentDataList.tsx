@@ -12,7 +12,7 @@ const AppointmentDataList = ({ appointments }: AppointmentDataListProps) => {
         <div className="grid grid-cols-1 gap-4">
           {appointments.map((appointment) => (
             <AppointmentCard
-              key={appointment.id + crypto.randomUUID()}
+              key={appointment.attributes.appointment_uuid ?? appointment.id}
               appointment={appointment}
             />
           ))}

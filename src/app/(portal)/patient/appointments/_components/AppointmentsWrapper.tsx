@@ -73,11 +73,18 @@ const AppointmentsWrapper = () => {
     );
   }
 
-  const dataList = (data?.data || []).slice().sort(
-    (a, b) =>
-      new Date(b.appointment_start_time).getTime() -
-      new Date(a.appointment_start_time).getTime(),
-  );
+  const dataList = (data?.data || [])
+    .filter(
+      (item, index, self) =>
+        self.findIndex(
+          (a) => a.attributes.appointment_uuid === item.attributes.appointment_uuid,
+        ) === index,
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.appointment_start_time).getTime() -
+        new Date(a.appointment_start_time).getTime(),
+    );
   const paginationMeta = data?.meta || null;
 
   return (

@@ -47,10 +47,12 @@ const ConditionWrapper = () => {
     );
   }
 
-  const dataList = (data?.data || []).slice().sort(
-    (a, b) =>
-      new Date(b.effectiveAt).getTime() - new Date(a.effectiveAt).getTime(),
-  );
+  const dataList = (data?.data || [])
+    .filter((item, index, self) => self.findIndex((c) => c.id === item.id) === index)
+    .sort(
+      (a, b) =>
+        new Date(b.effectiveAt).getTime() - new Date(a.effectiveAt).getTime(),
+    );
   const paginationMeta = data?.meta || null;
 
   return (
