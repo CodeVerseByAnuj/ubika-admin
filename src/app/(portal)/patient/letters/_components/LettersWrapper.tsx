@@ -1,5 +1,4 @@
 "use client";
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -31,7 +30,7 @@ const LettersWrapper = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getLatters", page],
-    queryFn: () => patientApiServices.getLatters<ILettersResposne>(page),
+    queryFn: () => patientApiServices.getLetters<ILettersResposne>(page),
     placeholderData: keepPreviousData,
   });
 
