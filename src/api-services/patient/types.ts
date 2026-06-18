@@ -347,3 +347,83 @@ export interface IMedicalTileSummaryResposne {
     lastSyncedAt: string;
   };
 }
+
+export interface ILetter {
+  id: number;
+  type: string;
+  title: string;
+  content: string;
+  generatedSummary: string | null;
+  effectiveAt: string;
+  attributes: {
+    letter_id: number;
+    appointment_id: number;
+    letter_type_id: number;
+    letter_status: string;
+    read_status: string;
+    letter_version: number;
+    is_active_version: boolean;
+    is_archived: boolean;
+    is_deleted: boolean;
+    is_letter_read: boolean;
+    physician_id: number;
+    modified_ts: string;
+    reviewed_ts: string;
+    days_since_created: number;
+    days_since_modified: number;
+  };
+  provenance: {
+    sourceSystem: string;
+    sourceRecordType: string;
+    lastSyncedAt: string;
+  };
+}
+export interface ILettersResposne {
+  data: ILetter[];
+  meta: IPagination;
+}
+
+export interface ILettersDetailsResponse {
+  data: {
+    id: number;
+    type: string;
+    title: string;
+    content: string;
+    generatedSummary: string | null;
+    effectiveAt: string;
+    styled_content: string | null;
+
+    attributes: {
+      letter_id: number;
+      appointment_id: number;
+      letter_type_id: number;
+
+      letter_status: string;
+      read_status: string;
+
+      letter_version: number;
+
+      is_active_version: boolean;
+      is_archived: boolean;
+      is_deleted: boolean;
+      is_letter_read: boolean;
+
+      physician_id: number;
+
+      modified_ts: string;
+      reviewed_ts: string;
+
+      days_since_created: number;
+      days_since_modified: number;
+
+      is_xml: boolean;
+      is_locked: boolean;
+    };
+
+    provenance: {
+      sourceSystem: string;
+      sourceRecordType: string;
+      lastSyncedAt: string;
+    };
+  };
+}

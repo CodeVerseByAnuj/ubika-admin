@@ -86,7 +86,7 @@ const PolicyDetailsForm = ({ onNext }: { onNext?: () => void }) => {
         <button
           type="button"
           onClick={() => setSelected((prev) => !prev)}
-          className={`w-full text-left rounded-2xl border shadow-sm overflow-hidden transition-all ${
+          className={`w-full text-left rounded-lg border overflow-hidden transition-all ${
             selected
               ? "border-primary bg-primary/5"
               : "border-border bg-card hover:border-primary/40"

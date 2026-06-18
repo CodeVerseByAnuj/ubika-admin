@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/sidebar";
 import ProfileMenu from "./ProfileMenu";
 import Link from "next/link";
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogoHandler from "./ApplicationLogoHandler";
 
 // Sample Data
 const data = [
@@ -125,7 +125,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     <Sidebar collapsible="icon" {...props}>
       {/* Header */}
       <SidebarHeader className="border-b h-14 flex flex-row items-center overflow-hidden">
-        <ApplicationLogo />
+        <ApplicationLogoHandler />
       </SidebarHeader>
 
       <SidebarContent className="p-2">
@@ -193,10 +193,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarContent>
 
       {/* Footer */}
-      <SidebarFooter>
-        <ProfileMenu />
-      </SidebarFooter>
-
+      {/* <SidebarFooter></SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

@@ -10,11 +10,8 @@ const AllergyDataList = ({ allergyList }: AllergyDataListProps) => {
     <>
       {allergyList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {allergyList.map((allergy) => (
-            <AllergyCard
-              key={allergy.id + crypto.randomUUID()}
-              allergy={allergy}
-            />
+          {allergyList.map((allergy, index) => (
+            <AllergyCard key={`${allergy.id}-${index}`} allergy={allergy} />
           ))}
         </div>
       ) : (

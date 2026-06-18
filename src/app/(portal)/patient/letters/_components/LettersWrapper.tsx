@@ -1,16 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
-import { IHistoryResposne } from "@/api-services/patient/types";
+import CustomPagination from "@/components/common/CustomPagination";
+import { ILettersResposne } from "@/api-services/patient/types";
+import LetterDataListSkeleton from "./LetterDataListSkeleton";
+import LetterDataList from "./LetterDataList";
 
 const LettersWrapper = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const [page] = useState(() => parseInt(searchParams.get("page") || "1", 10));
+  const [page, setPage] = useState(() =>
+    parseInt(searchParams.get("page") || "1", 10),
+  );
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -24,9 +28,9 @@ const LettersWrapper = () => {
     router.replace(`${pathName}?${params.toString()}`, { scroll: true });
   }, [page, router, pathName]);
 
-  const { data, isError, error } = useQuery({
-    queryKey: ["getLetters", page],
-    queryFn: () => patientApiServices.getLetters<any>(page),
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getLatters", page],
+    queryFn: () => patientApiServices.getLetters<ILettersResposne>(page),
     placeholderData: keepPreviousData,
   });
 
@@ -58,6 +62,24 @@ const LettersWrapper = () => {
           Review and manage all medical letters and notices.
         </p>
       </div>
+
+      {isLoading ? (
+        <LetterDataListSkeleton />
+      ) : (
+        <LetterDataList letterList={dataList} />
+      )}
+
+      {!isLoading && paginationMeta && (
+        <CustomPagination
+          pagination={{
+            page,
+            limit: paginationMeta?.per_page,
+            total: paginationMeta?.total,
+            totalPages: paginationMeta?.last_page,
+          }}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };
