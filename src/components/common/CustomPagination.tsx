@@ -1,3 +1,4 @@
+"use client";
 import {
   Pagination,
   PaginationContent,
@@ -45,7 +46,7 @@ const CustomPagination = ({
     // First page
     pages.push(1);
 
-    // Left dots
+    // Left ellipsis
     if (page > 3) {
       pages.push("left-ellipsis");
     }
@@ -59,7 +60,7 @@ const CustomPagination = ({
       pages.push(i);
     }
 
-    // Right dots
+    // Right ellipsis
     if (page < totalPages - 2) {
       pages.push("right-ellipsis");
     }
@@ -69,17 +70,26 @@ const CustomPagination = ({
       pages.push(totalPages);
     }
 
-    return [...new Set(pages)];
+    // Remove duplicate values
+    return pages.filter((item, index, self) => self.indexOf(item) === index);
   };
 
   const pages = generatePages();
 
+  const handlePageChange = (newPage: number) => {
+    onPageChange?.(newPage);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <div className="p-3 border rounded-md bg-background">
+    <div className="rounded-md border bg-background p-3">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        {/* Left Section */}
+        {/* Left */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-          {/* Info */}
           <div className="text-sm text-muted-foreground">
             Showing page <span className="font-medium">{page}</span> of{" "}
             <span className="font-medium">{totalPages}</span>
@@ -87,7 +97,6 @@ const CustomPagination = ({
             Total <span className="font-medium">{total}</span> items
           </div>
 
-          {/* Limit Selector */}
           {total > 10 && isRowSelect && (
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Rows:</span>
@@ -96,13 +105,13 @@ const CustomPagination = ({
                 value={String(limit)}
                 onValueChange={(value) => onLimitChange?.(Number(value))}
               >
-                <SelectTrigger className="w-22.5 h-9">
+                <SelectTrigger className="h-9 w-22.5">
                   <SelectValue placeholder="Limit" />
                 </SelectTrigger>
 
                 <SelectContent>
                   {[10, 20, 50, 100].map((item) => (
-                    <SelectItem key={item} value={String(item)}>
+                    <SelectItem key={`limit-${item}`} value={String(item)}>
                       {item}
                     </SelectItem>
                   ))}
@@ -112,77 +121,75 @@ const CustomPagination = ({
           )}
         </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Pagination className="w-fit m-0">
-            <PaginationContent>
-              {/* Previous */}
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
+        {/* Right */}
+        <Pagination className="m-0 w-fit">
+          <PaginationContent>
+            {/* Previous */}
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
 
-                    if (page > 1) {
-                      onPageChange?.(page - 1);
-                    }
-                  }}
-                  className={
-                    page === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
+                  if (page > 1) {
+                    handlePageChange(page - 1);
                   }
-                />
-              </PaginationItem>
-
-              {/* Page Numbers */}
-              {pages.map((item) => {
-                if (typeof item === "string") {
-                  return (
-                    <PaginationItem key={item}>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                  );
+                }}
+                className={
+                  page === 1
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
                 }
+              />
+            </PaginationItem>
 
+            {/* Pages */}
+            {pages.map((item, index) => {
+              if (typeof item === "string") {
                 return (
-                  <PaginationItem key={item}>
-                    <PaginationLink
-                      href="#"
-                      isActive={page === item}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onPageChange?.(item);
-                      }}
-                      className="cursor-pointer"
-                    >
-                      {item}
-                    </PaginationLink>
+                  <PaginationItem key={`ellipsis-${item}-${index}`}>
+                    <PaginationEllipsis />
                   </PaginationItem>
                 );
-              })}
+              }
 
-              {/* Next */}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
+              return (
+                <PaginationItem key={`page-${item}-${index}`}>
+                  <PaginationLink
+                    href="#"
+                    isActive={page === item}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(item);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
 
-                    if (page < totalPages) {
-                      onPageChange?.(page + 1);
-                    }
-                  }}
-                  className={
-                    page === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
+            {/* Next */}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  if (page < totalPages) {
+                    handlePageChange(page + 1);
                   }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+                }}
+                className={
+                  page === totalPages
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );

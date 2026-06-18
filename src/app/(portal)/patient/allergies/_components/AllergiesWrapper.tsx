@@ -48,6 +48,9 @@ const AllergiesWrapper = () => {
   }
 
   const dataList = data?.data || [];
+  const uniqueDataList = Array.from(
+    new Map(dataList.map((item) => [item.id, item])).values(),
+  );
   const paginationMeta = data?.meta || null;
 
   return (
@@ -63,7 +66,7 @@ const AllergiesWrapper = () => {
       </div>
 
       {!isLoading ? (
-        <AllergyDataList allergyList={dataList} />
+        <AllergyDataList allergyList={uniqueDataList} />
       ) : (
         <AllergyDataListSkeleton />
       )}

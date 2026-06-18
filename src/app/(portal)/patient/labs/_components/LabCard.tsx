@@ -1,7 +1,7 @@
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ILab } from "@/api-services/patient/types";
-import ViewDetails from "./ViewDetails"; // adjust import path as needed
+import ViewLabChartDetails, { LabChartDialog } from "./ViewLabChartDetails";
 
 const LabCard = ({ lab }: { lab: ILab }) => {
   return (
@@ -53,7 +53,8 @@ const LabCard = ({ lab }: { lab: ILab }) => {
 
       {/* Right Section - View Details Button */}
       <div className="flex shrink-0 items-center">
-        <ViewDetails labId={lab.id} />
+        <LabChartDialog lab={lab} />
+        {/* <ViewDetails labId={lab.id} /> */}
       </div>
     </div>
   );

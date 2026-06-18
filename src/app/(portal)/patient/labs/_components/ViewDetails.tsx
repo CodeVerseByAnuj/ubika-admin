@@ -58,6 +58,8 @@ const ViewDetails = ({ labId }: ViewDetailsProps) => {
         aria-describedby={undefined}
         className="min-w-full md:min-w-2xl p-0 gap-0"
       >
+        <DialogTitle className="sr-only">Lab Details</DialogTitle>
+
         {isLoading ? (
           <div className="flex h-48 items-center justify-center">
             <Spinner className="h-6 w-6 animate-spin" />

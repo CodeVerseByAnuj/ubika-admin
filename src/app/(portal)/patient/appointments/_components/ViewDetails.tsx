@@ -101,6 +101,8 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
           "max-w-md p-6 gap-0 overflow-hidden transition-colors duration-200",
         )}
       >
+        <DialogTitle className="sr-only">Appointment Details</DialogTitle>
+
         {isLoading ? (
           <div className="flex h-48 items-center justify-center">
             <Spinner className="h-6 w-6 text-primary animate-spin" />

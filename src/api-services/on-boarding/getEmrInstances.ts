@@ -1,5 +1,5 @@
 import { onBoardingApiServices } from "./api";
-import type { EmrInstance } from "./type";
+import type { EmrInstance } from "./types";
 
 export const getEmrInstances = () =>
-    onBoardingApiServices.getEmrInstances<EmrInstance[]>();
+  onBoardingApiServices.getEmrInstances<EmrInstance[]>();

@@ -158,6 +158,19 @@ export const patientApiServices = {
       );
     }
   },
+  getLattersDetails: async function <T>(letterId: number): Promise<T> {
+    try {
+      const response = await axiosInstance.get(`/patient/letters/${letterId}`);
+      return response.data;
+    } catch (error: any) {
+      console.error("Get patient latters details api error:", error);
+      throw (
+        error?.response?.data || {
+          message: "Something went wrong",
+        }
+      );
+    }
+  },
   getMedicalTileSummary: async function <T>(): Promise<T> {
     try {
       const response = await axiosInstance.get(`/patient/medical/tile-summary`);
