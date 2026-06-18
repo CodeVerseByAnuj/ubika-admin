@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import LettesWrapper from "./_components/LettesWrapper";
+import LettersWrapper from "./_components/LettersWrapper";
 
 const PatientLettersPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LettesWrapper />
+      <LettersWrapper />
     </Suspense>
   );
 };

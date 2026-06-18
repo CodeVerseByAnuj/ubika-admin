@@ -12,7 +12,7 @@ import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/fie
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/common/LoadingButton";
 import { createOnBoarding } from "@/api-services/on-boarding/createOnBoarding";
-import { OnBoardingSchema, type OnBoardingFormData } from "@/api-services/on-boarding/type";
+import { OnBoardingSchema, type OnBoardingFormData } from "@/api-services/on-boarding/types";
 
 const BasicDetailsForm = ({ onNext }: { onNext: () => void }) => {
   const {
