@@ -71,6 +71,18 @@ const LabsWrapper = () => {
     return params.toString();
   }, [page, filters]);
 
+  const handleFiltersChange = useCallback(
+    (newFilters: {
+      observation_label?: string;
+      type?: string;
+      effectiveAt?: string;
+    }) => {
+      setPage(1);
+      setFilters(newFilters);
+    },
+    [],
+  );
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getLabs", apiQueryString],
     queryFn: () => patientApiServices.getLabs<ILabsResposne>(apiQueryString),
@@ -92,18 +104,6 @@ const LabsWrapper = () => {
 
   const dataList = data?.data || [];
   const paginationMeta = data?.meta;
-
-  const handleFiltersChange = useCallback(
-    (newFilters: {
-      observation_label?: string;
-      type?: string;
-      effectiveAt?: string;
-    }) => {
-      setPage(1);
-      setFilters(newFilters);
-    },
-    [],
-  );
 
   return (
     <div className="w-full space-y-5">

@@ -193,10 +193,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       </SidebarContent>
 
       {/* Footer */}
-      <SidebarFooter>
-        <ProfileMenu />
-      </SidebarFooter>
-
+      {/* <SidebarFooter></SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

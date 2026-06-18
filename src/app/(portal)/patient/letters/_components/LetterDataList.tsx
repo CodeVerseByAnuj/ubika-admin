@@ -1,8 +1,8 @@
-import { IHistory } from "@/api-services/patient/types";
+import { ILetter } from "@/api-services/patient/types";
 import LetterCard from "./LetterCard";
 
 type LetterDataListProps = {
-  letterList: IHistory[];
+  letterList: ILetter[];
 };
 
 const LetterDataList = ({ letterList }: LetterDataListProps) => {
@@ -11,7 +11,10 @@ const LetterDataList = ({ letterList }: LetterDataListProps) => {
       {letterList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {letterList.map((letter) => (
-            <LetterCard key={letter.id + crypto.randomUUID()} letter={letter} />
+            <LetterCard
+              key={letter?.id + crypto.randomUUID()}
+              letter={letter}
+            />
           ))}
         </div>
       ) : (

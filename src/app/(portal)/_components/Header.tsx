@@ -1,5 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import Logout from "./Logout";
+import ProfileMenu from "./ProfileMenu";
 
 const Header = () => {
   return (
@@ -7,7 +7,7 @@ const Header = () => {
       <div className="h-full w-full flex items-center justify-between px-4">
         <SidebarTrigger />
         <div>
-          <Logout />
+          <ProfileMenu />
         </div>
       </div>
     </div>
