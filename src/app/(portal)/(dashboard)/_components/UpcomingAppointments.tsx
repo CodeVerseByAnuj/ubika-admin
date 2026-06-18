@@ -14,11 +14,15 @@ const UpcomingAppointments = () => {
     queryKey: ["getUpcomingAppointments"],
     queryFn: () =>
       patientApiServices.getAppointments<IAppointmentsResponse>(
-        `page=${1}&status=upcoming`,
+        `page=1&status=upcoming&sort=desc`,
       ),
   });
 
-  const appointments = data?.data || [];
+  const appointments = (data?.data || []).slice().sort(
+    (a, b) =>
+      new Date(b.appointment_start_time).getTime() -
+      new Date(a.appointment_start_time).getTime(),
+  );
 
   const formatAppointmentInfo = (appointment: IAppointment) => {
     const start = new Date(appointment.appointment_start_time);

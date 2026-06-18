@@ -12,7 +12,7 @@ const HistoryDataList = ({ historyList }: HistoryDataListProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {historyList.map((history) => (
             <HistoryCard
-              key={history.id + crypto.randomUUID()}
+              key={history.id}
               history={history}
             />
           ))}

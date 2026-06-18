@@ -47,14 +47,19 @@ const ConditionWrapper = () => {
     );
   }
 
-  const dataList = data?.data || [];
+  const dataList = (data?.data || [])
+    .filter((item, index, self) => self.findIndex((c) => c.id === item.id) === index)
+    .sort(
+      (a, b) =>
+        new Date(b.effectiveAt).getTime() - new Date(a.effectiveAt).getTime(),
+    );
   const paginationMeta = data?.meta || null;
 
   return (
     <div className="w-full space-y-5">
       <div>
         <h1 className="text-2xl font-bold tracking-tight font-serif">
-          Patient Conditions
+          Conditions
         </h1>
 
         <p className="text-sm text-muted-foreground mt-1">

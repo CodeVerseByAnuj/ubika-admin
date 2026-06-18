@@ -47,6 +47,7 @@ const AppointmentsWrapper = () => {
       Object.entries({
         page,
         status,
+        sort: "desc",
       }).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           params.append(key, String(value));
@@ -72,7 +73,18 @@ const AppointmentsWrapper = () => {
     );
   }
 
-  const dataList = data?.data || [];
+  const dataList = (data?.data || [])
+    .filter(
+      (item, index, self) =>
+        self.findIndex(
+          (a) => a.attributes.appointment_uuid === item.attributes.appointment_uuid,
+        ) === index,
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.appointment_start_time).getTime() -
+        new Date(a.appointment_start_time).getTime(),
+    );
   const paginationMeta = data?.meta || null;
 
   return (
