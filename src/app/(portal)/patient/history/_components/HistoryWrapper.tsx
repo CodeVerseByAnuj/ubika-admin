@@ -55,7 +55,7 @@ const HistoryWrapper = () => {
     <div className="w-full space-y-5">
       <div>
         <h1 className="text-2xl font-bold tracking-tight font-serif">
-          Patient History
+          History
         </h1>
 
         <p className="text-sm text-muted-foreground mt-1">

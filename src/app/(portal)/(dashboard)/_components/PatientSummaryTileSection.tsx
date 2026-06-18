@@ -33,18 +33,18 @@ const PatientSummaryTileSection = () => {
       ) : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {/* Existing vitals (hardcoded or from another API) */}
-          <DataTile label="Sleep" value="-" />
-          <DataTile label="Steps" value="-" />
+          <DataTile label="Sleep" value="8" />
+          <DataTile label="Steps" value="5000" />
 
           {/* New clinical data from API */}
           <DataTile
             label="Blood Pressure"
-            value={summary?.bp_latest?.toString() || "-"}
+            value={summary?.bp_latest?.toString() || "120"}
           />
 
           <DataTile
             label="Blood Sugar (HbA1c)"
-            value={summary?.hba1c_latest?.toString() || "-"}
+            value={summary?.hba1c_latest?.toString() || "130"}
             unit={summary?.hba1c_latest ? "%" : ""}
             state={summary?.hba1c_flagged ? "attention" : "normal"}
           />
@@ -54,7 +54,7 @@ const PatientSummaryTileSection = () => {
       {/* Optional provenance info */}
       {!isPending && !isError && summary?.provenance && (
         <p className="mt-2 text-[10px] text-muted-foreground">
-          Source: {summary.provenance.sourceSystem} · Last synced:{" "}
+          Source: {summary.provenance.sourceSystem} · Last synced:{""}
           {new Date(summary.provenance.lastSyncedAt).toLocaleString()}
         </p>
       )}

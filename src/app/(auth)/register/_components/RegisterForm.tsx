@@ -69,12 +69,12 @@ const RegisterForm = function ({
             </svg>
             Login with Microsoft
           </LoadingButton>
-          <FieldDescription className="text-center">
+          {/* <FieldDescription className="text-center">
             have an account?{" "}
             <a href="#" className="underline underline-offset-4">
               Login
             </a>
-          </FieldDescription>
+          </FieldDescription> */}
         </Field>
       </FieldGroup>
     </form>
