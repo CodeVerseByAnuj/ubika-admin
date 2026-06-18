@@ -78,7 +78,7 @@ const EmptyState = () => (
       <CardDescription>No body composition data available</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
+      <div className="h-75 w-full flex items-center justify-center text-muted-foreground">
         No data to display
       </div>
     </CardContent>

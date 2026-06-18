@@ -38,7 +38,7 @@ const LoadingSkeleton = () => {
           <Skeleton className="h-3 w-56" />
         </CardHeader>
         <CardContent>
-          <div className="h-[300px] w-full flex items-end gap-2">
+          <div className="h-75 w-full flex items-end gap-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton
                 key={i}

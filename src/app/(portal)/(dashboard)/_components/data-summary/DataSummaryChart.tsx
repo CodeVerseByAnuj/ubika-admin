@@ -46,7 +46,7 @@ const EmptyState = () => (
       <CardDescription>No summary data available</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
+      <div className="h-75 w-full flex items-center justify-center text-muted-foreground">
         No data to display
       </div>
     </CardContent>
@@ -223,7 +223,7 @@ const DataSummaryChart = ({
           <CardDescription>Top 10 workout types by frequency</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-[400px] w-full">
+          <div className="h-100 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={topWorkoutTypes}
@@ -283,7 +283,7 @@ const DataSummaryChart = ({
             {/* Workouts per provider */}
             <div>
               <h4 className="text-sm font-medium mb-2">Workouts</h4>
-              <div className="h-[200px] w-full">
+              <div className="h-50 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data?.by_provider}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -305,7 +305,7 @@ const DataSummaryChart = ({
             {/* Sleep per provider */}
             <div>
               <h4 className="text-sm font-medium mb-2">Sleep Events</h4>
-              <div className="h-[200px] w-full">
+              <div className="h-50 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data?.by_provider}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
