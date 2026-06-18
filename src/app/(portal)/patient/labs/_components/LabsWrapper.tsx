@@ -103,6 +103,9 @@ const LabsWrapper = () => {
   }
 
   const dataList = data?.data || [];
+  const uniqueDataList = Array.from(
+    new Map(dataList.map((item) => [item.observation_label, item])).values(),
+  );
   const paginationMeta = data?.meta;
 
   return (
@@ -122,7 +125,11 @@ const LabsWrapper = () => {
         onFiltersChange={handleFiltersChange}
       />
 
-      {isLoading ? <LabListSkeleton /> : <LabDataList labList={dataList} />}
+      {isLoading ? (
+        <LabListSkeleton />
+      ) : (
+        <LabDataList labList={uniqueDataList} />
+      )}
 
       {!isLoading && paginationMeta && (
         <CustomPagination

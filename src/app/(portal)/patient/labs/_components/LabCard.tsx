@@ -1,7 +1,7 @@
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ILab } from "@/api-services/patient/types";
-import ViewLabChartDetails, { LabChartDialog } from "./ViewLabChartDetails";
+import { LabChartDialog } from "./ViewLabChartDetails";
 
 const LabCard = ({ lab }: { lab: ILab }) => {
   return (

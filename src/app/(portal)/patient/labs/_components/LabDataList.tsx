@@ -10,8 +10,8 @@ const LabDataList = ({ labList }: LabDataListProps) => {
     <>
       {labList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {labList.map((lab) => (
-            <LabCard key={lab.id + crypto.randomUUID()} lab={lab} />
+          {labList.map((lab, index) => (
+            <LabCard key={`${lab.id}-${index}`} lab={lab} />
           ))}
         </div>
       ) : (
