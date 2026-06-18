@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { axiosInstance } from "../axoisInstance";
+import { axiosInstance } from "../axiosInstance";
 
 export const patientApiServices = {
   getAllergies: async function <T>(page: number): Promise<T> {
@@ -141,7 +141,7 @@ export const patientApiServices = {
       );
     }
   },
-  getLatters: async function <T>(page: number): Promise<T> {
+  getLetters: async function <T>(page: number): Promise<T> {
     try {
       const response = await axiosInstance.get(`/patient/letters`, {
         params: {
@@ -150,7 +150,7 @@ export const patientApiServices = {
       });
       return response.data;
     } catch (error: any) {
-      console.error("Get patient latters api error:", error);
+      console.error("Get patient letters api error:", error);
       throw (
         error?.response?.data || {
           message: "Something went wrong",

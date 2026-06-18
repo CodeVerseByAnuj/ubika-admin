@@ -136,10 +136,10 @@ const CustomPagination = ({
               </PaginationItem>
 
               {/* Page Numbers */}
-              {pages.map((item, index) => {
+              {pages.map((item) => {
                 if (typeof item === "string") {
                   return (
-                    <PaginationItem key={index}>
+                    <PaginationItem key={item}>
                       <PaginationEllipsis />
                     </PaginationItem>
                   );

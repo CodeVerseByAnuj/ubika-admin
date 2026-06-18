@@ -12,7 +12,7 @@ import LoadingButton from "@/components/common/LoadingButton";
 import {
   OnPolicyConsentSchema,
   type OnPolicyConsent,
-} from "@/api-services/on-boarding/type";
+} from "@/api-services/on-boarding/types";
 import { getCurrentPolicy } from "@/api-services/on-boarding/getCurrentPolicy";
 import { createPolicyConsent } from "@/api-services/on-boarding/createPolicyConsent";
 

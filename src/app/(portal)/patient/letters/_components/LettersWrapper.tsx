@@ -6,7 +6,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IHistoryResposne } from "@/api-services/patient/types";
 
-const LettesWrapper = () => {
+const LettersWrapper = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -25,8 +25,8 @@ const LettesWrapper = () => {
   }, [page, router, pathName]);
 
   const { data, isError, error } = useQuery({
-    queryKey: ["getLatters", page],
-    queryFn: () => patientApiServices.getLatters<any>(page),
+    queryKey: ["getLetters", page],
+    queryFn: () => patientApiServices.getLetters<any>(page),
     placeholderData: keepPreviousData,
   });
 
@@ -62,4 +62,4 @@ const LettesWrapper = () => {
   );
 };
 
-export default LettesWrapper;
+export default LettersWrapper;

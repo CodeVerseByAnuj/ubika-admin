@@ -15,7 +15,7 @@ import {
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
 import LoadingButton from "@/components/common/LoadingButton";
 import SuccessDialog from "./SuccessDialog";
-import { EmrLinkingSchema, type EmrLinkingFormData } from "@/api-services/on-boarding/type";
+import { EmrLinkingSchema, type EmrLinkingFormData } from "@/api-services/on-boarding/types";
 import { getEmrInstances } from "@/api-services/on-boarding/getEmrInstances";
 import { createEmrLinking } from "@/api-services/on-boarding/createEmrLinking";
 
