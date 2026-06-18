@@ -48,7 +48,12 @@ const HistoryWrapper = () => {
     );
   }
 
-  const dataList = data?.data || [];
+  const dataList = (data?.data || [])
+    .filter((item, index, self) => self.findIndex((h) => h.id === item.id) === index)
+    .sort(
+      (a, b) =>
+        new Date(b.effectiveAt).getTime() - new Date(a.effectiveAt).getTime(),
+    );
   const paginationMeta = data?.meta || null;
 
   return (
