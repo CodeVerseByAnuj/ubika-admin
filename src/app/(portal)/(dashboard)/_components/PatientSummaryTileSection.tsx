@@ -4,6 +4,7 @@ import { IMedicalTileSummaryResposne } from "@/api-services/patient/types";
 import { DataTile } from "@/components/custom-ui/data-tile";
 import DataTileSkeleton from "@/components/custom-ui/data-tile-skeleton";
 import { useQuery } from "@tanstack/react-query";
+import { Droplets, Weight, PersonStanding, Moon } from "lucide-react";
 
 const PatientSummaryTileSection = () => {
   const { data, isPending, isError } = useQuery({
@@ -21,7 +22,6 @@ const PatientSummaryTileSection = () => {
       </h2>
 
       {isPending ? (
-        // Skeleton loading
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <DataTileSkeleton />
           <DataTileSkeleton />
@@ -32,31 +32,36 @@ const PatientSummaryTileSection = () => {
         <p className="text-sm text-red-500">Failed to load summary data.</p>
       ) : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {/* Existing vitals (hardcoded or from another API) */}
-          <DataTile label="Sleep" value="8" />
-          <DataTile label="Steps" value="5000" />
-
-          {/* New clinical data from API */}
           <DataTile
-            label="Blood Pressure"
-            value={summary?.bp_latest?.toString() || "120"}
+            label="HBA1C"
+            value={summary?.hba1c_latest?.toString() || "6.8"}
+            unit="%"
+            state={summary?.hba1c_flagged ? "attention" : "normal"}
+            icon={Droplets}
           />
 
           <DataTile
-            label="Blood Sugar (HbA1c)"
-            value={summary?.hba1c_latest?.toString() || "130"}
-            unit={summary?.hba1c_latest ? "%" : ""}
-            state={summary?.hba1c_flagged ? "attention" : "normal"}
+            label="Weight"
+            value="71.0"
+            unit="kg"
+            icon={Weight}
+          />
+
+          <DataTile
+            label="Movement"
+            value="8,432"
+            unit="steps"
+            icon={PersonStanding}
+            dots={{ total: 7, filled: 5 }}
+          />
+
+          <DataTile
+            label="Sleep"
+            value="7h 12m"
+            icon={Moon}
+            dots={{ total: 7, filled: 5 }}
           />
         </div>
-      )}
-
-      {/* Optional provenance info */}
-      {!isPending && !isError && summary?.provenance && (
-        <p className="mt-2 text-[10px] text-muted-foreground">
-          Source: {summary.provenance.sourceSystem} · Last synced:{""}
-          {new Date(summary.provenance.lastSyncedAt).toLocaleString()}
-        </p>
       )}
     </section>
   );

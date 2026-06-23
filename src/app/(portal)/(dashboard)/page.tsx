@@ -40,6 +40,16 @@ const DashboardPage = () => {
 
       {/* Data */}
       <PatientSummaryTileSection />
+
+       <section className="mt-4">
+        <InsightCard
+          title="Care Guides"
+          body="Essential dietary adjustments for your final 12 days before surgery to ensure optimal recovery."
+          link="/care-guides"
+          tone="cool"
+          linkTitle="View daily plan >"
+        />
+      </section>
     </main>
   );
 };

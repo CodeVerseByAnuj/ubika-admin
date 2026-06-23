@@ -1,10 +1,12 @@
 type Props = {
   title: string;
   body: string;
+  link?: string;
   tone?: "warm" | "cool";
+  linkTitle?: string;
 };
 
-export function InsightCard({ title, body, tone = "warm" }: Props) {
+export function InsightCard({ title, body, tone = "warm" , link, linkTitle   }: Props) {
   return (
     <div
       className={`rounded-lg p-4 ${
@@ -16,6 +18,14 @@ export function InsightCard({ title, body, tone = "warm" }: Props) {
       </div>
 
       <p className="font-serif text-[15px] italic leading-[1.4]">{body}</p>
+      {link && (
+        <a
+          href={link}
+          className="mt-2 inline-block text-sm font-medium text-foreground underline-offset-4 hover:underline"
+        >
+          {linkTitle}
+        </a>
+      )}
     </div>
   );
 }
