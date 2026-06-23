@@ -85,10 +85,8 @@ const UpcomingAppointments = () => {
             <ItemRow
               key={appointment.id}
               icon={CalendarDays}
-              title={`Appointment at ${appointment.attributes.service_location || "clinic"}`}
+              title={`Appointment`}
               subtitle={formatAppointmentInfo(appointment)}
-              trail={getTrail(appointment.appointment_start_time)}
-              // optionally, if cancelled, we could set trailVariant="danger"
             />
           ))
         )}

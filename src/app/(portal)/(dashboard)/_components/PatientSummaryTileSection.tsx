@@ -17,7 +17,7 @@ const PatientSummaryTileSection = () => {
   return (
     <section className="mt-6">
       <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        Your Data
+        Your Readiness Metrics
       </h2>
 
       {isPending ? (
