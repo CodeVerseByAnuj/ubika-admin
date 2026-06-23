@@ -1,8 +1,5 @@
-import { DataTile } from "@/components/custom-ui/data-tile";
 import { InsightCard } from "@/components/custom-ui/insight-card";
 import { StatusCard } from "@/components/custom-ui/status-card";
-import { TrustBand } from "@/components/custom-ui/trust-band";
-import { ShieldCheck } from "lucide-react";
 import UpcomingAppointments from "./_components/UpcomingAppointments";
 import PatientSummaryTileSection from "./_components/PatientSummaryTileSection";
 

@@ -74,6 +74,10 @@ const data = [
     icon: BookOpen,
     items: [
       {
+        title: "Care Guides",
+        url: "/care-guides",
+      },
+      {
         title: "Allergies",
         url: "/patient/allergies",
       },
@@ -92,10 +96,10 @@ const data = [
     url: "#",
     icon: DatabaseIcon,
     items: [
-      {
-        title: "History",
-        url: "/patient/history",
-      },
+      // {
+      //   title: "History",
+      //   url: "/patient/history",
+      // },
       {
         title: "Labs",
         url: "/patient/labs",
