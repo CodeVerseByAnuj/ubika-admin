@@ -269,7 +269,14 @@ export interface ILab {
   attributes: {
     observation_value: string;
     observation_value_numeric: string;
-    observation_units: string;
+    observation_units?: string;
+
+    observation_status: string | null;
+    observation_range: string | null;
+    lower_range: string | null;
+    upper_range: string | null;
+    in_reference_range: boolean | null;
+    observation_flag?: string;
 
     collection_ts: string;
     observation_ts: string;
@@ -283,6 +290,11 @@ export interface ILab {
 
     result_id: string;
     source_id: number;
+
+    performing_lab?: string;
+    specimen_source?: string;
+    observational_result_status?: string;
+    result_status?: string;
   };
 
   provenance: {
@@ -292,8 +304,18 @@ export interface ILab {
   };
 }
 
+export interface ILabObservation {
+  observation_label: string;
+  results: ILab[];
+}
+
+export interface ILabDateGroup {
+  date: string;
+  observations: ILabObservation[];
+}
+
 export interface ILabsResposne {
-  data: ILab[];
+  data: ILabDateGroup[];
   meta: IPagination;
 }
 

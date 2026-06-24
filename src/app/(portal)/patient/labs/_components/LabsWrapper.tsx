@@ -14,71 +14,31 @@ const LabsWrapper = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  // Initial values from URL
-  const initialFilters = useMemo(
-    () => ({
-      observation_label: searchParams.get("observation_label") || "",
-      type: searchParams.get("type") || "",
-      effectiveAt: searchParams.get("effectiveAt") || "",
-    }),
-    [searchParams],
-  );
 
+  const initialLabel = searchParams.get("observation_label") || "";
   const initialPage = Number(searchParams.get("page") || 1);
+
   const [page, setPage] = useState(initialPage);
+  const [observationLabel, setObservationLabel] = useState(initialLabel);
 
-  const [filters, setFilters] = useState<{
-    observation_label?: string;
-    type?: string;
-    effectiveAt?: string;
-  }>(initialFilters);
-
-  // Sync URL
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("page", String(page));
+    if (observationLabel) params.set("observation_label", observationLabel);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: true });
+  }, [page, observationLabel, pathname, router]);
 
-    if (filters.observation_label) {
-      params.set("observation_label", filters.observation_label);
-    }
-
-    if (filters.type) {
-      params.set("type", filters.type);
-    }
-
-    if (filters.effectiveAt) {
-      params.set("effectiveAt", filters.effectiveAt);
-    }
-
-    router.replace(`${pathname}?${params.toString()}`, {
-      scroll: true,
-    });
-  }, [page, filters, pathname, router]);
-
-  // Query string for API
   const apiQueryString = useMemo(() => {
     const params = new URLSearchParams();
     params.set("page", String(page));
-    if (filters.observation_label) {
-      params.set("observation_label", filters.observation_label);
-    }
-    if (filters.type) {
-      params.set("type", filters.type);
-    }
-    if (filters.effectiveAt) {
-      params.set("effectiveAt", filters.effectiveAt);
-    }
+    if (observationLabel) params.set("observation_label", observationLabel);
     return params.toString();
-  }, [page, filters]);
+  }, [page, observationLabel]);
 
   const handleFiltersChange = useCallback(
-    (newFilters: {
-      observation_label?: string;
-      type?: string;
-      effectiveAt?: string;
-    }) => {
+    (filters: { observation_label?: string }) => {
       setPage(1);
-      setFilters(newFilters);
+      setObservationLabel(filters.observation_label || "");
     },
     [],
   );
@@ -108,17 +68,16 @@ const LabsWrapper = () => {
   return (
     <div className="w-full space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight font-serif">
+        <h1 className="font-serif text-2xl font-bold tracking-tight">
           Lab Results
         </h1>
-
         <p className="mt-1 text-sm text-muted-foreground">
           Monitor and review recent laboratory reports.
         </p>
       </div>
 
       <LabFilters
-        initialFilters={initialFilters}
+        initialFilters={{ observation_label: initialLabel }}
         onFiltersChange={handleFiltersChange}
       />
 

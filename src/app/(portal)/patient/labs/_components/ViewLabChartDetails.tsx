@@ -59,11 +59,14 @@ const ViewLabChartDetails = ({ lab }: { lab: ILab }) => {
     queryKey: ["getLabsChartDetails", lab.observation_label],
     queryFn: () =>
       patientApiServices.getLabs<ILabsResposne>(
-        `?page=1&observation_label=${lab.observation_label}`,
+        `page=1&observation_label=${encodeURIComponent(lab.observation_label)}`,
       ),
   });
 
-  const labResults = labData?.data ?? [];
+  const labResults =
+    labData?.data?.flatMap((group) =>
+      group.observations.flatMap((obs) => obs.results),
+    ) ?? [];
   const sortedData = [...labResults].sort(
     (a, b) =>
       new Date(a.effectiveAt).getTime() - new Date(b.effectiveAt).getTime(),
