@@ -5,12 +5,11 @@ type Props = {
   label: string;
   value: string;
   unit?: string;
-  state?: "normal" | "attention" | "empty";
   icon?: LucideIcon;
   dots?: { total: number; filled: number };
 };
 
-export function DataTile({ label, value, unit, state = "normal", icon: Icon, dots }: Props) {
+export function DataTile({ label, value, unit, icon: Icon, dots }: Props) {
   return (
     <div className="rounded-xl border border-border bg-card p-4">
       <div className="flex items-start justify-between">
@@ -23,8 +22,6 @@ export function DataTile({ label, value, unit, state = "normal", icon: Icon, dot
       <div
         className={cn(
           "mt-3 text-[26px] font-semibold tracking-[-0.02em] tabular-nums",
-          state === "attention" && "text-clay",
-          state === "empty" && "text-muted-foreground text-sm",
         )}
       >
         {value}

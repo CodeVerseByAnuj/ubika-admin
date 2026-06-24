@@ -34,15 +34,14 @@ const PatientSummaryTileSection = () => {
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <DataTile
             label="HBA1C"
-            value={summary?.hba1c_latest?.toString() || "6.8"}
+            value={summary?.hba1c_latest?.toString() || ""}
             unit="%"
-            state={summary?.hba1c_flagged ? "attention" : "normal"}
             icon={Droplets}
           />
 
           <DataTile
             label="Weight"
-            value="71.0"
+            value={summary?.weight_latest?.toString() || ""}
             unit="kg"
             icon={Weight}
           />
