@@ -2,17 +2,12 @@ import { InsightCard } from "@/components/custom-ui/insight-card";
 import { StatusCard } from "@/components/custom-ui/status-card";
 import UpcomingAppointments from "./_components/UpcomingAppointments";
 import PatientSummaryTileSection from "./_components/PatientSummaryTileSection";
+import DashboardGreeting from "./_components/DashboardGreeting";
 
 const DashboardPage = () => {
   return (
     <main className="min-h-screen bg-background">
-      {/* Greeting */}
-      <section>
-        <p className="mt-1 text-xs text-muted-foreground">Tuesday, May 14</p>
-        <h1 className="font-serif text-[28px] leading-[1.1] tracking-[-0.015em] text-foreground">
-          <span>Good morning,</span>  Sophia
-        </h1>
-      </section>
+      <DashboardGreeting />
 
       {/* Status Card */}
       <section className="mt-4">
