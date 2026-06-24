@@ -81,7 +81,11 @@ const LabsWrapper = () => {
         onFiltersChange={handleFiltersChange}
       />
 
-      {isLoading ? <LabListSkeleton /> : <LabDataList labList={dataList} />}
+      {isLoading ? (
+        <LabListSkeleton />
+      ) : (
+        <LabDataList labList={dataList} />
+      )}
 
       {!isLoading && paginationMeta && (
         <CustomPagination
