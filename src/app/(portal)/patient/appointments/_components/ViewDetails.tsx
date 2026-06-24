@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAppointmentDetailsResposne } from "@/api-services/patient/types";
 import { Button } from "@/components/ui/button";
@@ -28,9 +29,10 @@ import { cn } from "@/lib/utils";
 
 type ViewDetailsProps = {
   appointmentId: number;
+  children?: React.ReactNode;
 };
 
-const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
+const ViewDetails = ({ appointmentId, children }: ViewDetailsProps) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const {
@@ -92,7 +94,11 @@ const ViewDetails = ({ appointmentId }: ViewDetailsProps) => {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button size="sm">View Details</Button>
+        {children ? (
+          <div className="cursor-pointer">{children}</div>
+        ) : (
+          <Button size="sm">View Details</Button>
+        )}
       </DialogTrigger>
 
       <DialogContent

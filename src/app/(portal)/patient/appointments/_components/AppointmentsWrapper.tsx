@@ -4,14 +4,6 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAppointmentsResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AppointmentDataList from "./AppointmentDataList";
 import AppointmentDataListSkeleton from "./AppointmentDataListSkeleton";
@@ -24,7 +16,7 @@ const AppointmentsWrapper = () => {
     parseInt(searchParams.get("page") || "1", 10),
   );
   const [status, setStatus] = useState(
-    () => searchParams.get("status") || "all",
+    () => searchParams.get("status") || "upcoming",
   );
 
   useEffect(() => {
@@ -87,35 +79,42 @@ const AppointmentsWrapper = () => {
     );
   const paginationMeta = data?.meta || null;
 
+  const tabs = [
+    { label: "Upcoming", value: "upcoming" },
+    { label: "Past", value: "past" },
+    { label: "All", value: "all" },
+  ];
+
   return (
     <div className="w-full space-y-5">
-      <div className="flex flex-col gap-4 md:flex-row justify-between items-end">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight font-serif">
-            Appointments
-          </h1>
-
-          <p className="text-sm text-muted-foreground mt-1">
-            Manage and track all upcoming appointments.
-          </p>
-        </div>
-
-        <Select value={status} onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-full md:w-45">
-            <SelectValue placeholder="Theme" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="upcoming">Upcoming</SelectItem>
-              <SelectItem value="past">Past</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight font-serif">
+          Appointments
+        </h1>
       </div>
 
+      <section className="flex justify-end">
+        <div className="inline-flex items-center gap-1 rounded-full bg-muted p-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => {
+                setStatus(tab.value);
+                setPage(1);
+              }}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${status === tab.value
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
       {!isLoading ? (
-        <AppointmentDataList appointments={dataList} />
+        <AppointmentDataList appointments={dataList} activeStatus={status} />
       ) : (
         <AppointmentDataListSkeleton />
       )}
