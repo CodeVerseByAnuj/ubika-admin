@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { IAllergies } from "@/api-services/patient/types";
 import {

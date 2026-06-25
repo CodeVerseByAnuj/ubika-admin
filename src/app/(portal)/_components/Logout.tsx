@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   return (
-    <Button onClick={() => router.push("/register")}>
+    <Button onClick={() => navigate("/register")}>
       <LogOut /> Logout
     </Button>
   );

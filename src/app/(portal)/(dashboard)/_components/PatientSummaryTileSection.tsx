@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IMedicalTileSummaryResposne } from "@/api-services/patient/types";
 import { DataTile } from "@/components/custom-ui/data-tile";

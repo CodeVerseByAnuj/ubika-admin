@@ -1,5 +1,5 @@
 import { LucideIcon, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 type CareGuideRowProps = {
   icon: LucideIcon;
@@ -15,7 +15,7 @@ export function CareGuideRow({
   href = "#",
 }: CareGuideRowProps) {
   return (
-    <Link href={href}>
+    <Link to={href}>
       <div className="flex min-h-16 mb-4 items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:shadow-sm active:scale-[0.99]">
         {/* Icon Tile */}
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-mist text-foreground">

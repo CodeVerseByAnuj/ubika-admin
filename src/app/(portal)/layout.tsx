@@ -1,9 +1,9 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "./_components/AppSidebar";
 import Header from "./_components/Header";
-import React from "react";
+import { Outlet } from "react-router-dom";
 
-const PortalLayout = ({ children }: { children: React.ReactNode }) => {
+const PortalLayout = () => {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full overflow-x-hidden">
@@ -11,7 +11,9 @@ const PortalLayout = ({ children }: { children: React.ReactNode }) => {
 
         <main className="flex-1 overflow-x-hidden bg-gray-50/10">
           <Header />
-          <div className="p-4 overflow-x-hidden">{children}</div>
+          <div className="p-4 overflow-x-hidden">
+            <Outlet />
+          </div>
         </main>
       </div>
     </SidebarProvider>

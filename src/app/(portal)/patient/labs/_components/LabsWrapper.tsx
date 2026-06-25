@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
@@ -11,9 +11,9 @@ import LabListSkeleton from "./LabListSkeleton";
 import LabFilters from "./LabFilters";
 
 const LabsWrapper = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const initialLabel = searchParams.get("observation_label") || "";
   const initialPage = Number(searchParams.get("page") || 1);
@@ -25,8 +25,8 @@ const LabsWrapper = () => {
     const params = new URLSearchParams();
     params.set("page", String(page));
     if (observationLabel) params.set("observation_label", observationLabel);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: true });
-  }, [page, observationLabel, pathname, router]);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [page, observationLabel, location.pathname, navigate]);
 
   const apiQueryString = useMemo(() => {
     const params = new URLSearchParams();

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import * as React from "react";
 import {
   BookOpen,
@@ -28,7 +28,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import ProfileMenu from "./ProfileMenu";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import ApplicationLogoHandler from "./ApplicationLogoHandler";
 
 // Sample Data
@@ -168,7 +168,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
                         {item.items.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
-                              <Link href={subItem.url}>
+                              <Link to={subItem.url}>
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
@@ -185,7 +185,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild tooltip={item.title}>
-                  <Link href={item.url}>
+                  <Link to={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </Link>

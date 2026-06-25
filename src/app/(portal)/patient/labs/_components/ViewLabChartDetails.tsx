@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { patientApiServices } from "@/api-services/patient/api";
 import { ILab, ILabsResposne } from "@/api-services/patient/types";

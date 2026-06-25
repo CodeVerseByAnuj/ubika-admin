@@ -1,4 +1,3 @@
-import Image from "next/image";
 import ApplicationLogo from "@/components/common/ApplicationLogo";
 import RegisterForm from "./_components/RegisterForm";
 
@@ -12,12 +11,10 @@ const RegisterPage = () => {
       <div className="grid min-h-svh lg:grid-cols-2">
         {/* Left Side Image */}
         <div className="relative hidden bg-muted lg:block">
-          <Image
+          <img
             src="/images/login-image.png"
             alt="Register Banner"
-            fill
-            priority
-            className="object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
 

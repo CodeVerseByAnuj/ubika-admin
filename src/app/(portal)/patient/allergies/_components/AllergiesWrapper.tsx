@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
@@ -6,12 +6,12 @@ import { IAllergiesResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
 import AllergyDataListSkeleton from "./AllergyDataListSkeleton";
 import AllergyDataList from "./AllergyDataList";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 
 const AllergiesWrapper = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathName = usePathname();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState(() =>
     parseInt(searchParams.get("page") || "1", 10),
   );
@@ -25,8 +25,8 @@ const AllergiesWrapper = () => {
         params.append(key, String(value));
       }
     });
-    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
-  }, [page, router, pathName]);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [page, navigate, location.pathname]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getAllergies", page],

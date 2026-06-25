@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -10,12 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ProfileMenu = function () {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { data, isLoading } = useUser();
 
   const user = data
@@ -65,7 +65,7 @@ const ProfileMenu = function () {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => router.push("/register")}
+              onClick={() => navigate("/register")}
               variant="destructive"
             >
               <LogOut />

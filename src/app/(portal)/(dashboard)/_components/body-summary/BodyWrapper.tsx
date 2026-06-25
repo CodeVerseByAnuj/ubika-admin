@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { patientWearablesApiServices } from "@/api-services/patient-wearables/api";
 import { IBody } from "@/api-services/patient-wearables/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";

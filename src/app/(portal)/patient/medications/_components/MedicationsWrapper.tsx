@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -12,15 +12,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import MedicationDataList from "./MedicationDataList";
 import MedicationDataListSkeleton from "./MedicationDataListSkeleton";
 import CustomPagination from "@/components/common/CustomPagination";
 
 const MedicationsWrapper = () => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState(() =>
     parseInt(searchParams.get("page") || "1", 10),
   );
@@ -38,8 +38,8 @@ const MedicationsWrapper = () => {
         params.append(key, String(value));
       }
     });
-    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
-  }, [page, status, router, pathName]);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [page, status, navigate, location.pathname]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getMedications", page, status],

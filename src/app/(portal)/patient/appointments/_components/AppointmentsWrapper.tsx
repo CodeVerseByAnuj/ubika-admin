@@ -1,17 +1,17 @@
-"use client";
+﻿"use client";
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { patientApiServices } from "@/api-services/patient/api";
 import { IAppointmentsResponse } from "@/api-services/patient/types";
 import CustomPagination from "@/components/common/CustomPagination";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import AppointmentDataList from "./AppointmentDataList";
 import AppointmentDataListSkeleton from "./AppointmentDataListSkeleton";
 
 const AppointmentsWrapper = () => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState(() =>
     parseInt(searchParams.get("page") || "1", 10),
   );
@@ -29,8 +29,8 @@ const AppointmentsWrapper = () => {
         params.append(key, String(value));
       }
     });
-    router.replace(`${pathName}?${params.toString()}`, { scroll: true });
-  }, [page, status, router, pathName]);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [page, status, navigate, location.pathname]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getAppointments", page, status],

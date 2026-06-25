@@ -2,7 +2,7 @@
 import axios, { AxiosError } from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `Bearer ${token}`;
     // }
-    config.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
+    config.headers.Authorization = `Bearer ${import.meta.env.VITE_API_TOKEN}`;
     return config;
   },
   (error) => {

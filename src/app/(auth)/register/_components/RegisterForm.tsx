@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 import { cn } from "@/lib/utils";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import LoadingButton from "@/components/common/LoadingButton";
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ const RegisterForm = function ({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +19,7 @@ const RegisterForm = function ({
       setTimeout(res, 2000);
     });
     setLoading(false);
-    router.push("/register/steps");
+    navigate("/register/steps");
   }
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>

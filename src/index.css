@@ -1,0 +1,194 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Fonts */
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+
+  /* Brand Colors */
+  --color-mist: var(--ubika-mist);
+  --color-navy: var(--ubika-navy);
+  --color-sage: var(--ubika-sage);
+  --color-ink: var(--ubika-ink);
+  --color-clay: var(--ubika-clay);
+
+  /* Tints */
+  --color-mist-2: var(--ubika-mist-2);
+  --color-sage-soft: var(--ubika-sage-soft);
+  --color-clay-soft: var(--ubika-clay-soft);
+  --color-clay-tint: var(--ubika-clay-tint);
+  --color-slate: var(--ubika-slate);
+
+  /* Shadcn  */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Font families loaded via Google Fonts in index.html */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Source Serif 4', serif;
+
+  /* UBIKA BRAND TOKENS */
+  --ubika-mist: #f4f6f5;
+  --ubika-navy: #2d4a6b;
+  --ubika-sage: #82a89e;
+  --ubika-ink: #2d4a6b;
+  --ubika-clay: #b05a3f;
+
+  /* Tints */
+  --ubika-mist-2: #ecefee;
+  --ubika-sage-soft: #eaf0ed;
+  --ubika-clay-soft: #fbefe5;
+  --ubika-clay-tint: #f4dcd0;
+  --ubika-slate: #6b7480;
+
+  /* SEMANTIC TOKENS */
+  --ubika-bg: var(--ubika-mist);
+  --ubika-surface: #ffffff;
+  --ubika-text: var(--ubika-ink);
+  --ubika-text-muted: var(--ubika-slate);
+  --ubika-border: rgba(14, 24, 40, 0.08);
+
+  /* SHADCN MAPPING */
+  --background: oklch(1 0 0);
+  --foreground: var(--ubika-text);
+
+  --card: var(--ubika-surface);
+  --card-foreground: var(--ubika-text);
+
+  --popover: var(--ubika-surface);
+  --popover-foreground: var(--ubika-text);
+
+  --primary: var(--ubika-ink);
+  --primary-foreground: var(--ubika-mist);
+
+  --secondary: var(--ubika-mist-2);
+  --secondary-foreground: var(--ubika-text);
+
+  --muted: var(--ubika-mist-2);
+  --muted-foreground: var(--ubika-text-muted);
+
+  --accent: var(--ubika-sage-soft);
+  --accent-foreground: var(--ubika-text);
+
+  --destructive: var(--ubika-clay);
+
+  --border: var(--ubika-border);
+  --input: var(--ubika-border);
+
+  --ring: var(--ubika-navy);
+
+  /* Charts */
+  --chart-1: var(--ubika-ink);
+  --chart-2: var(--ubika-navy);
+  --chart-3: var(--ubika-sage);
+  --chart-4: var(--ubika-clay);
+  --chart-5: var(--ubika-slate);
+  --radius: 0.75rem;
+
+  /* Sidebar */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: var(--ubika-text);
+  --sidebar-primary: var(--ubika-ink);
+  --sidebar-primary-foreground: var(--ubika-mist);
+  --sidebar-accent: var(--ubika-sage-soft);
+  --sidebar-accent-foreground: var(--ubika-text);
+  --sidebar-border: var(--ubika-border);
+  --sidebar-ring: var(--ubika-navy);
+}
+
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.92 0.004 286.32);
+  --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.552 0.016 285.938);
+  --chart-1: oklch(0.871 0.006 286.286);
+  --chart-2: oklch(0.552 0.016 285.938);
+  --chart-3: oklch(0.442 0.017 285.786);
+  --chart-4: oklch(0.37 0.013 285.805);
+  --chart-5: oklch(0.274 0.006 286.033);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
+}
