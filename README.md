@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ubika Admin
+
+A modern healthcare dashboard built with **React + Vite**, for managing appointments, medications, lab results, conditions, allergies, and patient records.
+
+## Tech Stack
+
+- **React 19** + **TypeScript**
+- **Vite** — build tool and dev server
+- **React Router v6** — client-side routing
+- **TanStack React Query** — data fetching and caching
+- **shadcn/ui** + **Radix UI** — component library
+- **Tailwind CSS v4** — styling
+- **Recharts** — data visualization
+- **React Hook Form** + **Zod** — form handling and validation
+- **Axios** — HTTP client
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Set up environment variables
+
+Create a `.env` file in the root:
+
+```env
+VITE_API_URL=https://your-api-url/api/v1
+VITE_API_TOKEN=your_api_token
+```
+
+### 3. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Run ESLint |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── App.tsx                  # Root router setup
+├── main.tsx                 # React DOM entry point
+├── index.css                # Global styles + Tailwind
+├── app/
+│   ├── (auth)/              # Auth pages (register, steps)
+│   └── (portal)/            # Portal pages (dashboard, patient, etc.)
+├── api-services/            # Axios instance + API service functions
+├── components/
+│   ├── common/              # Shared components (DataTable, Pagination, etc.)
+│   ├── custom-ui/           # Custom UI primitives
+│   └── ui/                  # shadcn/ui components
+├── hooks/                   # Custom React hooks
+└── lib/                     # Utilities (cn, tokens, status helpers)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build the app for production:
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The output is in the `dist/` folder — deploy it to any static hosting provider (Netlify, Vercel, AWS S3, etc.).
