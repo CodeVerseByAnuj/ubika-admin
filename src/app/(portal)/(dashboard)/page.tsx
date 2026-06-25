@@ -17,7 +17,7 @@ const DashboardPage = () => {
           meta="Your vitals and required prep are perfectly aligned for your upcoming procedure."
         />
       </section>
-
+console.log("heloo")
       {/* Insight */}
       <section className="mt-4">
         <InsightCard
